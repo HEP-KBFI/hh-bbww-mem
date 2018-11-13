@@ -20,6 +20,8 @@ output standalone_cpp hh_bbww
 display diagrams
 ```
 
+The fortran files are taken from `MG5_aMC_v2_3_3/models/BSM_gg_hh/Fortran`.
+
 ## Building instructions
 
 ```bash

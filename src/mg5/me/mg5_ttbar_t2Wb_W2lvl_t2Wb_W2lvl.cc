@@ -83,7 +83,6 @@ void mg5_sm_ttbar2WbWb_WW2lvlv::sigmaKin()
   static int ntry = 0, sum_hel = 0, ngood = 0; 
   static int igood[ncomb]; 
   static int jhel; 
-  std::complex<double> * * wfs; 
   double t[nprocesses]; 
   // Helicities for the process
   static const int helicities[ncomb][nexternal] = {{-1, -1, -1, -1, -1, -1, -1,
@@ -292,7 +291,6 @@ double mg5_sm_ttbar2WbWb_WW2lvlv::sigmaHat()
 void mg5_sm_ttbar2WbWb_WW2lvlv::calculate_wavefunctions(const int perm[], const int hel[])
 {
   // Calculate wavefunctions for all processes
-  int i, j; 
 
   // Calculate all wavefunctions
   vxxxxx(p[perm[0]], mME[0], hel[0], -1, w[0]); 
@@ -322,7 +320,6 @@ double mg5_sm_ttbar2WbWb_WW2lvlv::matrix_1_gg_ttx_t_wpb_wp_epve_tx_wmbx_wm_emvex
 {
   int i, j; 
   // Local variables
-  const int ngraphs = 3; 
   const int ncolor = 2; 
   std::complex<double> ztemp; 
   std::complex<double> jamp[ncolor]; 
