@@ -1,0 +1,17 @@
+<flags ADD_SUBDIR="1" />
+<use name="DataFormats/Math" />
+<use name="FWCore/ParameterSet" />
+<use name="FWCore/Utilities" />
+<use name="root" />
+<use name="rootgraphics" />
+<use name="lhapdf" />
+<use name="vamp" />
+<use name="boost" />
+<use name="boost_system" />
+<use name="boost_filesystem" />
+<use name="HiggsToTauTau/tthMEM" />
+<!-- <Flags CXXFLAGS="-g3 -Og -ggdb3 -pedantic -Werror" /> -->
+<Flags CXXFLAGS="-g0 -O3 -ggdb0 -Wall -Wextra -Wpedantic -Werror" />
+<export>
+  <lib name="1" />
+</export>
