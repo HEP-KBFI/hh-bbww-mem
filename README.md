@@ -3,7 +3,7 @@ Matrix element method (MEM) for HH->bbWW analysis
 
 ## Generating the MG files
 
-1. download & unpack Madgrapg version 2.3.3: https://launchpad.net/mg5amcnlo/2.0/2.3.x/+download/MG5_aMC_v2.3.3.tar.gz
+1. download & unpack Madgraph version 2.3.3: https://launchpad.net/mg5amcnlo/2.0/2.3.x/+download/MG5_aMC_v2.3.3.tar.gz
 2. download UFO files: https://cms-project-generators.web.cern.ch/cms-project-generators/BSM_gg_hh.tar
 3. unpack the UFO files to `MG5_aMC_v2_3_3/models/BSM_gg_hh`
 4. in `./MG5_aMC_v2_3_3/bin/mg5_aMC` run:
