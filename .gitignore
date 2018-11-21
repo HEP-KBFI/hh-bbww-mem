@@ -6,4 +6,5 @@
 __init__.py*
 *~
 .idea/
+*.creator.user
 
