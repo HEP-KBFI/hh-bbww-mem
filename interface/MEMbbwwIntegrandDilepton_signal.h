@@ -16,7 +16,7 @@ class MEMbbwwIntegrandDilepton_signal : public MEMbbwwIntegrandBase
   /// set measured momenta of charged leptons and b-jets and of missing transverse momentum
   void setInputs(const mem::MeasuredParticle&, const mem::MeasuredParticle&, const mem::MeasuredParticle&, const mem::MeasuredParticle&, double, double, const TMatrixD&);
 
-  /// switch between
+  /// switch between associations of lepton+ and lepton- to on-shell and off-shell W bosons
   enum { kPermutationUndefined, kOnshellChargedLeptonPlus, kOnshellChargedLeptonMinus };
   void setOnshellChargedLepton(int chargedLeptonPermutation);
 

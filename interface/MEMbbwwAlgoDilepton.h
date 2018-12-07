@@ -2,7 +2,7 @@
 #define hhAnalysis_bbwwMEM_MEMbbwwAlgoDilepton_h
 
 #include "hhAnalysis/bbwwMEM/interface/MEMbbwwIntegrandDilepton_signal.h"
-//#include "hhAnalysis/bbwwMEM/interface/MEMbbwwIntegrandDilepton_background.h"
+#include "hhAnalysis/bbwwMEM/interface/MEMbbwwIntegrandDilepton_background.h"
 #include "hhAnalysis/bbwwMEM/interface/MEMIntegratorBase.h"
 #include "hhAnalysis/bbwwMEM/interface/MeasuredParticle.h"
 
@@ -62,7 +62,7 @@ class MEMbbwwAlgoDilepton
 
   /// pointers to integration classes for signal and background hypotheses
   mem::MEMbbwwIntegrandDilepton_signal* integrand_signal_;
-  //mem::MEMbbwwIntegrandDilepton_background* integrand_background_;
+  mem::MEMbbwwIntegrandDilepton_background* integrand_background_;
   double sqrtS_;
 
   /// measured momenta of charged leptons and b-jets

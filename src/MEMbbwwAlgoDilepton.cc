@@ -35,7 +35,7 @@ namespace
 
 MEMbbwwAlgoDilepton::MEMbbwwAlgoDilepton(double sqrtS, const std::string& pdfName, const std::string& madgraphFileName, int verbosity) 
   : integrand_signal_(nullptr),
-    //integrand_background_(nullptr),
+    integrand_background_(nullptr),
     sqrtS_(sqrtS),
     intMode_(kVAMP),
     intAlgo_(nullptr),
@@ -47,7 +47,7 @@ MEMbbwwAlgoDilepton::MEMbbwwAlgoDilepton(double sqrtS, const std::string& pdfNam
     verbosity_(verbosity)
 { 
   integrand_signal_ = new MEMbbwwIntegrandDilepton_signal(sqrtS_, pdfName, madgraphFileName, verbosity_);
-  //integrand_background_ = new MEMbbwwIntegrandDilepton_background(sqrtS_, pdfName, madgraphFileName, verbosity_);
+  integrand_background_ = new MEMbbwwIntegrandDilepton_background(sqrtS_, pdfName, madgraphFileName, verbosity_);
 
   result_.prob_signal_ = -1.;
   result_.probErr_signal_ = -1.;
@@ -60,7 +60,7 @@ MEMbbwwAlgoDilepton::MEMbbwwAlgoDilepton(double sqrtS, const std::string& pdfNam
 MEMbbwwAlgoDilepton::~MEMbbwwAlgoDilepton() 
 {
   delete integrand_signal_;
-  //delete integrand_background_;
+  delete integrand_background_;
 
   delete clock_;
 }
@@ -170,9 +170,9 @@ MEMbbwwAlgoDilepton::integrate(const std::vector<MeasuredParticle>& measuredPart
     integrand_signal_->setOnshellChargedLepton(chargedLeptonPermutation);
     MEMbbwwAlgoDilepton::runIntAlgo(integrand_signal_, result_.prob_signal_, result_.probErr_signal_);
   }
-  result_.prob_signal_ /= 2.;
-  result_.probErr_signal_ /= 2.;
-/*
+  result_.prob_signal_ /= 4.;
+  result_.probErr_signal_ /= 4.;
+
   MEMbbwwAlgoDilepton::gMEMIntegrand = integrand_background_;
   initializeIntAlgo();
   result_.prob_background_ = 0.;
@@ -188,13 +188,13 @@ MEMbbwwAlgoDilepton::integrate(const std::vector<MeasuredParticle>& measuredPart
       measuredBJet2 = measuredLeadingBJet_;
     }
     integrand_background_->setInputs(
-      measuredChargedLeptonPlus_, measuredChargedLeptonMinus_, *measuredBJet1, *measuredBJet2, 
+      *measuredChargedLeptonPlus_, *measuredChargedLeptonMinus_, *measuredBJet1, *measuredBJet2, 
       measuredMEtPx_, measuredMEtPy_, measuredMEtCov_);
     MEMbbwwAlgoDilepton::runIntAlgo(integrand_background_, result_.prob_background_, result_.probErr_background_);
   }
   result_.prob_background_ /= 2.;
   result_.probErr_background_ /= 2.;
- */
+
   clock_->Stop("<MEMbbwwAlgoDilepton::integrate>");
   if ( verbosity_ >= 1 ) {
     clock_->Show("<MEMbbwwAlgoDilepton::integrate>");

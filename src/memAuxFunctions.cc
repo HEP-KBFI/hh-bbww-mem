@@ -95,6 +95,27 @@ double compNuStarEn_Hww(const LorentzVector& trueEllNuEllStarP4, double trueNuSt
   }
 }
 
+double compBJetEn_top(const LorentzVector& trueEllNuP4, const LorentzVector& measuredBJetP4)
+{
+  double delta_mt = 0.5*(topQuarkMass2 - (wBosonMass2 + bottomQuarkMass2));
+  double a = trueEllNuP4.energy();  
+  double b = trueEllNuP4.P()*compCosAngle(trueEllNuP4, measuredBJetP4);
+  double a2_minus_b2 = a*a - b*b;
+  if ( a2_minus_b2 > 1.e-3 ) {
+    double term1 = a*delta_mt;
+    double term2 = delta_mt*delta_mt - (a2_minus_b2)*bottomQuarkMass2;
+    if ( term2 < 0. ) term2 = 0;
+    double sqrt_term2 = TMath::Sqrt(term2);
+    double term3 = b*sqrt_term2; // CV: taking the absolute value is not necessary, as we consider solutions with both signs anyway
+    double trueBJetEn_solution1 = (term1 + term3)/a2_minus_b2;
+    double trueBJetEn_solution2 = (term1 - term3)/a2_minus_b2;
+    double trueBJetEn = TMath::Max(trueBJetEn_solution1, trueBJetEn_solution2);
+    return trueBJetEn;
+  } else {
+    return 0.;
+  }
+}
+
 LorentzVector buildLorentzVector(double energy, double theta, double phi)
 {
   // special version of "buildLorentzVector" function for massless particles (neutrinos)
@@ -152,6 +173,19 @@ double compJacobiFactor_Hww(const LorentzVector& trueEllNuEllStarP4, const Loren
   double inverse_jacobiFactor = trueEllNuEllStarP4.energy()*(1. - trueEllNuEllStarBeta*compCosAngle(trueEllNuEllStarP4, trueNuStarP4));
   if ( inverse_jacobiFactor < 1.e-3 ) inverse_jacobiFactor = 1.e-3;
   return 1./inverse_jacobiFactor;
+}
+
+double compJacobiFactor_top(const LorentzVector& trueEllNuP4, const LorentzVector& trueBJetP4)
+{
+  double trueEllNuBeta = trueEllNuP4.P()/trueEllNuP4.energy();
+  double trueBJetBeta = trueBJetP4.P()/trueBJetP4.energy();
+  if ( trueBJetBeta > 1.e-3 ) {
+    double inverse_jacobiFactor = trueEllNuP4.energy()*(1. - (trueEllNuBeta/trueBJetBeta)*compCosAngle(trueEllNuP4, trueBJetP4));
+    if ( inverse_jacobiFactor < 1.e-3 ) inverse_jacobiFactor = 1.e-3;
+    return 1./inverse_jacobiFactor;
+  } else {
+    return 0.;
+  }
 }
 
 }
