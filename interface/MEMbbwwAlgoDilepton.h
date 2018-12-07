@@ -15,7 +15,7 @@
 class MEMbbwwAlgoDilepton
 {
  public:
-  MEMbbwwAlgoDilepton(double, const std::string&, const std::string& = "", int = 0); 
+  MEMbbwwAlgoDilepton(double, const std::string&, const std::string&, const std::string& = "", int = 0); 
   ~MEMbbwwAlgoDilepton();
 
   /// number of function calls for VEGAS and VAMP integration (default is 100000)
@@ -61,7 +61,10 @@ class MEMbbwwAlgoDilepton
   void runIntAlgo(mem::MEMbbwwIntegrandBase* integrand, double& prob, double& probErr);
 
   /// pointers to integration classes for signal and background hypotheses
+  std::string pdfName_;
+  std::string madgraphFileName_signal_;
   mem::MEMbbwwIntegrandDilepton_signal* integrand_signal_;
+  std::string madgraphFileName_background_;
   mem::MEMbbwwIntegrandDilepton_background* integrand_background_;
   double sqrtS_;
 

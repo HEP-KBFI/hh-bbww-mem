@@ -1,0 +1,5 @@
+<bin   file="testMEMbbwwDilepton.cc" name="testMEMbbwwDilepton">
+  <use name="FWCore/ParameterSet"/>
+  <use name="hhAnalysis/bbwwMEM"/>
+  <use name="root"/>
+</bin>

@@ -33,21 +33,27 @@ namespace
   }
 }
 
-MEMbbwwAlgoDilepton::MEMbbwwAlgoDilepton(double sqrtS, const std::string& pdfName, const std::string& madgraphFileName, int verbosity) 
-  : integrand_signal_(nullptr),
-    integrand_background_(nullptr),
-    sqrtS_(sqrtS),
-    intMode_(kVAMP),
-    intAlgo_(nullptr),
-    maxObjFunctionCalls_(20000),
-    precision_(1.e-3),
-    clock_(nullptr),
-    numSeconds_cpu_(-1.),
-    numSeconds_real_(-1.),
-    verbosity_(verbosity)
+MEMbbwwAlgoDilepton::MEMbbwwAlgoDilepton(double sqrtS, 
+					 const std::string& pdfName, 
+					 const std::string& madgraphFileName_signal, const std::string& madgraphFileName_background, 
+					 int verbosity) 
+  : pdfName_(pdfName)
+  , madgraphFileName_signal_(madgraphFileName_signal)
+  , integrand_signal_(nullptr)
+  , madgraphFileName_background_(madgraphFileName_background)
+  , integrand_background_(nullptr)
+  , sqrtS_(sqrtS)
+  , intMode_(kVAMP)
+  , intAlgo_(nullptr)
+  , maxObjFunctionCalls_(20000)
+  , precision_(1.e-3)
+  , clock_(nullptr)
+  , numSeconds_cpu_(-1.)
+  , numSeconds_real_(-1.)
+  , verbosity_(verbosity)
 { 
-  integrand_signal_ = new MEMbbwwIntegrandDilepton_signal(sqrtS_, pdfName, madgraphFileName, verbosity_);
-  integrand_background_ = new MEMbbwwIntegrandDilepton_background(sqrtS_, pdfName, madgraphFileName, verbosity_);
+  //integrand_signal_ = new MEMbbwwIntegrandDilepton_signal(sqrtS_, pdfName_, madgraphFileName_signal_, verbosity_);
+  //integrand_background_ = new MEMbbwwIntegrandDilepton_background(sqrtS_, pdfName_, madgraphFileName_background_, verbosity_);
 
   result_.prob_signal_ = -1.;
   result_.probErr_signal_ = -1.;
@@ -59,8 +65,8 @@ MEMbbwwAlgoDilepton::MEMbbwwAlgoDilepton(double sqrtS, const std::string& pdfNam
 
 MEMbbwwAlgoDilepton::~MEMbbwwAlgoDilepton() 
 {
-  delete integrand_signal_;
-  delete integrand_background_;
+  //delete integrand_signal_;
+  //delete integrand_background_;
 
   delete clock_;
 }
@@ -147,6 +153,7 @@ MEMbbwwAlgoDilepton::integrate(const std::vector<MeasuredParticle>& measuredPart
     std::cout << "Eigenvalues = " << EigenValues(0) << ", " << EigenValues(1) << std::endl;
   }
 
+  integrand_signal_ = new MEMbbwwIntegrandDilepton_signal(sqrtS_, pdfName_, madgraphFileName_signal_, verbosity_);
   MEMbbwwAlgoDilepton::gMEMIntegrand = integrand_signal_;
   initializeIntAlgo();
   result_.prob_signal_ = 0.;
@@ -172,7 +179,12 @@ MEMbbwwAlgoDilepton::integrate(const std::vector<MeasuredParticle>& measuredPart
   }
   result_.prob_signal_ /= 4.;
   result_.probErr_signal_ /= 4.;
+  delete integrand_signal_;
+  //integrand_signal_ = nullptr;
+  delete intAlgo_;
+  //intAlgo_ = nullptr;
 
+  integrand_background_ = new MEMbbwwIntegrandDilepton_background(sqrtS_, pdfName_, madgraphFileName_background_, verbosity_);
   MEMbbwwAlgoDilepton::gMEMIntegrand = integrand_background_;
   initializeIntAlgo();
   result_.prob_background_ = 0.;
@@ -194,6 +206,10 @@ MEMbbwwAlgoDilepton::integrate(const std::vector<MeasuredParticle>& measuredPart
   }
   result_.prob_background_ /= 2.;
   result_.probErr_background_ /= 2.;
+  delete integrand_background_;
+  //integrand_background_ = nullptr;
+  delete intAlgo_;
+  //intAlgo_ = nullptr;
 
   clock_->Stop("<MEMbbwwAlgoDilepton::integrate>");
   if ( verbosity_ >= 1 ) {
