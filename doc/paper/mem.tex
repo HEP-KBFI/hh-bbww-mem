@@ -1,0 +1,394 @@
+\section{The Matrix element method}
+\label{sec:mem}
+
+The matrix element method (MEM) computes probability densities $w_{i}(\vecy|\vecyhat)$
+for obtaining the measured observables $\vecy$, assuming the event has been produced by the process $i$.
+The probability densities $w_{i}(\vecy|\vecyhat)$ are interpreted as quantifying the compatibility of the measured observables $\vecy$
+with the signal ($i=0$) and background ($i=1$) hypothesis.
+In the analysis of Higgs boson pair ($\PHiggs\PHiggs$) production in the decay channel 
+$\PHiggs\PHiggs \to \Pbottom\APbottom \, \PW^{+}\PW^{-} \to \Pbottom\APbottom \, \ellPlusnu\ellMinusnu$
+the observables $\vecy$ refer to 
+the measured momenta of the two $\Pbottom$-jets, the two charged leptons, and the measured missing transverse momentum ($\vecMET$) in the event.
+We use symbols with a hat to denote the true values of energies and momenta.
+Bold letters denote vector quantities.
+The vector $\vecyhat$ denotes the true values of the $\Pbottom$-jet and charged lepton momenta and the true values of the momenta of the two neutrinos produced in the $\PW$ boson decays.
+Note that $\PHiggs\PHiggs \to \Pbottom\APbottom \, \PW^{+}\PW^{-} \to \Pbottom\APbottom \, \ellPlusnu\ellMinusnu$ signal events
+contain the same number of $\Pbottom$-jets, charged leptons, and neutrinos as the dominant background,
+arising from top quark pair production ($\ttbar \to \Pbottom\PW^{+} \, \APbottom\PW^{-} \to \Pbottom\ellPlusnu \, \APbottom\ellMinusnu$),
+in this channel.
+The separation of the $\PHiggs\PHiggs$ signal from the irreducible $\ttbar$ background is based on the difference in event kinematics,
+causing the probability densities $w_{0}(\vecy|\vecyhat)$ ($w_{1}(\vecy|\vecyhat)$) to be in general higher when evaluated on signal (background) events
+and lower when evaluated on background (signal) events.
+Given the probability densities $w_{0}(\vecy|\vecyhat)$ and $w_{1}(\vecy|\vecyhat)$ for the signal and background hypotheses,
+the Neyman lemma~\cite{Neyman:1937uhy} postulates that the ratio:
+\begin{equation*}
+P(\vecy) = \frac{w_{0}(\vecy|\vecyhat)}{w_{0}(\vecy|\vecyhat) + w_{1}(\vecy|\vecyhat)}
+\end{equation*}
+then provides the optimal separation of the $\PHiggs\PHiggs$ signal from the irreducible $\ttbar$ background.
+
+Different nomenclatures and conventions for the MEM exist in the literature.
+In this note, we follow the nomenclature and conventions introduced in Ref.~\cite{Volobouev:2011vb}.
+The probability densities $w_{i}(\vecy|\vecyhat)$ are given by the integral:
+\begin{align}
+w_{i}(\vecy|\vecyhat) = & \frac{\Omega(\vecy)}{\sigma \, \mathcal{A}} \, \int \, d\xhat_{a} \, d\xhat_{b} \,
+  d\Phi_{n} \, \frac{f(\xhat_{a}) \, f(\xhat_{b})}{2 \, \xhat_{a} \, \xhat_{b} \, s} \, (2\pi)^{4} \,
+  \delta\left( \xhat_{a} \, \Ehat_{a} + \xhat_{b} \, \Ehat_{b} - \sum_{i}^{n} \Ehat_{(i)} \right) \nonumber \\
+ & \quad \cdot \, \delta^{3}( \xhat_{a} \, \vecphat^{a} + \xhat_{b} \, \vecphat^{b} - \sum_{i}^{n} \vecphat^{(i)}) \, 
+  \vert \mathcal{M}_{i}(\vecyhat) \vert^{2} \, W(\vecy|\vecyhat) \, \epsilon(\vecyhat) \, .
+\label{eq:mem1}
+\end{align}
+The symbol $\vert \mathcal{M}_{i}(\vecyhat) \vert^{2}$ denotes the squared modulus of the matrix element (ME) for either the signal ($i=0$) or for the background ($i=1$) hypothesis.
+The symbols $\Ehat_{a}$ and $\Ehat_{b}$ ($\vecphat^{a}$ and $\vecphat^{b}$) denote the energies (momenta) of the two colliding protons,
+$\sqrt{s}$ their center-of-mass energy,
+$\xhat_{a}$ and $\xhat_{b}$ the Bjorken scaling variables~\cite{Bjorkenx},
+and $f(\xhat_{a})$ and $f(\xhat_{b})$ the corresponding parton distribution functions (PDF).
+We use the MSTW 2008 LO PDF set~\cite{MSTW} to evaluate $f(\xhat_{a})$ and $f(\xhat_{b})$.
+We denote by $n$ the number of particles in the final state,
+by $\vecp^{(i)}$ ($\vecphat^{(i)}$) the measured (true) momentum of the $i$-th final state particle, and by 
+$d\Phi_{n} = \prod_{i}^{n} \, \frac{d^{3}\vecphat^{(i)}}{(2\pi)^{3} \, 2 \Ehat_{(i)}}$ 
+the differential $n$-particle phase space (PS) element.
+For the $\PHiggs\PHiggs$ signal 
+as well as for the $\ttbar$ background,
+$n=6$, as the final state in both cases contains a pair of $\Pbottom$ and $\APbottom$ quarks, two charged leptons, and two neutrinos.
+The $\delta$-functions $\delta( \xhat_{a} \, \Ehat_{a} + \xhat_{b} \, \Ehat_{b} - \sum_{i}^{n} \Ehat_{(i)})$
+and $\delta^{3}( \xhat_{a} \, \vecphat^{a} + \xhat_{b} \, \vecphat^{b} - \sum_{i}^{n} \vecphat^{(i)})$ 
+impose conservation of energy and momentum.
+The functions $W(\vecy|\vecyhat)$ are referred to as ``transfer functions'' (TF) in the literature.
+They represent the probability density to observe the measured values $\vecy$, given the true values $\vecyhat$.
+The vector $\vecyhat$ corresponds to a point $\vecphat$ in the $n$-particle PS.
+The function $\Omega(\vecy)$ is referred to as ``indicator function'' in the literature~\cite{Fiedler:2010sg,Volobouev:2011vb}.
+It attains the value $1$ in case the event represented by the measured observables $\vecy$ passes the event selection criteria and otherwise attains the value $0$.
+The efficiency for an event originating at the PS point
+$\vecyhat$ to pass the event selection, \ie to end up with measured
+observables $\vecy$ for which $\Omega(\vecy) = 1$,
+is denoted by $\epsilon(\vecy)$. 
+Finally, the symbol $\mathcal{A}$ denotes the acceptance of the event selection, 
+that is, the percentage of events which pass the event selection criteria,
+while $\sigma$ denotes the total (inclusive) cross section.
+Division of the right-hand-side (RHS) of Eq.~(\ref{eq:mem1}) by the product $\sigma \, \mathcal{A}$
+ensures that $w_{i}(\vecy|\vecyhat)$ has the correct normalization required for a probability density, 
+\ie $\int \, d\vecy \, w_{i}(\vecy|\vecyhat) = 1$,
+provided that the TF satisfy the normalization condition
+$\int \, d\vecy \, \Omega(\vecy) \, W(\vecy|\vecyhat) = 1$
+for every $\vecy$.
+
+We express the PS element $d\Phi_{6}$ in terms of the energies $\Ehat_{(i)}$, the polar angles $\thetahat_{(i)}$, and the azimuthal angles $\phihat_{(i)}$ 
+of the pair of $\Pbottom$ and $\APbottom$ quarks, of the two charged leptons, and of the two neutrinos:
+\begin{eqnarray}
+d\Phi_{6} 
+ & = &\prod_{i}^{6} \, \frac{d^{3}\vecphat^{(i)}}{(2 \, \pi)^{3} \, 2 \, \Ehat_{(i)}} 
+  = \frac{1}{2^{24} \, \pi^{18}} \, \prod_{i}^{6} \, 
+\frac{d^{3}\vecphat^{(i)}}{\Ehat_{(i)}} \nonumber \\
+ & = & \frac{1}{2^{24} \, \pi^{18}} \, \prod_{i}^{6} \, 
+\frac{d\Ehat_{(i)} \, d\thetahat_{(i)} \, d\phihat_{(i)} \, |\vecphat^{(i)}| \, \Ehat_{(i)} \, \sin\thetahat_{(i)}}{\Ehat_{(i)}} \nonumber \\
+ & = & \frac{1}{2^{24} \, \pi^{18}} \, \prod_{i}^{6} \, 
+d\Ehat_{(i)} \, d\thetahat_{(i)} \, d\phihat_{(i)} \, \betahat_{(i)} \Ehat_{(i)} \, \sin\thetahat_{(i)} \, .
+\label{eq:PS_inPolarCoordinates}
+\end{eqnarray}
+All energies $\Ehat_{(i)}$ as well as the angles $\thetahat_{(i)}$ and $\phihat_{(i)}$ refer to the laboratory (detector) frame.
+The velocity $\betahat_{(i)}$ of particle $i$,
+given by $\betahat_{(i)} \equiv \frac{|\vecphat^{(i)}|}{\Ehat_{(i)}}$,
+has been used to simplify the expression for $d\Phi_{6}$ in the last step.
+Note that the velocity $\betahat_{(i)}$ is a function of energy $\Ehat_{(i)}$ and hence cannot be treated as constant when evaluating the integral over $d\Ehat_{(i)}$.
+Similarly, the magnitude of the momentum $|\vecphat^{(i)}|$ is a function of the energy $\Ehat_{(i)}$.
+In the following, we use the identities $|\vecphat^{(i)}| = \sqrt{\Ehat_{(i)}^{2} - m_{(i)}^{2}}$ 
+and $\betahat_{(i)} = \frac{\sqrt{\Ehat_{(i)}^{2} - m_{(i)}^{2}}}{\Ehat_{(i)}}$ to make the dependency on the energy $\Ehat_{(i)}$ explicit.
+
+The form of Eq.~(\ref{eq:PS_inPolarCoordinates}) is useful, 
+as it allows to trivially perform the integration over the 
+angles $\thetahat_{(i)}$ and $\phihat_{(i)}$ for the pair of $\Pbottom$ and $\APbottom$ quarks and for the two charged leptons,
+taking advantage of the fact that the directions of quarks (jets) and charged leptons are measured with negligible experimental resolution.
+With the further assumption that also the energy of charged leptons can be measured with negligible experimental resolution,
+the integration over $d\Ehat_{\Plepton^{+}}$ and $d\Ehat_{\Plepton^{-}}$ can be carried out trivially too.
+We shall only consider events that pass the event selection criteria, \ie for which the indicator function $\Omega(\vecy)$ is equal to $1$.
+For simplicity, we moreover neglect the effect of the efficiency $\epsilon(\vecyhat)$ and of the acceptance $\mathcal{A}$.
+With these assumptions and upon inserting the expressions for the TF given by Eqs.~(\ref{eq:TF_ell}),~(\ref{eq:TF_b}), and~(\ref{eq:TF_f}) in the appendix
+into Eq.~(\ref{eq:PS_inPolarCoordinates}), we obtain:
+\begin{align}
+w_{i}(\vecy|\vecyhat) 
+ = & \frac{1}{2^{24} \, \pi^{18} \, \sigma \, E_{\Plepton^{+}} \, E_{\Plepton^{-}}} \, \int \, d\xhat_{a} \, d\xhat_{b} \,
+\frac{d\Ehat_{\Pbottom}}{\Ehat_{\Pbottom}} \, \frac{d\Ehat_{\APbottom}}{\Ehat_{\APbottom}} \, \frac{d^{3}\vecphat_{\Pnu}}{\Ehat_{\Pnu}} \, \frac{d^{3}\vecphat_{\APnu}}{\Ehat_{\APnu}} \,
+\frac{f(\xhat_{a}) \, f(\xhat_{b})}{2 \, \xhat_{a} \, \xhat_{b} \, s} \nonumber \\
+ & \quad \cdot \, (2 \, \pi)^{4} \, \delta( \xhat_{a} \, \Ehat_{a} + \xhat_{b} \, \Ehat_{b} - \sum_{i}^{6} \Ehat_{(i)}) \, 
+\delta^{3}( \xhat_{a} \, \vecphat^{a} + \xhat_{b} \, \vecphat^{b} - \sum_{i}^{6} \vecphat^{(i)}) \nonumber \\
+ & \quad \cdot \, \vert \mathcal{M}_{i}(\vecphat) \vert^{2} \, \frac{\betahat_{\Pbottom} \, \Ehat_{\Pbottom}^{2}}{\beta_{\Pbottom} \, E_{\Pbottom}^{2}} \, W(E_{\Pbottom}|\Ehat_{\Pbottom}) \, 
+\frac{\betahat_{\APbottom} \, \Ehat_{\APbottom}^{2}}{\beta_{\APbottom} \, E_{\APbottom}^{2}} \, W(E_{\APbottom}|\Ehat_{\APbottom}) \nonumber \\
+ = & \frac{1}{2^{21} \, \pi^{14} \, \sigma \, E_{\Plepton^{+}} \, E_{\Plepton^{-}} \, E_{\Pbottom} \, E_{\APbottom}} \, \int \, d\xhat_{a} \, d\xhat_{b} \,
+d\Ehat_{\Pbottom} \, d\Ehat_{\APbottom} \, \frac{d^{3}\vecphat_{\Pnu}}{\Ehat_{\Pnu}} \, \frac{d^{3}\vecphat_{\APnu}}{\Ehat_{\APnu}} \,
+\frac{f(\xhat_{a}) \, f(\xhat_{b})}{\xhat_{a} \, \xhat_{b} \, s} \nonumber \\
+ & \quad \cdot \, \delta( \xhat_{a} \, \Ehat_{a} + \xhat_{b} \, \Ehat_{b} - \sum_{i}^{6} \Ehat_{(i)}) \,
+\delta^{3}( \xhat_{a} \, \vecphat^{a} + \xhat_{b} \, \vecphat^{b} - \sum_{i}^{6} \vecphat^{(i)}) \nonumber \\
+ & \quad \cdot \, \vert \mathcal{M}_{i}(\vecphat) \vert^{2}\, \frac{\betahat_{\Pbottom} \, \Ehat_{\Pbottom}}{\beta_{\Pbottom} \, E_{\Pbottom}} \, W(E_{\Pbottom}|\Ehat_{\Pbottom}) \, 
+\frac{\betahat_{\APbottom} \, \Ehat_{\APbottom}}{\beta_{\APbottom} \, E_{\APbottom}} \, W(E_{\APbottom}|\Ehat_{\APbottom}) \, .
+\label{eq:mem2}
+\end{align}
+The terms $\frac{\betahat_{\Pbottom} \, \Ehat_{\Pbottom}}{\beta_{\Pbottom} \, E_{\Pbottom}}$ and $\frac{\betahat_{\APbottom} \, \Ehat_{\APbottom}}{\beta_{\APbottom} \, E_{\APbottom}}$ 
+arise because the integration over the PS elements $d^{3}\vecphat$ of the $\Pbottom$ and $\APbottom$ quarks yields a factor $\betahat \, \Ehat^{2} \, \sin\thetahat$,
+while the normalization of the TF yields a factor $\frac{1}{\beta \, E^{2} \, \sin\theta}$, \cf Eq.~(\ref{eq:TF_f}).
+The terms $\sin\thetahat$ and $\frac{1}{\sin\theta}$ cancel, due to the presence of the $\delta$-function $\delta(\theta - \thetahat)$ in the integrand, \cf Eq.~(\ref{eq:TF_b}).
+No similar terms arise for the charged leptons, as the TF for charged leptons demand $\betahat = \beta$, $\Ehat = E$, and $\thetahat = \theta$, \cf Eq.~(\ref{eq:TF_ell}).
+
+Concerning the four-dimensional $\delta$-function 
+$\delta( \xhat_{a} \, \Ehat_{a} + \xhat_{b} \, \Ehat_{b} - \sum_{i}^{6} \Ehat_{(i)}) \cdot \delta^{3}( \xhat_{a} \, \vecphat^{a} + \xhat_{b} \, \vecphat^{b} - \sum_{i}^{6} \vecphat^{(i)})$,
+which ensures the conservation of energy and momentum,
+we first eliminate the energy and longitudinal momentum components by solving for the Bjorken scaling variables $\xhat_{a}$ and $\xhat_{b}$.
+This yields~\cite{CMS_AN_2013_313}:
+\begin{equation}
+\xhat_{a} = \frac{1}{\sqrt{s}} \, \sum_{i}^{6} \Ehat_{(i)} + \pZhat^{(i)} \quad \mbox{ and } \quad
+\xhat_{b} = \frac{1}{\sqrt{s}} \, \sum_{i}^{6} \Ehat_{(i)} - \pZhat^{(i)} \, .
+\label{eq:Bjorkenx}
+\end{equation}
+
+For the purpose of eliminating the transverse momentum components of the four-dimensional $\delta$-function,
+we follow the approach of Ref.~\cite{CMS_AN_2013_313}.
+The approach is based on introducing the ``hadronic recoil'', denoted by the symbol $\rho$, as a means to account for QCD radiation,
+which causes additional jets to be produced besides the two $\Pbottom$-jets originating from the decay of the $\PHiggs$ boson (in signal events) 
+or from the decay of the two top quarks (in background events).
+As detailed in Ref.~\cite{Alwall:2010cq}, significant amounts of QCD radiation, in particular initial-state radiation (ISR),
+are a typical feature of most signal and background processes at the LHC.
+The longitudinal momentum of the additional jets produced by QCD radiation alters the relations for $\xhat_{a}$ and $\xhat_{b}$ somewhat,
+compared to the values given by Eq.~(\ref{eq:Bjorkenx}).
+We expect the effect of QCD radiation on the energy and longitudinal momentum components to be small, however, and thus neglect it.
+The effect on the transverse momentum balance is important, however,
+as QCD radiation distorts the kinematic relations that would be expected to hold in the absence of such radiation.
+As a consequence, the $\delta$-functions that ensure the conservation of momentum in the transverse plane need to be modified. 
+Their modified form reads: 
+$\delta( \pXhat^{\rho} + \sum_{i}^{6} \pXhat^{(i)})$ and $\delta( \pYhat^{\rho} + \sum_{i}^{6} \pYhat^{(i)})$,
+where $\pXhat^{\rho}$ ($\pYhat^{\rho}$) denotes the true value of the momentum of the hadronic recoil $\rho$ in $x$ ($y$) direction.
+The $\delta$-functions hold on the level of measured and on the level of true values.
+For the measured values, they imply the relations:
+\begin{equation*}
+\pX^{\rho} = - \left( \pX^{\Pbottom} + \pX^{\APbottom} + \pX^{\Plepton^{+}} + \pX^{\Plepton^{-}} + \METx \right) \, \mbox{ and } \,
+\pY^{\rho} = - \left( \pY^{\Pbottom} + \pY^{\APbottom} + \pY^{\Plepton^{+}} + \pY^{\Plepton^{-}} + \METy \right) \, ,
+\end{equation*}
+while the corresponding relations for the true momenta read:
+\begin{equation}
+\pXhat^{\rho} = - \left( \pXhat^{\Pbottom} + \pXhat^{\APbottom} + \pXhat^{\Plepton^{+}} + \pXhat^{\Pnu} + \pXhat^{\Plepton^{-}} + \pXhat^{\APnu} \right) \, \mbox{ and } \,
+\pYhat^{\rho} = - \left( \pYhat^{\Pbottom} + \pYhat^{\APbottom} + \pYhat^{\Plepton^{+}} + \pYhat^{\Pnu} + \pYhat^{\Plepton^{-}} + \pYhat^{\APnu} \right) \, .
+\label{eq:hadRecoil_true}
+\end{equation}
+The experimental resolution on $\pX^{\rho}$ and $\pY^{\rho}$ is modeled by introducing a TF for the hadronic recoil into the integrand of Eq.~(\ref{eq:mem2}).
+Following Ref.~\cite{CMS_AN_2013_313}, we assume that the resolution on the transverse momentum components of $\rho$ follows a two-dimensional normal distribution:
+\begin{equation}
+W_{\rho}( \pX^{\rho},\pY^{\rho} | \pXhat^{\rho},\pYhat^{\rho} ) = 
+ \frac{1}{2\pi \, \sqrt{\vert V \vert}} \, \exp \left( -\frac{1}{2}
+ \left( \begin{array}{c} \pX^{\rho} - \pXhat^{\rho} \\ \pY^{\rho} - \pYhat^{\rho} \end{array} \right)^{T}
+  \cdot V^{-1} \cdot
+   \left( \begin{array}{c} \pX^{\rho} - \pXhat^{\rho} \\ \pY^{\rho} - \pYhat^{\rho} \end{array} \right)
+ \right) \, .
+\label{eq:TF_hadRecoil}
+\end{equation}
+The matrix $V$ is computed event-by-event, using the $\MET$-significance algorithm~\cite{CMS_AN_2010-400}.
+Following Ref.~\cite{CMS_AN_2013_313}, we replace the $\delta$-functions 
+$\delta( \pXhat^{\rho} + \sum_{i}^{6} \pXhat^{(i)})$ and $\delta( \pYhat^{\rho} + \sum_{i}^{6} \pYhat^{(i)})$
+that ensure the momentum conservation in the transverse plane
+by the TF for the hadronic recoil.
+A remaining issue is that we use leading order (LO) ME $\mathcal{M}_{i}(\vecphat)$ for the $\PHiggs\PHiggs$ signal and for the $\ttbar$ background in Eq.~(\ref{eq:mem2}).
+The LO ME for the signal (background) requires that the $\PHiggs\PHiggs$ ($\ttbar$) system has zero $\pT$, 
+a condition that (in the laboratory frame) only holds in case the hadronic recoil has zero $\pT$, 
+which rarely holds at the LHC, due to the abundance of ISR (as previously discussed).
+The issue that the LO ME is only well-defined for events with zero ISR
+is resolved by evaluating the ME $\mathcal{M}_{i}(\vecyhat)$ in a frame in which the $\PHiggs\PHiggs$ ($\ttbar$) system has zero $\pT$, 
+to which we refer as the zero-transverse-momentum (ZTM) frame.
+The Lorentz transformation of the energy $\Ehat_{(i)}$ and momenta $\vecphat^{(i)}$ in Eq.~(\ref{eq:mem2})
+from the laboratory to the ZTM frame is performed using the vector $(-\frac{\pX^{\rho}}{\pT^{\rho}},-\frac{\pY^{\rho}}{\pT^{\rho}},0)$ as the boost vector.
+
+Eliminating the energy and longitudinal momentum components of the (modified) four-dimensional $\delta$-function 
+$\delta( \xhat_{a} \, \Ehat_{a} + \xhat_{b} \, \Ehat_{b} - \sum_{i}^{6} \Ehat_{(i)}) \cdot \delta( \xhat_{a} \, \pZhat^{a} + \xhat_{b} \, \pZhat^{b} - \sum_{i}^{6} \pZhat^{(i)}) \cdot \delta( \pXhat^{\rho} + \sum_{i}^{6} \pXhat^{(i)}) \cdot \delta( \pYhat^{\rho} + \sum_{i}^{6} \pYhat^{(i)})$
+by means of Eq.~(\ref{eq:Bjorkenx})
+and replacing its transverse momentum components by the TF $W_{\rho}( \pX^{\rho},\pY^{\rho} | \pXhat^{\rho},\pYhat^{\rho} )$ for the hadronic recoil $\rho$,
+the expression for the probability density $w_{i}(\vecy|\vecyhat)$ becomes:
+\begin{align}
+w_{i}(\vecy|\vecyhat) 
+ = & \frac{1}{2^{21} \, \pi^{14} \, \sigma \, E_{\Plepton^{+}} \, E_{\Plepton^{-}} \, E_{\Pbottom} \, E_{\APbottom}} \, \int \, 
+d\Ehat_{\Pbottom} \, d\Ehat_{\APbottom} \, \frac{d^{3}\vecphat_{\Pnu}}{\Ehat_{\Pnu}} \, \frac{d^{3}\vecphat_{\APnu}}{\Ehat_{\APnu}} \,
+\frac{f(\xhat_{a}) \, f(\xhat_{b})}{\xhat_{a} \, \xhat_{b} \, s} \nonumber \\
+ & \quad \cdot \, \vert \mathcal{M}_{i}(\vecphat) \vert^{2} \, 
+\frac{\betahat_{\Pbottom} \, \Ehat_{\Pbottom}}{\beta_{\Pbottom} \, E_{\Pbottom}} \, W(E_{\Pbottom}|\Ehat_{\Pbottom}) \, 
+\frac{\betahat_{\APbottom} \, \Ehat_{\APbottom}}{\beta_{\APbottom} \, E_{\APbottom}} \, W(E_{\APbottom}|\Ehat_{\APbottom}) \, W_{\rho}( \pX^{\rho},\pY^{\rho} | \pXhat^{\rho},\pYhat^{\rho} ) \nonumber \\
+ = & \frac{1}{2^{21} \, \pi^{14} \, \sigma \, E_{\Plepton^{+}} \, E_{\Plepton^{-}} \, E_{\Pbottom} \, E_{\APbottom}} \, \int \, 
+d\Ehat_{\Pbottom} \, d\Ehat_{\APbottom} \, d\Ehat_{\Pnu} \, d\thetahat_{\Pnu} \, d\phihat_{\Pnu} \, d\Ehat_{\APnu} \, d\thetahat_{\APnu} \, d\phihat_{\APnu} \nonumber \\
+ & \quad \cdot \, \betahat_{\Pnu} \, \Ehat_{\Pnu} \, \sin\thetahat_{\Pnu} \, 
+\betahat_{\APnu} \, \Ehat_{\APnu} \, \sin\thetahat_{\APnu} \, 
+\frac{f(\xhat_{a}) \, f(\xhat_{b})}{\xhat_{a} \, \xhat_{b} \, s} \nonumber \\
+ & \quad \cdot \, \vert \mathcal{M}_{i}(\vecphat) \vert^{2} \, 
+\frac{\betahat_{\Pbottom} \, \Ehat_{\Pbottom}}{\beta_{\Pbottom} \, E_{\Pbottom}} \, W(E_{\Pbottom}|\Ehat_{\Pbottom}) \, 
+\frac{\betahat_{\APbottom} \, \Ehat_{\APbottom}}{\beta_{\APbottom} \, E_{\APbottom}} \, W(E_{\APbottom}|\Ehat_{\APbottom}) \, W_{\rho}( \pX^{\rho},\pY^{\rho} | \pXhat^{\rho},\pYhat^{\rho} ) \, .
+\label{eq:mem3}
+\end{align}
+The expression in Eq.~(\ref{eq:mem3}) concludes our discussion of the analytic transformations that we apply to $w_{i}(\vecy|\vecyhat)$
+in case of the signal ($i=0$) as well as the background ($i=1$) hypothesis.
+
+A few more transformations are necessary to handle the presence of Breit-Wigner (BW) propagators in the ME $\mathcal{M}_{i}(\vecphat)$ while performing the numeric integration.
+The effect of the BW propagators is that only narrow slices in the $6$-particle PS yield sizeable contribution to the integral,
+namely the regions where the $6$ final state particles (the $\Pbottom$ and $\APbottom$ quarks, the two charged leptons, and the two neutrinos)
+satisfy certain mass constraints.
+The mass constraints reflect the presence of (on-shell) $\PHiggs$ bosons, $\PW$ bosons, and top quarks in the decay chains
+$\PHiggs\PHiggs \to \Pbottom\APbottom \, \PW^{+}\PW^{-} \to \Pbottom\APbottom \, \ellPlusnu\ellMinusnu$ and
+$\ttbar \to \Pbottom\PW^{+} \, \APbottom\PW^{-} \to \Pbottom\ellPlusnu \, \APbottom\ellMinusnu$.
+The presence of these narrow slices in the $6$-particle PS renders the numeric integration inefficient, unless the mass constraints are treated analytically.
+We use the narrow-width approximation~\cite{NWA} to treat the mass constraints and replace the BW propagators by $\delta$-functions,
+which has the effect of restricting the numerical integration to the regions in PS where the mass constraints are satisfied
+and the ME $\mathcal{M}_{i}(\vecphat)$ yields a sizeable contribution to the integral.
+The analytic transformations specific to the signal hypothesis are detailed in Section~\ref{sec:mem_signal},
+while those specific to the background hypothesis are presented in Section~\ref{sec:mem_background}.
+
+The final numeric integration is performed using the VAMP algorithm~\cite{VAMP}, a variant of the popular VEGAS algorithm~\cite{VEGAS},
+which has been optimized for the case of integrating multimodal functions, typically appearing in the integration of ME over regions in PS.
+
+
+\section{Analytic transformations specific to the signal hypothesis}
+\label{sec:mem_signal}
+
+In $\PHiggs\PHiggs \to \Pbottom\APbottom \, \PW^{+}\PW^{-} \to \Pbottom\APbottom \, \ellPlusnu\ellMinusnu$ signal events,
+either the $\PW^{+}$ or the $\PW^{-}$ boson (but not both) are on mass shell.
+We denote the off-shell $\PW$ boson in signal events by an asterisk ($\ast$),
+and similarly use an asterisk when referring to the charged lepton and neutrino originating from the decay of this $\PW$ boson.
+When evaluating the integrand in Eq.~(\ref{eq:mem3}) for the signal hypothesis, 
+a sizeable contribution to the value of the integral $w_{0}(\vecy|\vecyhat)$ is obtained only for those points $\vecphat$ in the $6$-particle PS for which
+the mass of the system of $\Pbottom$ plus $\APbottom$ quark equals $m_{\PHiggs} = 125.1$~\GeV~\cite{HIG-14-042},
+the mass of the system of charged lepton plus neutrino that originates from the decay of the on-shell $\PW$ boson equals $m_{\PW} = 80.4$~\GeV~\cite{PDG},
+and the mass of the system of two charged leptons plus the two neutrinos equals $m_{\PHiggs}$.
+
+We formally introduce these mass constraints by inserting three $\delta$-functions $\delta\left( g(x) \right)$ into the integrand of Eq.~(\ref{eq:mem3}).
+The procedure is explained in Section~\ref{sec:appendix_mass_constraints} of the appendix.
+More specifically, we insert
+one $\delta$-function of the type $g(\Ehat_{\APbottom})$ given by Eq.~(\ref{eq:bEn_Hbb1}), 
+one of the type $g(\Ehat_{\Pnu})$ given by Eq.~(\ref{eq:nuEn_Wlnu1}), and one of the type $g(\Ehat_{\nuStar})$ given by Eq.~(\ref{eq:nuEn_Hww1}).
+We denote the charged leptons and neutrinos in signal events by the labels $\Plepton$ and $\Pnu$ ($\ellStar$ and $\nuStar$)
+in order to indicate which charged lepton and neutrino originates from the decay of the on-shell (off-shell) $\PW$ boson and is therefore subject (not subject) to the $\PW$ mass constraint.
+
+After solving for the $\delta$-functions analytically, as detailed in Sections~\ref{sec:appendix_bEn_Hbb}, ~\ref{sec:appendix_nuEn_Wlnu}, and~\ref{sec:appendix_nuEn_Hww} of the appendix,
+the resulting expression for the probability density $w_{0}(\vecy|\vecyhat)$ for the signal hypothesis reads:
+\begin{align}
+w_{0}(\vecy|\vecyhat) 
+ = & \frac{(m_{\PHiggs} \, \Gamma_{\PHiggs})^{2} \, m_{\PW} \, \Gamma_{\PW}}{2^{21} \, \pi^{14} \, \sigma \, E_{\Plepton} \, E_{\ellStar} \, E_{\Pbottom} \, E_{\APbottom}} \, \int \,
+d\Ehat_{\Pbottom} \, d\thetahat_{\Pnu} \, d\phihat_{\Pnu} \, d\thetahat_{\nuStar} \, d\phihat_{\nuStar}  \nonumber \\
+ & \quad \cdot \, \underbrace{\betahat_{\Pnu}}_{= 1} \, \underbrace{\Ehat_{\Pnu} \, \sin\thetahat_{\Pnu}}_{= \pThat^{\Pnu}} \, 
+  \underbrace{\betahat_{\nuStar}}_{= 1} \, \underbrace{\Ehat_{\nuStar} \, \sin\thetahat_{\nuStar}}_{= \pThat^{\nuStar}} \, 
+\frac{f(\xhat_{a}) \, f(\xhat_{b})}{\xhat_{a} \, \xhat_{b} \, s} \nonumber \\
+ & \quad \cdot \, \vert \mathcal{M}_{0}(\vecphat) \vert^{2} \, 
+\frac{\betahat_{\Pbottom} \, \Ehat_{\Pbottom}}{\beta_{\Pbottom} \, E_{\Pbottom}} \, W(E_{\Pbottom}|\Ehat_{\Pbottom}) \, 
+\frac{\betahat_{\APbottom} \, \Ehat_{\APbottom}}{\beta_{\APbottom} \, E_{\APbottom}} \, W(E_{\APbottom}|\Ehat_{\APbottom}) \,
+W_{\rho}( \pX^{\rho},\pY^{\rho} | \pXhat^{\rho},\pYhat^{\rho} ) \nonumber \\
+ & \quad \cdot \, \frac{1}{\Ehat_{\Pbottom} \, \left( 1 - \frac{\betahat_{\Pbottom}}{\betahat_{\APbottom}} \, \cos\sphericalangle(\vecehat_{\Pbottom},\vecehat_{\APbottom}) \right)} \nonumber \\
+ & \quad \cdot \, \frac{1}{4 \, \Ehat_{\Plepton} \, \sin^{2}\left(\frac{\sphericalangle(\vecehat_{\Plepton},\vecehat_{\Pnu})}{2}\right)} \,
+\frac{1}{\Ehat_{\ellnuellStar} \left( 1 - \betahat_{\ellnuellStar} \, \cos\sphericalangle(\vecehat_{\ellnuellStar},\vecehat_{\nuStar}) \right)} \nonumber \\
+ = & \frac{(m_{\PHiggs} \, \Gamma_{\PHiggs})^{2} \, m_{\PW} \, \Gamma_{\PW}}{2^{23} \, \pi^{14} \, \sigma \, s \, 
+  E_{\Plepton} \, E_{\ellStar} \, \beta_{\Pbottom} \, E_{\Pbottom}^{2} \, \beta_{\APbottom} \, E_{\APbottom}^{2}} \, \int \,
+d\Ehat_{\Pbottom} \, d\thetahat_{\Pnu} \, d\phihat_{\Pnu} \, d\thetahat_{\nuStar} \, d\phihat_{\nuStar} \nonumber \\
+ & \quad \cdot \, \pThat^{\Pnu} \, \pThat^{\nuStar} \, 
+\frac{f(\xhat_{a}) \, f(\xhat_{b})}{\xhat_{a} \, \xhat_{b}} \nonumber \\
+ & \quad \cdot \, \vert \mathcal{M}_{0}(\vecphat) \vert^{2} \, 
+\betahat_{\Pbottom} \, \Ehat_{\Pbottom} \, W(E_{\Pbottom}|\Ehat_{\Pbottom}) \, 
+\betahat_{\APbottom} \, \Ehat_{\APbottom} \, W(E_{\APbottom}|\Ehat_{\APbottom}) \,
+W_{\rho}( \pX^{\rho},\pY^{\rho} | \pXhat^{\rho},\pYhat^{\rho} ) \nonumber \\
+ & \quad \cdot \, \frac{1}{\Ehat_{\Pbottom} \, \left( 1 - \frac{\betahat_{\Pbottom}}{\betahat_{\APbottom}} \, \cos\sphericalangle(\vecehat_{\Pbottom},\vecehat_{\APbottom}) \right)} \nonumber \\
+ & \quad \cdot \, \frac{1}{\Ehat_{\Plepton} \, \sin^{2}\left(\frac{\sphericalangle(\vecehat_{\Plepton},\vecehat_{\Pnu})}{2}\right)} \,
+\frac{1}{\Ehat_{\ellnuellStar} \left( 1 - \betahat_{\ellnuellStar} \, \cos\sphericalangle(\vecehat_{\ellnuellStar},\vecehat_{\nuStar}) \right)} \, ,
+\label{eq:mem_signal}
+\end{align}
+with:
+\begin{eqnarray}
+\Ehat_{\APbottom} & = & \frac{a \, \Delta_{m_{\PHiggs}} + |b| \, \sqrt{\Delta_{m_{\PHiggs}}^{2} - (a^{2} - b^{2}) \, m_{\Pbottom}^{2}}}{a^{2} - b^{2}} \nonumber \\
+\Ehat_{\Pnu} & = & \frac{m_{\PW}^{2}}{4 \, \Ehat_{\Plepton} \, \sin^{2}\left(\frac{\sphericalangle(\vecehat_{\Plepton},\vecehat_{\Pnu})}{2}\right)} \nonumber \\
+\Ehat_{\nuStar} & = & \frac{m_{\PHiggs}^{2} - m_{\ellnuellStar}^{2}}{2 \, \Ehat_{\ellnuellStar} \, 
+ \left( 1 - \betahat_{\ellnuellStar} \, \cos\sphericalangle(\vecehat_{\ellnuellStar},\vecehat_{\nuStar}) \right)} \, ,
+\end{eqnarray}
+where:
+\begin{eqnarray}
+\Delta_{m_{\PHiggs}} & = & \frac{m_{\PHiggs}^{2}}{2} - m_{\Pbottom}^{2} \nonumber \\
+a & = & \Ehat_{\Pbottom} \nonumber \\
+b & = & \underbrace{\sqrt{\Ehat_{\Pbottom}^{2} - m_{\Pbottom}^{2}}}_{= \betahat_{\Pbottom} \, \Ehat_{\Pbottom}} \, 
+ \underbrace{\vecehat_{\Pbottom} \cdot \vecehat_{\APbottom}}_{= \cos\sphericalangle(\vecehat_{\Pbottom},\vecehat_{\APbottom})} \, 
+= \, \betahat_{\Pbottom} \, \Ehat_{\Pbottom} \, \cos\sphericalangle(\vecehat_{\Pbottom},\vecehat_{\APbottom}) \, .
+\end{eqnarray}
+The integral given by Eq.~(\ref{eq:mem_signal}) extends over $5$ remaining variables,
+which are integrated numerically: $\Ehat_{\Pbottom}$, $\thetahat_{\Pnu}$, $\phihat_{\Pnu}$, $\thetahat_{\nuStar}$, and $\phihat_{\nuStar}$.
+
+There is one further aspect that needs to be taken into account when evaluating the compatibility of a given event with the signal hypothesis,
+and that is that there exists a fourfold ambiguity in associating the two measured $\Pbottom$-jets to the $\Pbottom$ and $\APbottom$ quarks 
+and in associating the two measured charged leptons to the on-shell and off-shell $\PW$ bosons.
+We deal with the fourfold ambiguity by evaluating the integral $w_{0}(\vecy|\vecyhat)$ given by Eq.~(\ref{eq:mem_signal}) four times,
+each time permuting the association of the measured $\Pbottom$-jets to the $\Pbottom$ and $\APbottom$ quarks and of the measured charged leptons to the on-shell and off-shell $\PW$ bosons.
+
+
+\section{Analytic transformations specific to the background hypothesis}
+\label{sec:mem_background}
+
+In $\ttbar \to \Pbottom\PW^{+} \, \APbottom\PW^{-} \to \Pbottom\ellPlusnu \, \APbottom\ellMinusnu$ background events,
+both $\PW$ bosons are on-shell and sizeable contributions to the value of the integral $w_{1}(\vecy|\vecyhat)$ are thus obtained only
+for those points $\vecphat$ in the $6$-particle PS for which
+the masses of the $\ellPlusnu$ as well as of the $\ellMinusnu$ system are equal to $m_{\PW} = 80.4$~\GeV~\cite{PDG},
+and the masses of the $\Pbottom\ellPlusnu$ and $\APbottom\ellMinusnu$ systems are equal to the top quark mass of $m_{\top} = 173.0$~\GeV~\cite{PDG}.
+
+We account for these mass constraints by inserting four $\delta$-functions $\delta\left( g(x) \right)$ into the integrand of Eq.~(\ref{eq:mem3}):
+two $\delta$-functions of the type $g(\Ehat_{\Pnu})$ given by Eq.~(\ref{eq:nuEn_Wlnu1}) 
+and two $\delta$-functions of the type $g(\Ehat_{\Pbottom})$ given by Eq.~(\ref{eq:bEn_top1}).
+Note that the first (second) $\delta$-function of each type refers to the decay of the top (anti-top) quark and hence carries the labels $\Pnu$ and $\Pbottom$ 
+(and hence the labels $\Pnu$ and $\Pbottom$ need to be replaced by new labels $\APnu$ and $\APbottom$).
+
+After solving for the $\delta$-functions analytically, following Sections~\ref{sec:appendix_nuEn_Wlnu} and~\ref{sec:appendix_bEn_top} of the appendix,
+the resulting expression for the integral $w_{1}(\vecy|\vecyhat)$ for the background hypothesis is given by:
+\begin{align}
+w_{1}(\vecy|\vecyhat) 
+ = & \frac{(m_{\top} \, \Gamma_{\top})^{2} \, (m_{\PW} \, \Gamma_{\PW})^{2}}{2^{21} \, \pi^{14} \, \sigma \, E_{\Plepton^{+}} \, E_{\Plepton^{-}} \, E_{\Pbottom} \, E_{\APbottom}} \, \int \,
+d\thetahat_{\Pnu} \, d\phihat_{\Pnu} \, d\thetahat_{\APnu} \, d\phihat_{\APnu}  \nonumber \\
+ & \quad \cdot \, \underbrace{\betahat_{\Pnu}}_{= 1} \, \underbrace{\Ehat_{\Pnu} \, \sin\thetahat_{\Pnu}}_{= \pThat^{\Pnu}} \, 
+  \underbrace{\betahat_{\APnu}}_{= 1} \, \underbrace{\Ehat_{\APnu} \, \sin\thetahat_{\APnu}}_{= \pThat^{\APnu}} \, 
+\frac{f(\xhat_{a}) \, f(\xhat_{b})}{\xhat_{a} \, \xhat_{b} \, s} \nonumber \\
+ & \quad \cdot \, \vert \mathcal{M}_{1}(\vecphat) \vert^{2} \, 
+\frac{\betahat_{\Pbottom} \, \Ehat_{\Pbottom}}{\beta_{\Pbottom} \, E_{\Pbottom}} \, W(E_{\Pbottom}|\Ehat_{\Pbottom}) \, 
+\frac{\betahat_{\APbottom} \, \Ehat_{\APbottom}}{\beta_{\APbottom} \, E_{\APbottom}} \, W(E_{\APbottom}|\Ehat_{\APbottom}) \,
+W_{\rho}( \pX^{\rho},\pY^{\rho} | \pXhat^{\rho},\pYhat^{\rho} ) \nonumber \\
+ & \quad \cdot \, \frac{1}{4 \, \Ehat_{\Plepton^{+}} \, \sin^{2}\left(\frac{\sphericalangle(\vecehat_{\ellPlus},\vecehat_{\Pnu})}{2}\right)} \, 
+\frac{1}{4 \, \Ehat_{\Plepton^{-}} \, \sin^{2}\left(\frac{\sphericalangle(\vecehat_{\ellMinus},\vecehat_{\APnu})}{2}\right)} \nonumber \\
+ & \quad \cdot \, \frac{1}{\Ehat_{\ellPlusnu} \, \left( 1 - \frac{\betahat_{\ellPlusnu}}{\betahat_{\Pbottom}} \, \cos\sphericalangle(\vecehat_{\ellPlusnu},\vecehat_{\Pbottom}) \right)} \,
+\frac{1}{\Ehat_{\ellMinusnu} \, \left( 1 - \frac{\betahat_{\ellMinusnu}}{\betahat_{\APbottom}} \, \cos\sphericalangle(\vecehat_{\ellMinusnu},\vecehat_{\APbottom}) \right)} \nonumber \\
+ = & \frac{(m_{\top} \, \Gamma_{\top})^{2} \, (m_{\PW} \, \Gamma_{\PW})^{2}}{2^{25} \, \pi^{14} \, \sigma \, s \, 
+  E_{\Plepton^{+}} \, E_{\Plepton^{-}} \, \beta_{\Pbottom} \, E_{\Pbottom}^{2} \, \beta_{\APbottom} \, E_{\APbottom}^{2}} \, \int \,
+d\thetahat_{\Pnu} \, d\phihat_{\Pnu} \, d\thetahat_{\APnu} \, d\phihat_{\APnu}  \nonumber \\
+ & \quad \cdot \, \pThat^{\Pnu} \, \pThat^{\APnu} \,
+\frac{f(\xhat_{a}) \, f(\xhat_{b})}{\xhat_{a} \, \xhat_{b}} \nonumber \\
+ & \quad \cdot \, \vert \mathcal{M}_{1}(\vecphat) \vert^{2} \, 
+\betahat_{\Pbottom} \, \Ehat_{\Pbottom} \, W(E_{\Pbottom}|\Ehat_{\Pbottom}) \, 
+\betahat_{\APbottom} \, \Ehat_{\APbottom} \, W(E_{\APbottom}|\Ehat_{\APbottom}) \,
+W_{\rho}( \pX^{\rho},\pY^{\rho} | \pXhat^{\rho},\pYhat^{\rho} ) \nonumber \\
+ & \quad \cdot \, \frac{1}{\Ehat_{\Plepton^{+}} \, \sin^{2}\left(\frac{\sphericalangle(\vecehat_{\ellPlus},\vecehat_{\Pnu})}{2}\right)} \, 
+\frac{1}{\Ehat_{\Plepton^{-}} \, \sin^{2}\left(\frac{\sphericalangle(\vecehat_{\ellMinus},\vecehat_{\APnu})}{2}\right)} \nonumber \\
+ & \quad \cdot \, \frac{1}{\Ehat_{\ellPlusnu} \, \left( 1 - \frac{\betahat_{\ellPlusnu}}{\betahat_{\Pbottom}} \, \cos\sphericalangle(\vecehat_{\ellPlusnu},\vecehat_{\Pbottom}) \right)} \,
+\frac{1}{\Ehat_{\ellMinusnu} \, \left( 1 - \frac{\betahat_{\ellMinusnu}}{\betahat_{\APbottom}} \, \cos\sphericalangle(\vecehat_{\ellMinusnu},\vecehat_{\APbottom}) \right)} \, ,
+\label{eq:mem_background}
+\end{align}
+with:
+\begin{eqnarray}
+\Ehat_{\Pbottom} & = & \frac{a_{\top} \, \Delta_{m_{\top}}
+ + |b_{\top}| \, \sqrt{\Delta_{m_{\top}}^{2} - (a_{\top}^{2} - b_{\top}^{2}) \, m_{\Pbottom}^{2}}}{a_{\top}^{2} - b_{\top}^{2}} \nonumber \\
+\Ehat_{\APbottom} & = & \frac{a_{\antitop} \, \Delta_{m_{\top}}
+ + |b_{\antitop}| \, \sqrt{\Delta_{m_{\top}}^{2} - (a_{\antitop}^{2} - b_{\antitop}^{2}) \, m_{\Pbottom}^{2}}}{a_{\antitop}^{2} - b_{\antitop}^{2}} \nonumber \\
+\Ehat_{\Pnu} & = & \frac{m_{\PW}^{2}}{4 \, \Ehat_{\ellPlus} \, \sin^{2}\left(\frac{\sphericalangle(\vecehat_{\ellPlus},\vecehat_{\Pnu})}{2}\right)} \nonumber \\
+\Ehat_{\APnu} & = & \frac{m_{\PW}^{2}}{4 \, \Ehat_{\ellMinus} \, \sin^{2}\left(\frac{\sphericalangle(\vecehat_{\ellMinus},\vecehat_{\APnu})}{2}\right)} \, ,
+\end{eqnarray}
+where:
+\begin{eqnarray}
+\Delta_{m_{\top}} & = & \frac{m_{\top}^{2} - m_{\Pbottom}^{2} - m_{\PW}^{2}}{2} \nonumber \\
+a_{\top} & = & \Ehat_{\ellPlusnu} \nonumber \\
+b_{\top} & = & \sqrt{\Ehat_{\ellPlusnu}^{2} - m_{\PW}^{2}} \, 
+ \underbrace{\vecehat_{\ellPlusnu} \cdot \vecehat_{\Pbottom}}_{= \cos\sphericalangle(\vecehat_{\ellPlusnu},\vecehat_{\Pbottom})} \, 
+= \, \sqrt{\Ehat_{\ellPlusnu}^{2} - m_{\PW}^{2}} \, \cos\sphericalangle(\vecehat_{\ellPlusnu},\vecehat_{\Pbottom}) \nonumber \\
+a_{\antitop} & = & \Ehat_{\ellMinusnu} \nonumber \\
+b_{\antitop} & = & \sqrt{\Ehat_{\ellMinusnu}^{2} - m_{\PW}^{2}} \, 
+ \underbrace{\vecehat_{\ellMinusnu} \cdot \vecehat_{\APbottom}}_{= \cos\sphericalangle(\vecehat_{\ellMinusnu},\vecehat_{\APbottom})} \,
+= \, \sqrt{\Ehat_{\ellMinusnu}^{2} - m_{\PW}^{2}} \, \cos\sphericalangle(\vecehat_{\ellMinusnu},\vecehat_{\APbottom}) \, .
+\end{eqnarray}
+The integral given by Eq.~(\ref{eq:mem_background}) extends over $4$ remaining variables,
+which are integrated numerically: $\thetahat_{\Pnu}$, $\phihat_{\Pnu}$, $\thetahat_{\APnu}$, and $\phihat_{\APnu}$.
+
+When evaluating the compatibility of a given event with the background hypothesis,
+there exists a twofold ambiguity in associating the two measured $\Pbottom$-jets to the $\Pbottom$ and $\APbottom$ quarks.
+We deal with this ambiguity by evaluating the integral $w_{1}(\vecy|\vecyhat)$ given by Eq.~(\ref{eq:mem_signal}) two times,
+each time permuting the association of the measured $\Pbottom$-jets to the $\Pbottom$ and $\APbottom$ quarks.
+Note that in case of the background hypothesis, there is no ambiguity in associating the two measured leptons to the $\PW^{+}$ and $\PW^{-}$ bosons,
+as both $\PW$ bosons are on-shell and the measurement of the lepton charge allows for a unique association of each charged lepton to either the $\PW^{+}$ or the $\PW^{-}$ boson,
+as conservation of electric charge in the decays $\PW^{+} \to \ellPlusnu$ and $\PW^{-} \to \ellMinusnu$ implies that the the charge of each lepton $\Plepton$ matches the charge of the $\PW$ boson
+from the decay of which it originates.

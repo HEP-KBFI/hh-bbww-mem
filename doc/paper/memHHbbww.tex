@@ -1,0 +1,179 @@
+\def\verPreprint{1}
+\def\verPAPER{2}
+\def\ver{1}
+
+\ifx\ver\verPreprint
+\documentclass[a4paper,english,11pt]{article}
+\usepackage[bindingoffset=0.5cm,left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm,footskip=1.0cm]{geometry}
+\usepackage{lineno,hepnames,bm,multirow,amssymb,authblk,graphicx,newclude,xspace,hyperref}
+\fi
+\ifx\ver\verPAPER
+\documentclass[1p]{elsarticle}
+\usepackage{lineno,hyperref,hepnames,bm,multirow,amssymb,xspace}
+\fi
+
+\modulolinenumbers[5]
+
+%%\journal{Journal of \LaTeX\ Templates}
+
+%%%%%%%%%%%%%%%%%%%%%%%
+%% Elsevier bibliography styles
+%%%%%%%%%%%%%%%%%%%%%%%
+%% To change the style, put a % in front of the second line of the current style and
+%% remove the % from the second line of the style you would like to use.
+%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Numbered
+%\bibliographystyle{model1-num-names}
+
+%% Numbered without titles
+%\bibliographystyle{model1a-num-names}
+
+%% Harvard
+%\bibliographystyle{model2-names.bst}\biboptions{authoryear}
+
+%% Vancouver numbered
+%\usepackage{numcompress}\bibliographystyle{model3-num-names}
+
+%% Vancouver name/year
+%\usepackage{numcompress}\bibliographystyle{model4-names}\biboptions{authoryear}
+
+%% APA style
+%\bibliographystyle{model5-names}\biboptions{authoryear}
+
+%% AMA style
+%\usepackage{numcompress}\bibliographystyle{model6-num-names}
+
+%% `Elsevier LaTeX' style
+\bibliographystyle{elsarticle-num}
+%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%
+%% Custom latex macros
+%%%%%%%%%%%%%%%%%%%%%%%
+
+\renewcommand{\Plepton}{\ensuremath{\ell}}
+\newcommand{\ellStar}{\ensuremath{\ell^{\ast}}}
+\newcommand{\nuStar}{\ensuremath{\Pnu^{\ast}}}
+\newcommand{\ellMinus}{\ensuremath{\Plepton^{-}}\xspace}
+\newcommand{\ellPlus}{\ensuremath{\Plepton^{+}}\xspace}
+\newcommand{\ellnu}{\ensuremath{\Plepton\Pnu}\xspace}
+\newcommand{\ellnuStar}{\ensuremath{\Plepton^{\ast}\Pnu^{\ast}}\xspace}
+\newcommand{\ellMinusnu}{\ensuremath{\Plepton^{-}\APnu}\xspace}
+\newcommand{\ellPlusnu}{\ensuremath{\Plepton^{+}\Pnu}\xspace}
+\newcommand{\ellnuellnuStar}{\ensuremath{\Plepton\Pnu\Plepton^{\ast}\Pnu^{\ast}}\xspace}
+\newcommand{\ellnuellStar}{\ensuremath{\Plepton\Pnu\Plepton^{\ast}}\xspace}
+%\renewcommand{\Pbottom}{\ensuremath{\cPqb}}
+%\renewcommand{\APbottom}{\ensuremath{\cPaqb}}
+%\renewcommand{\Ptop}{\ensuremath{\cPqt}}
+%\renewcommand{\APtop}{\ensuremath{\cPaqt}}
+\newcommand{\ttbar}{\ensuremath{\rm \Ptop\APtop}}
+\newcommand{\vecp}{\ensuremath{\bm{p}}\xspace}
+\newcommand{\vecphat}{\ensuremath{\bm{\hat{p}}}\xspace}
+\newcommand{\pT}{\ensuremath{p_{\textrm{T}}}\xspace}
+\newcommand{\pThat}{\ensuremath{\hat{p}_{\textrm{T}}}\xspace}
+\newcommand{\etahat}{\ensuremath{\hat{\eta}}\xspace}
+\newcommand{\thetahat}{\ensuremath{\hat{\theta}}\xspace}
+\newcommand{\phihat}{\ensuremath{\hat{\phi}}\xspace}
+\newcommand{\mhat}{\ensuremath{\hat{m}}\xspace}
+\newcommand{\Ehat}{\ensuremath{\hat{E}}\xspace}
+\newcommand{\ET}{\ensuremath{E_{\textrm{T}}}\xspace}
+\newcommand{\EThat}{\ensuremath{\hat{E}_{\textrm{T}}}\xspace}
+\newcommand{\pX}{\ensuremath{p_{\textrm{x}}}\xspace}
+\newcommand{\pXhat}{\ensuremath{\hat{p}_{\textrm{x}}}\xspace}
+\newcommand{\pY}{\ensuremath{p_{\textrm{y}}}\xspace}
+\newcommand{\pYhat}{\ensuremath{\hat{p}_{\textrm{y}}}\xspace}
+\newcommand{\pZ}{\ensuremath{p_{\textrm{z}}}\xspace}
+\newcommand{\pZhat}{\ensuremath{\hat{p}_{\textrm{z}}}\xspace}
+\newcommand{\betahat}{\ensuremath{\hat{\beta}}\xspace}
+\newcommand{\vecx}{\ensuremath{\bm{x}}\xspace}
+\newcommand{\vecxhat}{\ensuremath{\bm{\hat{x}}}\xspace}
+\newcommand{\vecy}{\ensuremath{\bm{y}}\xspace}
+\newcommand{\vecyhat}{\ensuremath{\bm{\hat{y}}}\xspace}
+\newcommand{\MET}{\ensuremath{p_{\textrm{T}}^{\textrm{\kern0.10em miss}}}\xspace}
+\newcommand{\vecMET}{\ensuremath{\bm{p}_{\textrm{T}}^{\textrm{\kern0.10em miss}}}\xspace}
+\newcommand{\METx}{\ensuremath{p_{\textrm{x}}^{\textrm{\kern0.10em miss}}}\xspace}
+\newcommand{\METy}{\ensuremath{p_{\textrm{y}}^{\textrm{\kern0.10em miss}}}\xspace}
+\newcommand{\MeV}{\ensuremath{\textrm{MeV}}\xspace}
+\newcommand{\GeV}{\ensuremath{\textrm{GeV}}\xspace}
+\newcommand{\TeV}{\ensuremath{\textrm{TeV}}\xspace}
+\newcommand{\miss}{\ensuremath{\textrm{miss}}}
+\newcommand{\cf}{cf.\xspace}
+\newcommand{\ie}{i.e.\xspace}
+\newcommand{\eg}{e.g.\xspace}
+\newcommand{\BW}{\ensuremath{\textrm{BW}}}
+\renewcommand{\top}{\ensuremath{\textrm{t}}\xspace}
+\newcommand{\antitop}{\ensuremath{\bar{\textrm{t}}}\xspace}
+\newcommand{\rad}{\ensuremath{\textrm{rad}}\xspace}
+\newcommand{\mrad}{\ensuremath{\textrm{mrad}}\xspace}
+\newcommand{\defL}{\ensuremath{\mathrel{\mathop:\hspace{-.2em}\mathop:}=}\xspace}
+\newcommand{\defR}{\ensuremath{=\mathrel{\mathop:\hspace{-.2em}\mathop:}}\xspace}
+\newcommand{\xhat}{\ensuremath{\hat{\textrm{x}}}\xspace}
+\newcommand{\phat}{\ensuremath{\hat{\textrm{p}}}\xspace}
+\newcommand{\vece}{\ensuremath{\bm{e}}\xspace}
+\newcommand{\vecehat}{\ensuremath{\bm{\hat{e}}}\xspace}
+\newcommand{\X}{\ensuremath{\textrm{X}}}
+\def\TReg{\textsuperscript{\textregistered}}
+\usepackage{array}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\ifx\ver\verPAPER
+\begin{frontmatter}
+\fi
+
+\title{Application of the matrix element method to the analysis of $\PHiggs\PHiggs \to \Pbottom\APbottom\PW^{+}\PW^{-}$ in the dilepton decay channel}
+
+%% Group authors per affiliation:
+
+\ifx\ver\verPreprint
+\author[1]{Karl Ehat\"aht}
+\author[1]{Christian Veelken}
+\affil[1]{National Institute for Chemical Physics and Biophysics, 10143 Tallinn, Estonia}
+\fi
+\ifx\ver\verPAPER
+\author[tallinn]{Karl Ehat\"aht}
+\ead{karl.ehataht@cern.ch}
+\author[tallinn]{Christian Veelken}
+\ead{christian.veelken@cern.ch}
+\address[tallinn]{National Institute for Chemical Physics and Biophysics, 10143 Tallinn, Estonia}
+\fi
+
+\ifx\ver\verPreprint
+\maketitle
+\fi
+
+\begin{abstract}
+We present the development of a discriminant for the analysis of Higgs boson pair ($\PHiggs\PHiggs$) production in the decay channel 
+$\PHiggs\PHiggs \to \Pbottom\APbottom \, \PW^{+}\PW^{-} \to \Pbottom\APbottom \, \ellPlusnu\ellMinusnu$,
+which separates the $\PHiggs\PHiggs$ signal from the large irreducible background that arises from top quark pair production in this channel.
+The discriminant is based on matrix element method.
+\end{abstract}
+
+\ifx\ver\verPAPER
+\end{frontmatter}
+\fi
+
+\clearpage
+
+\linenumbers
+
+%\begingroup
+%\let\clearpage\relax
+
+\include*{mem}
+
+%\endgroup
+
+%\clearpage
+
+%\begingroup
+%\let\clearpage\relax
+\include*{appendix}
+
+\bibliography{memHHbbww}
+%\endgroup
+
+\end{document}

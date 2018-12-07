@@ -1,0 +1,97 @@
+\begin{thebibliography}{10}
+\expandafter\ifx\csname url\endcsname\relax
+  \def\url#1{\texttt{#1}}\fi
+\expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
+\expandafter\ifx\csname href\endcsname\relax
+  \def\href#1#2{#2} \def\path#1{#1}\fi
+
+\bibitem{Neyman:1937uhy}
+J.~Neyman, {Outline of a theory of statistical estimation based on the
+  classical theory of probability}, Phil.~Trans.~Roy.~Soc.~Lond. A~236~(767)
+  (1937) 333.
+\newblock \href {http://dx.doi.org/10.1098/rsta.1937.0005}
+  {\path{doi:10.1098/rsta.1937.0005}}.
+
+\bibitem{Volobouev:2011vb}
+I.~Volobouev, {Matrix element method in HEP: transfer functions, efficiencies,
+  and likelihood normalization}\href {http://arxiv.org/abs/1101.2259}
+  {\path{arXiv:1101.2259}}.
+
+\bibitem{Bjorkenx}
+J.~D. Bjorken, {Asymptotic sum rules at infinite momentum}, Phys.~Rev. 179
+  (1969) 1547.
+\newblock \href {http://dx.doi.org/10.1103/PhysRev.179.1547}
+  {\path{doi:10.1103/PhysRev.179.1547}}.
+
+\bibitem{MSTW}
+A.~D. Martin, W.~J. Stirling, R.~S. Thorne, G.~Watt, {Parton distributions for
+  the LHC}, Eur.~Phys.~J. C~63 (2009) 189.
+\newblock \href {http://arxiv.org/abs/0901.0002} {\path{arXiv:0901.0002}},
+  \href {http://dx.doi.org/10.1140/epjc/s10052-009-1072-5}
+  {\path{doi:10.1140/epjc/s10052-009-1072-5}}.
+
+\bibitem{Fiedler:2010sg}
+F.~Fiedler, A.~Grohsjean, P.~Haefner, P.~Schieferdecker, {The matrix element
+  method and its application in measurements of the top quark mass},
+  Nucl.~Instrum.~Meth. A~624 (2010) 203.
+\newblock \href {http://arxiv.org/abs/1003.1316} {\path{arXiv:1003.1316}},
+  \href {http://dx.doi.org/10.1016/j.nima.2010.09.024}
+  {\path{doi:10.1016/j.nima.2010.09.024}}.
+
+\bibitem{CMS_AN_2013_313}
+{Bianchini, L. and others}, {Search for the associated $\Ptop\APtop\PHiggs$
+  ($\to \Pbottom\APbottom$) production using the matrix element method}, CMS
+  Analysis Note
+  \href{http://cms.cern.ch/iCMS/jsp/openfile.jsp?tp=draft&files=AN2013_313_v7.%
+pdf}{2013/313}.
+
+\bibitem{Alwall:2010cq}
+J.~Alwall, A.~Freitas, O.~Mattelaer, {The matrix element method and QCD
+  radiation}, Phys.~Rev. D~83 (2011) 074010.
+\newblock \href {http://arxiv.org/abs/1010.2263} {\path{arXiv:1010.2263}},
+  \href {http://dx.doi.org/10.1103/PhysRevD.83.074010}
+  {\path{doi:10.1103/PhysRevD.83.074010}}.
+
+\bibitem{CMS_AN_2010-400}
+{Alexander, J. and others}, {Towards a robust $\MET$ significance with particle
+  flow}, CMS Analysis Note
+  \href{http://cms.cern.ch/iCMS/jsp/openfile.jsp?tp=draft&files=AN2010_400_v2.%
+pdf}{2010/400}.
+
+\bibitem{NWA}
+D.~Berdine, N.~Kauer, D.~Rainwater, {Breakdown of the narrow width
+  approximation for new physics}, Phys.~Rev.~Lett. 99 (2007) 111601.
+\newblock \href {http://arxiv.org/abs/hep-ph/0703058}
+  {\path{arXiv:hep-ph/0703058}}, \href
+  {http://dx.doi.org/10.1103/PhysRevLett.99.111601}
+  {\path{doi:10.1103/PhysRevLett.99.111601}}.
+
+\bibitem{VAMP}
+T.~Ohl, {Vegas revisited: Adaptive Monte Carlo integration beyond
+  factorization}, Comput.~Phys.~Commun. 120 (1999) 13.
+\newblock \href {http://arxiv.org/abs/hep-ph/9806432}
+  {\path{arXiv:hep-ph/9806432}}, \href
+  {http://dx.doi.org/10.1016/S0010-4655(99)00209-X}
+  {\path{doi:10.1016/S0010-4655(99)00209-X}}.
+
+\bibitem{VEGAS}
+G.~P. Lepage, {A new algorithm for adaptive multidimensional integration},
+  J.~Comput.~Phys. 27 (1978) 192.
+\newblock \href {http://dx.doi.org/10.1016/0021-9991(78)90004-9}
+  {\path{doi:10.1016/0021-9991(78)90004-9}}.
+
+\bibitem{HIG-14-042}
+G.~Aad, et~al., {Combined measurement of the Higgs boson mass in
+  $\textrm{p}\textrm{p}$ collisions at $\sqrt{s}=7$ and $8$~TeV with the ATLAS
+  and CMS experiments}, Phys.~Rev.~Lett. 114 (2015) 191803.
+\newblock \href {http://arxiv.org/abs/1503.07589} {\path{arXiv:1503.07589}},
+  \href {http://dx.doi.org/10.1103/PhysRevLett.114.191803}
+  {\path{doi:10.1103/PhysRevLett.114.191803}}.
+
+\bibitem{PDG}
+K.~A. Olive, et~al., {Review of particle physics}, Chin.~Phys. C~38 (2014)
+  090001.
+\newblock \href {http://dx.doi.org/10.1088/1674-1137/38/9/090001}
+  {\path{doi:10.1088/1674-1137/38/9/090001}}.
+
+\end{thebibliography}
