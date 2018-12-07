@@ -82,7 +82,7 @@ int main(int argc, char* argv[])
   std::string madgraphFileName_signal = "hhAnalysis/bbwwMEM/data/param_hh.dat";
   std::string madgraphFileName_background = "hhAnalysis/bbwwMEM/data/param_ttbar.dat";
 
-  int verbosity = 1;
+  int verbosity = 2;
   MEMbbwwAlgoDilepton memAlgo(sqrtS, pdfName.data(), findFile(madgraphFileName_signal), findFile(madgraphFileName_background), verbosity);
   memAlgo.setIntMode(MEMbbwwAlgoDilepton::kVAMP);
   memAlgo.setMaxObjFunctionCalls(20000);

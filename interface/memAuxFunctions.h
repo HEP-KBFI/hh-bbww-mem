@@ -5,6 +5,7 @@
 #include "Math/Vector3D.h"
 
 #include <string>
+#include <vector>
 
 namespace mem
 {
@@ -69,7 +70,8 @@ namespace mem
   const double wBosonWidth = 2.085; // GeV
   const double wBosonWidth2 = wBosonWidth*wBosonWidth;
 
-  const double higgsBosonMass = 125.18; // GeV
+  //const double higgsBosonMass = 125.18; // GeV
+  const double higgsBosonMass = 125.; // GeV (mH=125 GeV used by MadGraph)
   const double higgsBosonMass2 = higgsBosonMass*higgsBosonMass; 
   const double higgsBosonWidth = 4.07e-3; // GeV (Standard Model prediction, not measured value)
   const double higgsBosonWidth2 = higgsBosonWidth*higgsBosonWidth;
@@ -92,7 +94,7 @@ namespace mem
 
   void printLorentzVector(const std::string&, const LorentzVector&);
 
-  double compBJet2En_Hbb(const LorentzVector&, const LorentzVector&);
+  std::vector<double> compBJet2En_Hbb(const LorentzVector&, const LorentzVector&);
   double compNuEn_Wlnu(const LorentzVector&, double, double);
   double compNuStarEn_Hww(const LorentzVector&, double, double);
   double compBJetEn_top(const LorentzVector&, const LorentzVector&);

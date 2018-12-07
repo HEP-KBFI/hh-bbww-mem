@@ -83,23 +83,29 @@ MEMbbwwIntegrandBase::setInputs(const MeasuredParticle& measuredChargedLeptonPlu
   if ( verbosity_ ) {
     std::cout << "<MEMbbwwIntegrandBase::setInputs>:" << std::endl;
   }
-
+std::cout << "break-point 1 reached" << std::endl;
   // reset 'MatrixInversion' error code
   errorCode_ &= (errorCode_ ^ MatrixInversion);
-
+std::cout << "break-point 1.1 reached" << std::endl;
   measuredChargedLeptonPlus_ = measuredChargedLeptonPlus;
+std::cout << "break-point 1.2 reached" << std::endl;
   measuredChargedLeptonMinus_ = measuredChargedLeptonMinus;
+std::cout << "break-point 1.3 reached" << std::endl;
   measuredBJet1_ = measuredBJet1;
+std::cout << "break-point 1.4 reached" << std::endl;
   measuredBJet2_ = measuredBJet2;
-
+std::cout << "break-point 2 reached" << std::endl;
   measuredMEtPx_ = measuredMEtPx;
   measuredMEtPy_ = measuredMEtPy;
   measuredMEtCov_.ResizeTo(2,2);
   measuredMEtCov_ = measuredMEtCov;
-
+std::cout << "break-point 3 reached" << std::endl;
   measuredHadRecoilPx_ = -(measuredChargedLeptonPlus_.px() + measuredChargedLeptonMinus_.px() + measuredBJet1_.px() + measuredBJet2_.px() + measuredMEtPx_);
   measuredHadRecoilPy_ = -(measuredChargedLeptonPlus_.py() + measuredChargedLeptonMinus_.py() + measuredBJet1_.py() + measuredBJet2_.py() + measuredMEtPy_);
-  
+std::cout << "break-point 4 reached" << std::endl;
+std::cout << "bjet1TF = " << bjet1TF_ << std::endl;
+std::cout << "bjet2TF = " << bjet2TF_ << std::endl;
+std::cout << "hadRecoilTF = " << hadRecoilTF_ << std::endl;
   // set measured momenta of b-jets and of missing transverse momentum
   // in transfer function (TF) objects
   bjet1TF_->setInputs(measuredBJet1_.p4());
@@ -108,4 +114,5 @@ MEMbbwwIntegrandBase::setInputs(const MeasuredParticle& measuredChargedLeptonPlu
   if ( hadRecoilTF_->getErrorCode() ) {
     errorCode_ |= MatrixInversion;
   }
+std::cout << "break-point 5 reached" << std::endl;
 }

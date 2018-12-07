@@ -106,6 +106,10 @@ MEMbbwwAlgoDilepton::integrate(const std::vector<MeasuredParticle>& measuredPart
   }
   std::sort(measuredParticles_rounded.begin(), measuredParticles_rounded.end(), sortMeasuredParticles());
   measuredParticles_ = measuredParticles_rounded;
+  measuredChargedLeptonPlus_ = nullptr;
+  measuredChargedLeptonMinus_ = nullptr;
+  measuredLeadingBJet_ = nullptr; 
+  measuredSubleadingBJet_ = nullptr;
   for ( size_t idx = 0; idx < measuredParticles_.size(); ++idx ) {
     const MeasuredParticle& measuredParticle = measuredParticles_[idx];
     if ( verbosity_ >= 1 ) {
@@ -168,6 +172,10 @@ MEMbbwwAlgoDilepton::integrate(const std::vector<MeasuredParticle>& measuredPart
       measuredBJet1 = measuredSubleadingBJet_;
       measuredBJet2 = measuredLeadingBJet_;
     }
+    std::cout << "measuredChargedLeptonPlus = " << measuredChargedLeptonPlus_ << std::endl;
+    std::cout << "measuredChargedLeptonMinus = " << measuredChargedLeptonMinus_ << std::endl;
+    std::cout << "measuredBJet1 = " << measuredBJet1 << std::endl;
+    std::cout << "measuredBJet2 = " << measuredBJet2 << std::endl;
     integrand_signal_->setInputs(
       *measuredChargedLeptonPlus_, *measuredChargedLeptonMinus_, *measuredBJet1, *measuredBJet2, 
       measuredMEtPx_, measuredMEtPy_, measuredMEtCov_);
