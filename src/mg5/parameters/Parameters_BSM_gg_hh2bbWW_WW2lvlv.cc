@@ -43,6 +43,7 @@ void Parameters_BSM_gg_hh2bbWW_WW2lvlv::setIndependentParameters(SLHAReader& slh
   mdl_MZ = slha.get_block_entry("mass", 23, 9.118760e+01); 
   mdl_MTA = slha.get_block_entry("mass", 15, 1.777000e+00); 
   mdl_MT = slha.get_block_entry("mass", 6, 1.730000e+02); 
+  masses_.MDL_MT = mdl_MT;
   mdl_MB = slha.get_block_entry("mass", 5, 4.700000e+00); 
   mdl_cy = slha.get_block_entry("bsm", 189, 1.000000e+00); 
   mdl_ctr = slha.get_block_entry("bsm", 188, 1.000000e+00); 

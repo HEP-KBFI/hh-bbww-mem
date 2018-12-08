@@ -12,6 +12,14 @@
 
 #include <complex>
 
+extern "C"
+{
+  extern struct
+  {
+    double MDL_MT;
+  } masses_;
+}
+
 class Parameters_BSM_gg_hh2bbWW_WW2lvlv
 {
   public:
