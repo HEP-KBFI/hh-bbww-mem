@@ -137,11 +137,19 @@ double MEMbbwwIntegrandDilepton_background::Eval(const double* x) const
   double trueBJet2En = compBJetEn_top(trueChargedLeptonMinusP4 + trueAntiNuP4, measuredBJet2_.p4());
   LorentzVector trueBJet2P4 = buildLorentzVector(trueBJet2En, measuredBJet2_.theta(), measuredBJet2_.phi(), measuredBJet2_.mass());
 
+  LorentzVector trueSumP4 = trueBJet1P4 + trueBJet2P4 + trueChargedLeptonPlusP4 + trueNuP4 + trueChargedLeptonMinusP4 + trueAntiNuP4;
+
+  std::cout << "m(lep+ nu) = " << (trueChargedLeptonPlusP4 + trueNuP4).mass() << std::endl;
+  std::cout << "m(lep- nu) = " << (trueChargedLeptonMinusP4 + trueAntiNuP4).mass() << std::endl;
+  std::cout << "m(b lep+ nu) = " << (trueBJet1P4 + trueChargedLeptonPlusP4 + trueNuP4).mass() << std::endl;
+  std::cout << "m(bbar lep- nu) = " << (trueBJet2P4 + trueChargedLeptonMinusP4 + trueAntiNuP4).mass() << std::endl;
+
   // perform boost into zero-transverse-momentum (ZTM) frame 
-  double ztmFramePx = -measuredHadRecoilPx_;
-  double ztmFramePy = -measuredHadRecoilPy_;
-  double ztmFramePt = TMath::Sqrt(ztmFramePx*ztmFramePx + ztmFramePy*ztmFramePy);
-  Vector boost(-ztmFramePx/ztmFramePt, -ztmFramePy/ztmFramePt, 0.);
+  double ztmFramePx = trueSumP4.px();
+  double ztmFramePy = trueSumP4.py();
+  double ztmFrameEn = trueSumP4.energy();
+  Vector boost(-ztmFramePx/ztmFrameEn, -ztmFramePy/ztmFrameEn, 0.);
+  //std::cout << "boost: Px = " << boost.x() << ", Py = " << boost.y() << ", Pz = " << boost.z() << std::endl;
   LorentzVector trueChargedLeptonPlusP4_ztm = ROOT::Math::VectorUtil::boost(trueChargedLeptonPlusP4, boost);
   LorentzVector trueNuP4_ztm = ROOT::Math::VectorUtil::boost(trueNuP4, boost);
   LorentzVector trueBJet1P4_ztm = ROOT::Math::VectorUtil::boost(trueBJet1P4, boost); 
@@ -150,14 +158,14 @@ double MEMbbwwIntegrandDilepton_background::Eval(const double* x) const
   LorentzVector trueBJet2P4_ztm = ROOT::Math::VectorUtil::boost(trueBJet2P4, boost); 
   if ( verbosity_ >= 2 ) {
     std::cout << "laboratory frame:" << std::endl;
-    printLorentzVector("lepton+", trueChargedLeptonPlusP4);
+    printLorentzVector("lepton+", trueChargedLeptonPlusP4, measuredChargedLeptonPlus_.p4());
     printLorentzVector("neutrino", trueNuP4);
-    printLorentzVector("b-jet1", trueBJet1P4);
-    printLorentzVector("lepton-", trueChargedLeptonMinusP4);
+    printLorentzVector("b-jet1", trueBJet1P4, measuredBJet1_.p4());
+    printLorentzVector("lepton-", trueChargedLeptonMinusP4, measuredChargedLeptonMinus_.p4());
     printLorentzVector("anti-neutrino", trueAntiNuP4);
-    printLorentzVector("b-jet2", trueBJet2P4);
-    LorentzVector sumP4 = trueChargedLeptonPlusP4 + trueNuP4 + trueBJet1P4 + trueChargedLeptonMinusP4 + trueAntiNuP4 + trueBJet2P4;
-    printLorentzVector("sum", sumP4);
+    printLorentzVector("b-jet2", trueBJet2P4, measuredBJet2_.p4());
+    LorentzVector trueSumP4 = trueBJet1P4 + trueBJet2P4 + trueChargedLeptonPlusP4 + trueNuP4 + trueChargedLeptonMinusP4 + trueAntiNuP4;
+    printLorentzVector("sum", trueSumP4);
     std::cout << "zero-transverse-momentum frame:" << std::endl;
     printLorentzVector("lepton+", trueChargedLeptonPlusP4_ztm);
     printLorentzVector("neutrino", trueNuP4_ztm);
@@ -165,16 +173,15 @@ double MEMbbwwIntegrandDilepton_background::Eval(const double* x) const
     printLorentzVector("lepton-", trueChargedLeptonMinusP4_ztm);
     printLorentzVector("anti-neutrino", trueAntiNuP4_ztm);
     printLorentzVector("b-jet2", trueBJet2P4_ztm);
-    LorentzVector sumP4_ztm = trueChargedLeptonPlusP4_ztm + trueNuP4_ztm + trueBJet1P4_ztm + trueChargedLeptonMinusP4_ztm + trueAntiNuP4_ztm + trueBJet2P4_ztm;
-    printLorentzVector("sum", sumP4_ztm);
+    LorentzVector trueSumP4_ztm = trueBJet1P4_ztm + trueBJet2P4_ztm + trueChargedLeptonPlusP4_ztm + trueNuP4_ztm + trueChargedLeptonMinusP4_ztm + trueAntiNuP4_ztm;
+    printLorentzVector("sum", trueSumP4_ztm);
   }
 
   // compute Bjorken-x of incoming protons and evaluate PDF factor
-  LorentzVector sumP4 = trueChargedLeptonPlusP4 + trueNuP4 + trueBJet1P4 + trueChargedLeptonMinusP4 + trueAntiNuP4 + trueBJet2P4;
-  double sumPz = sumP4.pz();
-  double sumEn = sumP4.E();
-  double xa = (sumEn + sumPz)/sqrtS_;
-  double xb = (sumEn - sumPz)/sqrtS_;
+  double trueSumPz = trueSumP4.pz();
+  double trueSumEn = trueSumP4.E();
+  double xa = (trueSumEn + trueSumPz)/sqrtS_;
+  double xb = (trueSumEn - trueSumPz)/sqrtS_;
   //std::cout << "xa = " << xa << ", xb = " << xb << std::endl;
   if ( xa <= 0. || xa >= 1. ) return 0.;
   if ( xb <= 0. || xb >= 1. ) return 0.;
@@ -219,8 +226,9 @@ double MEMbbwwIntegrandDilepton_background::Eval(const double* x) const
   madgraphBJet2P4_[1] = trueBJet2P4_ztm.px();
   madgraphBJet2P4_[2] = trueBJet2P4_ztm.py();
   madgraphBJet2P4_[3] = trueBJet2P4_ztm.pz();
+  printMadGraphMomenta();
   double prob_ME = -1.;
-  if ( madgraphIsInitialized_ ) {
+  if ( madgraphIsInitialized_ ) {    
     me_madgraph_.setMomenta(madgraphMomenta_);
     me_madgraph_.sigmaKin();
     prob_ME = me_madgraph_.getMatrixElements()[0];
@@ -242,9 +250,15 @@ double MEMbbwwIntegrandDilepton_background::Eval(const double* x) const
 
   double trueHadRecoilPx = -(trueChargedLeptonPlusP4.px() + trueNuP4.px() + trueBJet1P4.px() + trueChargedLeptonMinusP4.px() + trueAntiNuP4.px() + trueBJet2P4.px());
   double trueHadRecoilPy = -(trueChargedLeptonPlusP4.py() + trueNuP4.py() + trueBJet1P4.py() + trueChargedLeptonMinusP4.py() + trueAntiNuP4.py() + trueBJet2P4.py());
-  double prob_TF = bjet1TF_->Eval(trueBJet1P4_ztm.energy())*bjet2TF_->Eval(trueBJet2P4_ztm.energy())*hadRecoilTF_->Eval(trueHadRecoilPx, trueHadRecoilPy);
+  std::cout << "hadRecoil:" << std::endl;
+  std::cout << " true Px = " << trueHadRecoilPx << ", Py = " << trueHadRecoilPy << std::endl;
+  std::cout << " rec. Px = " << measuredHadRecoilPx_ << ", Py = " << measuredHadRecoilPy_ << std::endl;
+  double prob_TF = bjet1TF_->Eval(trueBJet1P4.energy())*bjet2TF_->Eval(trueBJet2P4.energy())*hadRecoilTF_->Eval(trueHadRecoilPx, trueHadRecoilPy);
   if ( verbosity_ >= 2 ) {
     std::cout << "prob_TF = " << prob_TF << std::endl;
+    std::cout << "(b-jet1 = " << bjet1TF_->Eval(trueBJet1P4.energy()) << ","
+	      << " b-jet2 = " << bjet2TF_->Eval(trueBJet2P4.energy()) << ","
+	      << " hadRecoil = " << hadRecoilTF_->Eval(trueHadRecoilPx, trueHadRecoilPy) << ")" << std::endl;
   }
 
   double jacobiFactor = 1.;

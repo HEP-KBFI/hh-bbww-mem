@@ -62,6 +62,8 @@ class MEMbbwwIntegrandBase
   static bool pdfIsInitialized_;
 
  protected:  
+  void printMadGraphMomenta() const;
+
   /// integration variables
   unsigned intNumDimensions_;
   std::vector<std::string> intVarNames_; 

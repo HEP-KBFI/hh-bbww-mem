@@ -218,11 +218,11 @@ double MEMbbwwIntegrandDilepton_signal::Eval(const double* x) const
   LorentzVector trueAntiNuP4_ztm = ROOT::Math::VectorUtil::boost(trueAntiNuP4, boost);
   if ( verbosity_ >= 2 ) {
     std::cout << "laboratory frame:" << std::endl;
-    printLorentzVector("b-jet1", trueBJet1P4);
-    printLorentzVector("b-jet2", trueBJet2P4);
-    printLorentzVector("lepton+", trueChargedLeptonPlusP4);
+    printLorentzVector("b-jet1", trueBJet1P4, measuredBJet1_.p4());
+    printLorentzVector("b-jet2", trueBJet2P4, measuredBJet2_.p4());
+    printLorentzVector("lepton+", trueChargedLeptonPlusP4, measuredChargedLeptonPlus_.p4());
     printLorentzVector("neutrino", trueNuP4);
-    printLorentzVector("lepton-", trueChargedLeptonMinusP4);
+    printLorentzVector("lepton-", trueChargedLeptonMinusP4, measuredChargedLeptonMinus_.p4());
     printLorentzVector("anti-neutrino", trueAntiNuP4);
     LorentzVector trueSumP4 = trueBJet1P4 + trueBJet2P4 + trueChargedLeptonPlusP4 + trueNuP4 + trueChargedLeptonMinusP4 + trueAntiNuP4;
     printLorentzVector("sum", trueSumP4);
@@ -286,8 +286,10 @@ double MEMbbwwIntegrandDilepton_signal::Eval(const double* x) const
   madgraphBJet2P4_[1] = trueBJet2P4_ztm.px();
   madgraphBJet2P4_[2] = trueBJet2P4_ztm.py();
   madgraphBJet2P4_[3] = trueBJet2P4_ztm.pz();
+  printMadGraphMomenta();
   double prob_ME = -1.;
   if ( madgraphIsInitialized_ ) {
+    me_madgraph_.setHiggsWidth(2.); // CV: enlarge Higgs boson width to make ME evaluation robust against rounding errors
     me_madgraph_.setMomenta(madgraphMomenta_);
     me_madgraph_.sigmaKin();
     prob_ME = me_madgraph_.getMatrixElements()[0];
@@ -311,9 +313,15 @@ double MEMbbwwIntegrandDilepton_signal::Eval(const double* x) const
 
   double trueHadRecoilPx = -(trueBJet1P4.px() + trueBJet2P4.px() + trueChargedLeptonPlusP4.px() + trueNuP4.px() + trueChargedLeptonMinusP4.px() + trueAntiNuP4.px());
   double trueHadRecoilPy = -(trueBJet1P4.py() + trueBJet2P4.py() + trueChargedLeptonPlusP4.py() + trueNuP4.py() + trueChargedLeptonMinusP4.py() + trueAntiNuP4.py());
-  double prob_TF = bjet1TF_->Eval(trueBJet1P4_ztm.energy())*bjet2TF_->Eval(trueBJet2P4_ztm.energy())*hadRecoilTF_->Eval(trueHadRecoilPx, trueHadRecoilPy);
+  std::cout << "hadRecoil:" << std::endl;
+  std::cout << " true Px = " << trueHadRecoilPx << ", Py = " << trueHadRecoilPy << std::endl;
+  std::cout << " rec. Px = " << measuredHadRecoilPx_ << ", Py = " << measuredHadRecoilPy_ << std::endl;
+  double prob_TF = bjet1TF_->Eval(trueBJet1P4.energy())*bjet2TF_->Eval(trueBJet2P4.energy())*hadRecoilTF_->Eval(trueHadRecoilPx, trueHadRecoilPy);
   if ( verbosity_ >= 2 ) {
     std::cout << "prob_TF = " << prob_TF << std::endl;
+    std::cout << "(b-jet1 = " << bjet1TF_->Eval(trueBJet1P4.energy()) << ","
+	      << " b-jet2 = " << bjet2TF_->Eval(trueBJet2P4.energy()) << ","
+	      << " hadRecoil = " << hadRecoilTF_->Eval(trueHadRecoilPx, trueHadRecoilPy) << ")" << std::endl;
   }
 
   double jacobiFactor = compJacobiFactor_Hbb(trueBJet1P4, trueBJet2P4);

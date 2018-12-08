@@ -93,6 +93,7 @@ namespace mem
   double roundToNdigits(double, int = 3);
 
   void printLorentzVector(const std::string&, const LorentzVector&);
+  void printLorentzVector(const std::string&, const LorentzVector&, const LorentzVector&);
 
   std::vector<double> compBJet2En_Hbb(const LorentzVector&, const LorentzVector&);
   double compNuEn_Wlnu(const LorentzVector&, double, double);

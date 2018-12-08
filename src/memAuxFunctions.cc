@@ -18,9 +18,18 @@ double roundToNdigits(double x, int n)
  
 void printLorentzVector(const std::string& label, const LorentzVector& particleP4)
 {
-  std::cout << " " << label << ":" 
-	    << " Pt = " << particleP4.pt() << ", eta = " << particleP4.eta() << ", phi = " << particleP4.phi() << ", mass = " << particleP4.mass() << std::endl;
+  std::cout << label << ":" << std::endl;
+  std::cout << " Pt = " << particleP4.pt() << ", eta = " << particleP4.eta() << ", phi = " << particleP4.phi() << ", mass = " << particleP4.mass() << std::endl;
   std::cout << "(En = " << particleP4.energy() << ", Px = " << particleP4.px() << ", Py = " << particleP4.py() << ", Pz = " << particleP4.pz() << ")" << std::endl;
+}
+
+void printLorentzVector(const std::string& label, const LorentzVector& trueParticleP4, const LorentzVector& recoParticleP4)
+{
+  std::cout << label << ":" << std::endl;
+  std::cout << " true Pt = " << trueParticleP4.pt() << ", eta = " << trueParticleP4.eta() << ", phi = " << trueParticleP4.phi() << ", mass = " << trueParticleP4.mass() << std::endl;
+  std::cout << "     (En = " << trueParticleP4.energy() << ", Px = " << trueParticleP4.px() << ", Py = " << trueParticleP4.py() << ", Pz = " << trueParticleP4.pz() << ")" << std::endl;
+  std::cout << " rec. Pt = " << recoParticleP4.pt() << ", eta = " << recoParticleP4.eta() << ", phi = " << recoParticleP4.phi() << ", mass = " << recoParticleP4.mass() << std::endl;
+  std::cout << "     (En = " << recoParticleP4.energy() << ", Px = " << recoParticleP4.px() << ", Py = " << recoParticleP4.py() << ", Pz = " << recoParticleP4.pz() << ")" << std::endl;
 }
 
 double compCosAngle(const LorentzVector& particle1P4, const LorentzVector& particle2P4)
@@ -121,6 +130,7 @@ double compBJetEn_top(const LorentzVector& trueEllNuP4, const LorentzVector& mea
     double trueBJetEn_solution1 = (term1 + term3)/a2_minus_b2;
     double trueBJetEn_solution2 = (term1 - term3)/a2_minus_b2;
     double trueBJetEn = TMath::Max(trueBJetEn_solution1, trueBJetEn_solution2);
+    // CV: NEED TO RETURN STD::VECTOR WITH BOTH SOLUTIONS AND PICK SOLUTION THAT IS CLOSER TO TARGET MASS VALUE
     return trueBJetEn;
   } else {
     return 0.;

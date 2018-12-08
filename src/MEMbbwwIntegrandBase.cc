@@ -116,3 +116,18 @@ std::cout << "hadRecoilTF = " << hadRecoilTF_ << std::endl;
   }
 std::cout << "break-point 5 reached" << std::endl;
 }
+
+void 
+MEMbbwwIntegrandBase::printMadGraphMomenta() const
+{
+  std::cout << "<MEMbbwwIntegrandBase::printMadGraphMomenta>:" << std::endl;
+  size_t numParticles = madgraphMomenta_.size();
+  for ( size_t idxParticle = 0; idxParticle < numParticles; ++idxParticle ) {
+    std::cout << "particle #" << idxParticle << ":" 
+	      << " En = " << madgraphMomenta_[idxParticle][0] << "," 
+	      << " Px = " << madgraphMomenta_[idxParticle][1] << ","
+	      << " Py = " << madgraphMomenta_[idxParticle][2] << ","
+	      << " Pz = " << madgraphMomenta_[idxParticle][3] << std::endl;
+  }
+}
+

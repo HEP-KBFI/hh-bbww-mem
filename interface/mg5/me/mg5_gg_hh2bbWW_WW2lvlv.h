@@ -84,6 +84,10 @@ class mg5_BSM_gg_hh2bbWW_WW2lvlv
       return "g g > b b~ e+ ve e- ve~ (BSM_gg_hh)";
     }
 
+    // Set Higgs width
+    virtual void
+    setHiggsWidth(double higgsWidth);
+
     const std::vector<double> &
     getMasses() const
     {

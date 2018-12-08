@@ -12,7 +12,6 @@
 <use name="tthAnalysis/tthMEM" />
 <!-- <Flags CXXFLAGS="-g3 -Og -ggdb3 -pedantic -Werror" /> -->
 <Flags CXXFLAGS="-g0 -O3 -ggdb0 -Wall -Wextra -Wpedantic -Werror" />
-<!--Flags CXXFLAGS="-g0 -O3 -ggdb0 -Wall -Wextra -Wpedantic" /> -->
 <Flags FFLAGS="-ffixed-line-length-132" />
 <export>
   <lib name="1" />
