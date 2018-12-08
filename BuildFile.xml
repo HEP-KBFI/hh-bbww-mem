@@ -10,9 +10,8 @@
 <use name="boost_system" />
 <use name="boost_filesystem" />
 <use name="tthAnalysis/tthMEM" />
-<!-- <Flags CXXFLAGS="-g3 -Og -ggdb3 -pedantic -Werror" /> -->
 <Flags CXXFLAGS="-g0 -O3 -ggdb0 -Wall -Wextra -Wpedantic -Werror" />
-<Flags FFLAGS="-ffixed-line-length-132" />
+<Flags FFLAGS="-ffixed-line-length-132 -O3 -ffast-math -fPIC" />
 <export>
   <lib name="1" />
 </export>
