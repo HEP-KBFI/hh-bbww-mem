@@ -46,7 +46,7 @@ namespace mem
 
   //-----------------------------------------------------------------------------
   // define masses, widths and lifetimes of particles
-  // relevant for computing values of likelihood functions in SVfit algorithm
+  // relevant for computing values of likelihood functions in MEM
   //
   // NOTE: the values are taken from
   //        K.A. Olive et al. (Particle Data Group),
@@ -80,12 +80,12 @@ namespace mem
   //-----------------------------------------------------------------------------
 
   /**
-     \typedef SVfitStandalone::Vector
+     \typedef mem::Vector
      \brief   spacial momentum vector (equivalent to reco::Candidate::Vector)
   */
   typedef ROOT::Math::DisplacementVector3D<ROOT::Math::Cartesian3D<double> > Vector;
   /**
-     \typedef SVfitStandalone::LorentzVector
+     \typedef mem::LorentzVector
      \brief   lorentz vector (equivalent to reco::Candidate::LorentzVector)
   */
   typedef ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double> > LorentzVector;

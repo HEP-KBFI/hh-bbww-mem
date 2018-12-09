@@ -29,7 +29,7 @@ namespace mem
 class MEMbbwwIntegrandBase
 {
  public:
-  /// error codes that can be read out by SVfitMEM class
+  /// error codes
   enum ErrorCodes {
     None            = 0x00000000,
     MatrixInversion = 0x00000001
