@@ -4,11 +4,7 @@
 
 using namespace mem;
 
-LHAPDF::PDF* MEMbbwwIntegrandBase::pdf_ = nullptr;
-std::string MEMbbwwIntegrandBase::pdfName_ = "";
-bool MEMbbwwIntegrandBase::pdfIsInitialized_ = false;
-
-MEMbbwwIntegrandBase::MEMbbwwIntegrandBase(double sqrtS, const std::string& pdfName, const std::string& madgraphFileName, int verbosity) 
+MEMbbwwIntegrandBase::MEMbbwwIntegrandBase(double sqrtS, const std::string& madgraphFileName, int verbosity)
   : bjet1TF_(nullptr)
   , bjet2TF_(nullptr)
   , hadRecoilTF_(nullptr)
@@ -30,13 +26,6 @@ MEMbbwwIntegrandBase::MEMbbwwIntegrandBase(double sqrtS, const std::string& pdfN
   bjet1TF_ = new BJetTF(verbosity_);
   bjet2TF_ = new BJetTF(verbosity_);
   hadRecoilTF_ = new HadRecoilTF(verbosity_);
-
-  // initialize PDF set
-  if ( !pdfIsInitialized_ ) {
-    pdf_ = LHAPDF::mkPDF(pdfName.data(), 0);
-    pdfName_ = pdfName;
-    pdfIsInitialized_ = true;
-  }
 
   madgraphGluon1P4_ = new double[4];
   madgraphGluon1P4_[1] = 0.;
@@ -63,8 +52,6 @@ MEMbbwwIntegrandBase::~MEMbbwwIntegrandBase()
   delete bjet2TF_;
   delete hadRecoilTF_;
 
-  delete pdf_;
-
   delete [] madgraphGluon1P4_;
   delete [] madgraphGluon2P4_;
   delete [] madgraphChargedLeptonPlusP4_;
@@ -73,6 +60,12 @@ MEMbbwwIntegrandBase::~MEMbbwwIntegrandBase()
   delete [] madgraphAntiNeutrinoP4_;
   delete [] madgraphBJet1P4_;
   delete [] madgraphBJet2P4_;
+}
+
+void
+MEMbbwwIntegrandBase::setPDF(LHAPDF::PDF * pdf)
+{
+  pdf_ = pdf;
 }
 
 void 

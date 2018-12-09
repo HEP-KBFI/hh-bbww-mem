@@ -35,7 +35,7 @@ class MEMbbwwIntegrandBase
     MatrixInversion = 0x00000001
   };
 
-  MEMbbwwIntegrandBase(double, const std::string&, const std::string&, int);
+  MEMbbwwIntegrandBase(double, const std::string&, int);
   virtual ~MEMbbwwIntegrandBase();
   
   /// get dimension of integration region
@@ -55,13 +55,12 @@ class MEMbbwwIntegrandBase
   /// (pure virtual function, overwritten by derived classes for signal and background)
   virtual double Eval(const double* x) const = 0;
 
-  /// pointer to parton-distribution-functions (PDF)
-  /// Note: pointer is static so that same PDF instance gets used for signal and background
-  static LHAPDF::PDF* pdf_;
-  static std::string pdfName_;
-  static bool pdfIsInitialized_;
+  void setPDF(LHAPDF::PDF * pdf);
 
  protected:  
+  /// pointer to parton-distribution-functions (PDF)
+  LHAPDF::PDF * pdf_;
+
   void printMadGraphMomenta() const;
 
   /// integration variables

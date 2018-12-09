@@ -10,7 +10,7 @@ namespace mem
 class MEMbbwwIntegrandDilepton_background : public MEMbbwwIntegrandBase
 {
  public:
-  MEMbbwwIntegrandDilepton_background(double, const std::string&, const std::string&, int);
+  MEMbbwwIntegrandDilepton_background(double, const std::string&, int);
   ~MEMbbwwIntegrandDilepton_background();
 
   /// set measured momenta of charged leptons and b-jets and of missing transverse momentum

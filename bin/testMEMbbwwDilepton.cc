@@ -124,7 +124,7 @@ main(int argc __attribute__((unused)),
   std::cout <<
     " probability for signal hypothesis = "     << result_sig.prob_signal_     << " +/- " << result_sig.probErr_signal_     << "\n"
     " probability for background hypothesis = " << result_sig.prob_background_ << " +/- " << result_sig.probErr_background_ << "\n"
-    "--> likelihood ratio = "                   << ratio_signal            << " +/- " << ratioErr_signal            << '\n'
+    "--> likelihood ratio = "                   << ratio_signal            << " +/- " << ratioErr_signal                    << '\n'
   ;
 
   std::cout << "processing background event:\n";
@@ -137,7 +137,7 @@ main(int argc __attribute__((unused)),
   std::cout <<
     " probability for signal hypothesis = "     << result_bkg.prob_signal_     << " +/- " << result_bkg.probErr_signal_     << "\n"
     " probability for background hypothesis = " << result_bkg.prob_background_ << " +/- " << result_bkg.probErr_background_ << "\n"
-    "--> likelihood ratio = "                   << ratio_background        << " +/- " << ratioErr_background        << '\n'
+    "--> likelihood ratio = "                   << ratio_background        << " +/- " << ratioErr_background                << '\n'
   ;
 
   return EXIT_SUCCESS;

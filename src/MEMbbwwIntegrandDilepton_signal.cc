@@ -7,8 +7,8 @@
 
 using namespace mem;
 
-MEMbbwwIntegrandDilepton_signal::MEMbbwwIntegrandDilepton_signal(double sqrtS, const std::string& pdfName, const std::string& madgraphFileName, int verbosity)
-  : MEMbbwwIntegrandBase(sqrtS, pdfName, madgraphFileName, verbosity)
+MEMbbwwIntegrandDilepton_signal::MEMbbwwIntegrandDilepton_signal(double sqrtS, const std::string& madgraphFileName, int verbosity)
+  : MEMbbwwIntegrandBase(sqrtS, madgraphFileName, verbosity)
   , chargedLeptonPermutation_(kPermutationUndefined)
 {
   if ( verbosity_ ) {
@@ -246,7 +246,7 @@ double MEMbbwwIntegrandDilepton_signal::Eval(const double* x) const
   if ( xa <= 0. || xa >= 1. ) return 0.;
   if ( xb <= 0. || xb >= 1. ) return 0.;
   double Q = 0.5*trueSumP4.mass();
-  assert(pdfIsInitialized_);
+  assert(pdf_);
   double fa = pdf_->xfxQ(21, xa, Q)/xa; // gluon distribution
   double fb = pdf_->xfxQ(21, xb, Q)/xb;
   double prob_PDF = (fa*fb);
