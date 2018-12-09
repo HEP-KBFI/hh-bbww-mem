@@ -39,7 +39,7 @@ main(int argc __attribute__((unused)),
     { MeasuredParticle::kBJet,     35.00,  0.00, +2.00, bottomQuarkMass    }, // first b-jet
     { MeasuredParticle::kBJet,     25.00, +1.00, -2.00, bottomQuarkMass    }, // second b-jet
   };
-  
+
   // define measured missing transverse momentum (MET)
   const double measuredMEtPx_signal = +18.24;
   const double measuredMEtPy_signal = -23.07;
@@ -54,23 +54,51 @@ main(int argc __attribute__((unused)),
   /* This is a single ttbar->bW bW->blnu blnu background event for testing purposes */
 
   // define measured momenta of b-jets and charged leptons
+  // event taken from /store/mc/RunIIFall17MiniAOD/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM
+  //                  /94X_mc2017_realistic_v10-v2/60000/1688A03F-E9EF-E711-9A58-008CFAF356FA.root,
+  // 1:3293:3188303
+  //
+  // at generator level:
+  // pt = 51.000 eta = +0.621 phi = -1.824 mass = 0.000 pdgId = +13 status = 1
+  // pt = 35.125 eta = +0.889 phi = +2.391 mass = 0.000 pdgId = -14 status = 1
+  // pt = 33.625 eta = -1.328 phi = +2.852 mass = 0.000 pdgId = -13 status = 1
+  // pt = 53.000 eta = -2.430 phi = -1.762 mass = 0.000 pdgId = +14 status = 1
+  // pt = 121.500 eta = +0.807 phi = +1.703 mass = 0.000 pdgId = -5 status = 23
+  // pt = 68.000 eta = -1.410 phi = +0.281 mass = 0.000 pdgId = +5 status = 23
+  // pt = 60.000 eta = -2.484 phi = -2.359 mass = 79.500 pdgId = +24 status = 22
+  // pt = 46.125 eta = +1.195 phi = -2.555 mass = 73.500 pdgId = -24 status = 22
+  // pt = 32.875 eta = -3.398 phi = -0.803 mass = 171.500 pdgId = +6 status = 62
+  // pt = 109.500 eta = +1.262 phi = +2.094 mass = 177.500 pdgId = -6 status = 62
+  //
+  // at parton level:
+  // pt = 54.490 eta = +0.621 phi = -1.811 mass = 0.106 E = 65.329 pdgId = +13
+  // pt = 33.320 eta = +0.963 phi = +2.455 mass = 0.001 E = 49.990 pdgId = -14
+  // pt = 33.643 eta = -1.356 phi = +2.856 mass = 0.106 E = 69.639 pdgId = -13
+  // pt = 53.635 eta = -2.450 phi = -1.766 mass = 0.002 E = 313.106 pdgId = +14
+  // pt = 112.500 eta = +0.895 phi = +1.718 mass = 4.800 E = 160.707 pdgId = -5
+  // pt = 67.773 eta = -1.441 phi = +0.278 mass = 4.800 E = 151.271 pdgId = +5
+  //
+  // at reco level:
   const std::vector<MeasuredParticle> measuredParticles_background = {
-    { MeasuredParticle::kElectron, 25.00, -1.00, +1.00, electronMass,   +1 }, // positron
-    { MeasuredParticle::kMuon,     15.00, +2.00, -1.00, muonMass,       -1 }, // muon
-    { MeasuredParticle::kBJet,     35.00,  0.00, +2.00, bottomQuarkMass    }, // first b-jet
-    { MeasuredParticle::kBJet,     25.00, +1.00, -2.00, bottomQuarkMass    }, // second b-jet
+    { MeasuredParticle::kMuon,  51.867, +0.621, -1.825, 0.106, +1 },
+    { MeasuredParticle::kMuon,  33.838, -1.327, +2.852, 0.106, -1 },
+    { MeasuredParticle::kBJet, 140.125, +0.800, +1.708, 9.930     },
+    { MeasuredParticle::kBJet,  52.969, -1.397, +0.261, 8.555     },
   };
-  
+
   // define measured missing transverse momentum (MET)
-  const double measuredMEtPx_background = +18.24;
-  const double measuredMEtPy_background = -23.07;
+  // GenMET pt = 45.500 phi = -2.477
+  const double measuredMEtPt_background = 84.232;
+  const double measuredMEtPhi_background = -2.952;
+  const double measuredMEtPx_background = measuredMEtPt_background * std::cos(measuredMEtPhi_background);
+  const double measuredMEtPy_background = measuredMEtPt_background * std::sin(measuredMEtPhi_background);
   
   // define MET uncertainty matrix
   TMatrixD measuredMEtCov_background(2,2);
-  measuredMEtCov_background[0][0] = 100.00;
-  measuredMEtCov_background[1][0] =   0.00;
-  measuredMEtCov_background[0][1] =   0.00;
-  measuredMEtCov_background[1][1] = 100.00;
+  measuredMEtCov_background[0][0] = 688.000;
+  measuredMEtCov_background[1][0] = -25.125;
+  measuredMEtCov_background[0][1] = -25.125;
+  measuredMEtCov_background[1][1] = 846.000;
 
   // set center-of-mass energy to 13 TeV (LHC run 2)
   const double sqrtS = 13.e+3;
@@ -88,27 +116,27 @@ main(int argc __attribute__((unused)),
 
   std::cout << "processing signal event:\n";
   memAlgo.integrate(measuredParticles_signal, measuredMEtPx_signal, measuredMEtPy_signal, measuredMEtCov_signal);
-  MEMbbwwAlgoDilepton::resultType result = memAlgo.getResult();
-  const double ratio_signal    = result.prob_signal_ / result.prob_background_;
+  MEMbbwwAlgoDilepton::resultType result_sig = memAlgo.getResult();
+  const double ratio_signal    = result_sig.prob_signal_ / result_sig.prob_background_;
   const double ratioErr_signal = ratio_signal * std::sqrt(
-    square(result.probErr_signal_ / result.prob_signal_) + square(result.probErr_background_ / result.prob_background_)
+    square(result_sig.probErr_signal_ / result_sig.prob_signal_) + square(result_sig.probErr_background_ / result_sig.prob_background_)
   );
   std::cout <<
-    " probability for signal hypothesis = "     << result.prob_signal_     << " +/- " << result.probErr_signal_     << "\n"
-    " probability for background hypothesis = " << result.prob_background_ << " +/- " << result.probErr_background_ << "\n"
+    " probability for signal hypothesis = "     << result_sig.prob_signal_     << " +/- " << result_sig.probErr_signal_     << "\n"
+    " probability for background hypothesis = " << result_sig.prob_background_ << " +/- " << result_sig.probErr_background_ << "\n"
     "--> likelihood ratio = "                   << ratio_signal            << " +/- " << ratioErr_signal            << '\n'
   ;
 
   std::cout << "processing background event:\n";
   memAlgo.integrate(measuredParticles_background, measuredMEtPx_background, measuredMEtPy_background, measuredMEtCov_background);
-  result = memAlgo.getResult();
-  const double ratio_background    = result.prob_signal_ / result.prob_background_;
-  const double ratioErr_background = ratio_signal * std::sqrt(
-    square(result.probErr_signal_ / result.prob_signal_) + square(result.probErr_background_ / result.prob_background_)
+  MEMbbwwAlgoDilepton::resultType result_bkg = memAlgo.getResult();
+  const double ratio_background    = result_bkg.prob_signal_ / result_bkg.prob_background_;
+  const double ratioErr_background = ratio_background * std::sqrt(
+    square(result_bkg.probErr_signal_ / result_bkg.prob_signal_) + square(result_bkg.probErr_background_ / result_bkg.prob_background_)
   );
   std::cout <<
-    " probability for signal hypothesis = "     << result.prob_signal_     << " +/- " << result.probErr_signal_     << "\n"
-    " probability for background hypothesis = " << result.prob_background_ << " +/- " << result.probErr_background_ << "\n"
+    " probability for signal hypothesis = "     << result_bkg.prob_signal_     << " +/- " << result_bkg.probErr_signal_     << "\n"
+    " probability for background hypothesis = " << result_bkg.prob_background_ << " +/- " << result_bkg.probErr_background_ << "\n"
     "--> likelihood ratio = "                   << ratio_background        << " +/- " << ratioErr_background        << '\n'
   ;
 
