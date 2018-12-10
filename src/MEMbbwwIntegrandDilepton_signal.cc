@@ -37,6 +37,7 @@ MEMbbwwIntegrandDilepton_signal::MEMbbwwIntegrandDilepton_signal(double sqrtS, c
 
   // initialize MadGraph
   if ( madgraphFileName != "" ) {
+    std::cout << "initializing MadGraph ME for HH signal using " << madgraphFileName << " file." << std::endl;
     me_madgraph_.initProc(madgraphFileName);
     madgraphIsInitialized_ = true;
   } else {

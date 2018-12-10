@@ -33,6 +33,7 @@ MEMbbwwIntegrandDilepton_background::MEMbbwwIntegrandDilepton_background(double 
 
   // initialize MadGraph
   if ( madgraphFileName != "" ) {
+    std::cout << "initializing MadGraph ME for ttbar background using " << madgraphFileName << " file." << std::endl;
     me_madgraph_.initProc(madgraphFileName);
     madgraphIsInitialized_ = true;
   } else {
