@@ -72,11 +72,6 @@ void mg5_BSM_gg_hh2bbWW_WW2lvlv::initProc(const string & param_card_name)
 
 void mg5_BSM_gg_hh2bbWW_WW2lvlv::sigmaKin()
 {
-  //-----------------------------------------------------------------------------
-  std::cout << "<mg5_BSM_gg_hh2bbWW_WW2lvlv::sigmaKin>:" << std::endl;
-  std::cout << " mH = " << pars->mdl_MH << ", GammaH = " << pars->mdl_WH << std::endl;
-  //-----------------------------------------------------------------------------
-
   // Set the parameters which change event by event
   pars->setDependentParameters();
   pars->setDependentCouplings();
@@ -272,13 +267,6 @@ void mg5_BSM_gg_hh2bbWW_WW2lvlv::sigmaKin()
     }
   }
 
-  //-----------------------------------------------------------------------------
-  for (int i = 0; i < nprocesses; i++ ) {
-    std::cout << "matrix_element[" << i << "] = " << matrix_element[i] << std::endl;
-    std::cout << "denominators[" << i << "] = " << denominators[i] << std::endl;
-  }
-  //-----------------------------------------------------------------------------
-
   for (int i = 0; i < nprocesses; i++ )
     matrix_element[i] /= denominators[i];
 
@@ -308,8 +296,6 @@ double mg5_BSM_gg_hh2bbWW_WW2lvlv::sigmaHat()
 // Set Higgs width
 void mg5_BSM_gg_hh2bbWW_WW2lvlv::setHiggsWidth(double higgsWidth)
 {
-  std::cout << "<mg5_BSM_gg_hh2bbWW_WW2lvlv::setHiggsWidth>:" << std::endl;
-  std::cout << " pars = " << pars << ", higgsWidth = " << higgsWidth << std::endl;
   if(pars) pars -> mdl_WH = higgsWidth;
 }
 
