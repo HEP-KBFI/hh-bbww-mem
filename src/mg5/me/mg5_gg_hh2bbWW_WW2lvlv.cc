@@ -237,9 +237,6 @@ void mg5_BSM_gg_hh2bbWW_WW2lvlv::sigmaKin()
         double tsum = 0;
         for(int iproc = 0; iproc < nprocesses; iproc++ )
         {
-	  //---------------------------------------------------------------------
-	  std::cout << "ihel = " << ihel << ", iproc = " << iproc << ": t = " << t[iproc] << std::endl;
-	  //---------------------------------------------------------------------
           matrix_element[iproc] += t[iproc];
           tsum += t[iproc];
         }
