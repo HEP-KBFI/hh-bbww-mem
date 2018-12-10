@@ -13,6 +13,7 @@
 using namespace mem;
 
 const MEMbbwwIntegrandBase* MEMbbwwAlgoDilepton::gMEMIntegrand = nullptr;
+LHAPDF::PDF * MEMbbwwAlgoDilepton::pdf_ = nullptr;
 
 namespace 
 {
@@ -37,8 +38,7 @@ MEMbbwwAlgoDilepton::MEMbbwwAlgoDilepton(double sqrtS,
 					 const std::string& pdfName, 
 					 const std::string& madgraphFileName_signal, const std::string& madgraphFileName_background, 
 					 int verbosity) 
-  : pdfName_(pdfName)
-  , madgraphFileName_signal_(madgraphFileName_signal)
+  : madgraphFileName_signal_(madgraphFileName_signal)
   , integrand_signal_(nullptr)
   , madgraphFileName_background_(madgraphFileName_background)
   , integrand_background_(nullptr)
@@ -52,8 +52,16 @@ MEMbbwwAlgoDilepton::MEMbbwwAlgoDilepton(double sqrtS,
   , numSeconds_real_(-1.)
   , verbosity_(verbosity)
 { 
-  integrand_signal_ = new MEMbbwwIntegrandDilepton_signal(sqrtS_, pdfName_, madgraphFileName_signal_, verbosity_);
-  integrand_background_ = new MEMbbwwIntegrandDilepton_background(sqrtS_, pdfName_, madgraphFileName_background_, verbosity_);
+
+  integrand_signal_ = new MEMbbwwIntegrandDilepton_signal(sqrtS_, madgraphFileName_signal_, verbosity_);
+  integrand_background_ = new MEMbbwwIntegrandDilepton_background(sqrtS_, madgraphFileName_background_, verbosity_);
+
+  if(! pdf_)
+  {
+    pdf_ = LHAPDF::mkPDF(pdfName);
+  }
+  integrand_signal_->setPDF(pdf_);
+  integrand_background_->setPDF(pdf_);
   
   result_.prob_signal_ = -1.;
   result_.probErr_signal_ = -1.;
@@ -67,6 +75,12 @@ MEMbbwwAlgoDilepton::~MEMbbwwAlgoDilepton()
 {
   //delete integrand_signal_;
   //delete integrand_background_;
+
+  if(pdf_)
+  {
+    delete pdf_;
+    pdf_ = nullptr;
+  }
 
   delete clock_;
 }
@@ -157,7 +171,6 @@ MEMbbwwAlgoDilepton::integrate(const std::vector<MeasuredParticle>& measuredPart
     std::cout << "Eigenvalues = " << EigenValues(0) << ", " << EigenValues(1) << std::endl;
   }
 
-  integrand_signal_ = new MEMbbwwIntegrandDilepton_signal(sqrtS_, pdfName_, madgraphFileName_signal_, verbosity_);
   MEMbbwwAlgoDilepton::gMEMIntegrand = integrand_signal_;
   initializeIntAlgo();
   result_.prob_signal_ = 0.;
@@ -192,7 +205,6 @@ MEMbbwwAlgoDilepton::integrate(const std::vector<MeasuredParticle>& measuredPart
   delete intAlgo_;
   //intAlgo_ = nullptr;
  
-  integrand_background_ = new MEMbbwwIntegrandDilepton_background(sqrtS_, pdfName_, madgraphFileName_background_, verbosity_);
   MEMbbwwAlgoDilepton::gMEMIntegrand = integrand_background_;
   initializeIntAlgo();
   result_.prob_background_ = 0.;

@@ -10,7 +10,7 @@ namespace mem
 class MEMbbwwIntegrandDilepton_signal : public MEMbbwwIntegrandBase
 {
  public:
-  MEMbbwwIntegrandDilepton_signal(double, const std::string&, const std::string&, int);
+  MEMbbwwIntegrandDilepton_signal(double, const std::string&, int);
   ~MEMbbwwIntegrandDilepton_signal();
 
   /// set measured momenta of charged leptons and b-jets and of missing transverse momentum

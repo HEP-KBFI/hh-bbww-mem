@@ -7,8 +7,8 @@
 
 using namespace mem;
 
-MEMbbwwIntegrandDilepton_background::MEMbbwwIntegrandDilepton_background(double sqrtS, const std::string& pdfName, const std::string& madgraphFileName, int verbosity)
-  : MEMbbwwIntegrandBase(sqrtS, pdfName, madgraphFileName, verbosity)
+MEMbbwwIntegrandDilepton_background::MEMbbwwIntegrandDilepton_background(double sqrtS, const std::string& madgraphFileName, int verbosity)
+  : MEMbbwwIntegrandBase(sqrtS, madgraphFileName, verbosity)
 {
   if ( verbosity_ ) {
     std::cout << "<MEMbbwwIntegrandDilepton_background::MEMbbwwIntegrandDilepton_background>:" << std::endl;
@@ -140,17 +140,19 @@ double MEMbbwwIntegrandDilepton_background::Eval(const double* x) const
 
   LorentzVector trueSumP4 = trueBJet1P4 + trueBJet2P4 + trueChargedLeptonPlusP4 + trueNuP4 + trueChargedLeptonMinusP4 + trueAntiNuP4;
 
-  std::cout << "m(lep+ nu) = " << (trueChargedLeptonPlusP4 + trueNuP4).mass() << std::endl;
-  std::cout << "m(lep- nu) = " << (trueChargedLeptonMinusP4 + trueAntiNuP4).mass() << std::endl;
-  std::cout << "m(b lep+ nu) = " << (trueBJet1P4 + trueChargedLeptonPlusP4 + trueNuP4).mass() << std::endl;
-  std::cout << "m(bbar lep- nu) = " << (trueBJet2P4 + trueChargedLeptonMinusP4 + trueAntiNuP4).mass() << std::endl;
+  if(verbosity_ >= 2)
+  {
+    std::cout << "m(lep+ nu) = " << (trueChargedLeptonPlusP4 + trueNuP4).mass() << std::endl;
+    std::cout << "m(lep- nu) = " << (trueChargedLeptonMinusP4 + trueAntiNuP4).mass() << std::endl;
+    std::cout << "m(b lep+ nu) = " << (trueBJet1P4 + trueChargedLeptonPlusP4 + trueNuP4).mass() << std::endl;
+    std::cout << "m(bbar lep- nu) = " << (trueBJet2P4 + trueChargedLeptonMinusP4 + trueAntiNuP4).mass() << std::endl;
+  }
 
   // perform boost into zero-transverse-momentum (ZTM) frame 
   double ztmFramePx = trueSumP4.px();
   double ztmFramePy = trueSumP4.py();
   double ztmFrameEn = trueSumP4.energy();
   Vector boost(-ztmFramePx/ztmFrameEn, -ztmFramePy/ztmFrameEn, 0.);
-  //std::cout << "boost: Px = " << boost.x() << ", Py = " << boost.y() << ", Pz = " << boost.z() << std::endl;
   LorentzVector trueChargedLeptonPlusP4_ztm = ROOT::Math::VectorUtil::boost(trueChargedLeptonPlusP4, boost);
   LorentzVector trueNuP4_ztm = ROOT::Math::VectorUtil::boost(trueNuP4, boost);
   LorentzVector trueBJet1P4_ztm = ROOT::Math::VectorUtil::boost(trueBJet1P4, boost); 
@@ -183,11 +185,10 @@ double MEMbbwwIntegrandDilepton_background::Eval(const double* x) const
   double trueSumEn = trueSumP4.E();
   double xa = (trueSumEn + trueSumPz)/sqrtS_;
   double xb = (trueSumEn - trueSumPz)/sqrtS_;
-  //std::cout << "xa = " << xa << ", xb = " << xb << std::endl;
   if ( xa <= 0. || xa >= 1. ) return 0.;
   if ( xb <= 0. || xb >= 1. ) return 0.;
   double Q = 2.*topQuarkMass;
-  assert(pdfIsInitialized_);
+  assert(pdf_);
   double fa = pdf_->xfxQ(21, xa, Q)/xa; // gluon distribution
   double fb = pdf_->xfxQ(21, xb, Q)/xb;
   double prob_PDF = (fa*fb);
@@ -227,7 +228,10 @@ double MEMbbwwIntegrandDilepton_background::Eval(const double* x) const
   madgraphBJet2P4_[1] = trueBJet2P4_ztm.px();
   madgraphBJet2P4_[2] = trueBJet2P4_ztm.py();
   madgraphBJet2P4_[3] = trueBJet2P4_ztm.pz();
-  printMadGraphMomenta();
+  if(verbosity_ >= 2)
+  {
+    printMadGraphMomenta();
+  }
   double prob_ME = -1.;
   if ( madgraphIsInitialized_ ) {    
     me_madgraph_.setMomenta(madgraphMomenta_);
@@ -251,9 +255,12 @@ double MEMbbwwIntegrandDilepton_background::Eval(const double* x) const
 
   double trueHadRecoilPx = -(trueChargedLeptonPlusP4.px() + trueNuP4.px() + trueBJet1P4.px() + trueChargedLeptonMinusP4.px() + trueAntiNuP4.px() + trueBJet2P4.px());
   double trueHadRecoilPy = -(trueChargedLeptonPlusP4.py() + trueNuP4.py() + trueBJet1P4.py() + trueChargedLeptonMinusP4.py() + trueAntiNuP4.py() + trueBJet2P4.py());
-  std::cout << "hadRecoil:" << std::endl;
-  std::cout << " true Px = " << trueHadRecoilPx << ", Py = " << trueHadRecoilPy << std::endl;
-  std::cout << " rec. Px = " << measuredHadRecoilPx_ << ", Py = " << measuredHadRecoilPy_ << std::endl;
+  if(verbosity_ >= 2)
+  {
+    std::cout << "hadRecoil:" << std::endl;
+    std::cout << " true Px = " << trueHadRecoilPx << ", Py = " << trueHadRecoilPy << std::endl;
+    std::cout << " rec. Px = " << measuredHadRecoilPx_ << ", Py = " << measuredHadRecoilPy_ << std::endl;
+  }
   double prob_TF = bjet1TF_->Eval(trueBJet1P4.energy())*bjet2TF_->Eval(trueBJet2P4.energy())*hadRecoilTF_->Eval(trueHadRecoilPx, trueHadRecoilPy);
   if ( verbosity_ >= 2 ) {
     std::cout << "prob_TF = " << prob_TF << std::endl;

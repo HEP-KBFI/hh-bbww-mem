@@ -4,11 +4,7 @@
 
 using namespace mem;
 
-LHAPDF::PDF* MEMbbwwIntegrandBase::pdf_ = nullptr;
-std::string MEMbbwwIntegrandBase::pdfName_ = "";
-bool MEMbbwwIntegrandBase::pdfIsInitialized_ = false;
-
-MEMbbwwIntegrandBase::MEMbbwwIntegrandBase(double sqrtS, const std::string& pdfName, const std::string& madgraphFileName, int verbosity) 
+MEMbbwwIntegrandBase::MEMbbwwIntegrandBase(double sqrtS, const std::string& madgraphFileName, int verbosity)
   : bjet1TF_(nullptr)
   , bjet2TF_(nullptr)
   , hadRecoilTF_(nullptr)
@@ -30,13 +26,6 @@ MEMbbwwIntegrandBase::MEMbbwwIntegrandBase(double sqrtS, const std::string& pdfN
   bjet1TF_ = new BJetTF(verbosity_);
   bjet2TF_ = new BJetTF(verbosity_);
   hadRecoilTF_ = new HadRecoilTF(verbosity_);
-
-  // initialize PDF set
-  if ( !pdfIsInitialized_ ) {
-    pdf_ = LHAPDF::mkPDF(pdfName.data(), 0);
-    pdfName_ = pdfName;
-    pdfIsInitialized_ = true;
-  }
 
   madgraphGluon1P4_ = new double[4];
   madgraphGluon1P4_[1] = 0.;
@@ -63,8 +52,6 @@ MEMbbwwIntegrandBase::~MEMbbwwIntegrandBase()
   delete bjet2TF_;
   delete hadRecoilTF_;
 
-  delete pdf_;
-
   delete [] madgraphGluon1P4_;
   delete [] madgraphGluon2P4_;
   delete [] madgraphChargedLeptonPlusP4_;
@@ -75,6 +62,12 @@ MEMbbwwIntegrandBase::~MEMbbwwIntegrandBase()
   delete [] madgraphBJet2P4_;
 }
 
+void
+MEMbbwwIntegrandBase::setPDF(LHAPDF::PDF * pdf)
+{
+  pdf_ = pdf;
+}
+
 void 
 MEMbbwwIntegrandBase::setInputs(const MeasuredParticle& measuredChargedLeptonPlus, const MeasuredParticle& measuredChargedLeptonMinus,
 				const MeasuredParticle& measuredBJet1, const MeasuredParticle& measuredBJet2,
@@ -83,29 +76,18 @@ MEMbbwwIntegrandBase::setInputs(const MeasuredParticle& measuredChargedLeptonPlu
   if ( verbosity_ ) {
     std::cout << "<MEMbbwwIntegrandBase::setInputs>:" << std::endl;
   }
-std::cout << "break-point 1 reached" << std::endl;
   // reset 'MatrixInversion' error code
   errorCode_ &= (errorCode_ ^ MatrixInversion);
-std::cout << "break-point 1.1 reached" << std::endl;
   measuredChargedLeptonPlus_ = measuredChargedLeptonPlus;
-std::cout << "break-point 1.2 reached" << std::endl;
   measuredChargedLeptonMinus_ = measuredChargedLeptonMinus;
-std::cout << "break-point 1.3 reached" << std::endl;
   measuredBJet1_ = measuredBJet1;
-std::cout << "break-point 1.4 reached" << std::endl;
   measuredBJet2_ = measuredBJet2;
-std::cout << "break-point 2 reached" << std::endl;
   measuredMEtPx_ = measuredMEtPx;
   measuredMEtPy_ = measuredMEtPy;
   measuredMEtCov_.ResizeTo(2,2);
   measuredMEtCov_ = measuredMEtCov;
-std::cout << "break-point 3 reached" << std::endl;
   measuredHadRecoilPx_ = -(measuredChargedLeptonPlus_.px() + measuredChargedLeptonMinus_.px() + measuredBJet1_.px() + measuredBJet2_.px() + measuredMEtPx_);
   measuredHadRecoilPy_ = -(measuredChargedLeptonPlus_.py() + measuredChargedLeptonMinus_.py() + measuredBJet1_.py() + measuredBJet2_.py() + measuredMEtPy_);
-std::cout << "break-point 4 reached" << std::endl;
-std::cout << "bjet1TF = " << bjet1TF_ << std::endl;
-std::cout << "bjet2TF = " << bjet2TF_ << std::endl;
-std::cout << "hadRecoilTF = " << hadRecoilTF_ << std::endl;
   // set measured momenta of b-jets and of missing transverse momentum
   // in transfer function (TF) objects
   bjet1TF_->setInputs(measuredBJet1_.p4());
@@ -114,7 +96,6 @@ std::cout << "hadRecoilTF = " << hadRecoilTF_ << std::endl;
   if ( hadRecoilTF_->getErrorCode() ) {
     errorCode_ |= MatrixInversion;
   }
-std::cout << "break-point 5 reached" << std::endl;
 }
 
 void 

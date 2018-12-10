@@ -12,7 +12,6 @@ double roundToNdigits(double x, int n)
     tmp /= TMath::Power(10., TMath::Floor(TMath::Log10(TMath::Abs(x))));
   }
   double x_rounded = TMath::Nint(x*tmp)/tmp;
-  //std::cout << "<roundToNdigits>: x = " << x << ", x_rounded = " << x_rounded << std::endl;
   return x_rounded;
 }
  
@@ -58,11 +57,9 @@ double compCosAngle(const LorentzVector& particle1P4, double particle2Theta, dou
 
 std::vector<double> compBJet2En_Hbb(const LorentzVector& trueBJet1P4, const LorentzVector& measuredBJet2P4)
 {
-  std::cout << "<compBJet2En_Hbb>:" << std::endl;
   double delta_mH = 0.5*higgsBosonMass2 - bottomQuarkMass2;
   double a = trueBJet1P4.energy();
   double b = trueBJet1P4.P()*compCosAngle(trueBJet1P4, measuredBJet2P4);
-  std::cout << "cosAngle(trueBJet1P4, measuredBJet2P4) = " << compCosAngle(trueBJet1P4, measuredBJet2P4) << ": b = " << b << std::endl;
   double a2_minus_b2 = a*a - b*b;
   if ( a2_minus_b2 > 1.e-3 ) {
     double term1 = a*delta_mH;
@@ -72,10 +69,6 @@ std::vector<double> compBJet2En_Hbb(const LorentzVector& trueBJet1P4, const Lore
     double term3 = b*sqrt_term2; // CV: taking the absolute value is not necessary, as we consider solutions with both signs anyway
     double trueBJet2En_solution1 = (term1 + term3)/a2_minus_b2;
     double trueBJet2En_solution2 = (term1 - term3)/a2_minus_b2;
-    std::cout << "trueBJet2En: solution1 = " << trueBJet2En_solution1 << ", solution2 = " << trueBJet2En_solution2 << std::endl;
-    //double trueBJet2En = TMath::Max(trueBJet2En_solution1, trueBJet2En_solution2);
-    //double trueBJet2En = TMath::Min(trueBJet2En_solution1, trueBJet2En_solution2);
-    //return trueBJet2En;
     std::vector<double> trueBJet2En;
     trueBJet2En.push_back(trueBJet2En_solution1);
     trueBJet2En.push_back(trueBJet2En_solution2);

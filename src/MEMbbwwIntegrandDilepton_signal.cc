@@ -7,8 +7,8 @@
 
 using namespace mem;
 
-MEMbbwwIntegrandDilepton_signal::MEMbbwwIntegrandDilepton_signal(double sqrtS, const std::string& pdfName, const std::string& madgraphFileName, int verbosity)
-  : MEMbbwwIntegrandBase(sqrtS, pdfName, madgraphFileName, verbosity)
+MEMbbwwIntegrandDilepton_signal::MEMbbwwIntegrandDilepton_signal(double sqrtS, const std::string& madgraphFileName, int verbosity)
+  : MEMbbwwIntegrandBase(sqrtS, madgraphFileName, verbosity)
   , chargedLeptonPermutation_(kPermutationUndefined)
 {
   if ( verbosity_ ) {
@@ -129,12 +129,12 @@ double MEMbbwwIntegrandDilepton_signal::Eval(const double* x) const
   assert(chargedLeptonPermutation_ == kOnshellChargedLeptonPlus || chargedLeptonPermutation_ == kOnshellChargedLeptonMinus);
 
   double trueBJet1En = x[0];
-  std::cout << "trueBJet1: En = " << trueBJet1En << std::endl;
+  if(verbosity_ >= 2)
+  {
+    std::cout << "trueBJet1: En = " << trueBJet1En << std::endl;
+  }
   LorentzVector trueBJet1P4 = buildLorentzVector(trueBJet1En, measuredBJet1_.theta(), measuredBJet1_.phi(), measuredBJet1_.mass());
 
-  //double trueBJet2En = compBJet2En_Hbb(trueBJet1P4, measuredBJet2_.p4());
-  //if ( !(trueBJet2En > 0.) ) return 0.;
-  //LorentzVector trueBJet2P4 = buildLorentzVector(trueBJet2En, measuredBJet2_.theta(), measuredBJet2_.phi(), measuredBJet2_.mass());
   std::vector<double> trueBJet2En_solutions = compBJet2En_Hbb(trueBJet1P4, measuredBJet2_.p4());
   LorentzVector trueBJet2P4;
   bool trueBJet2En_foundSolution = false;
@@ -158,11 +158,17 @@ double MEMbbwwIntegrandDilepton_signal::Eval(const double* x) const
 
   double trueNuTheta = x[1];
   double trueNuPhi = x[2];
-  std::cout << "trueNu: theta = " << trueNuTheta << ", phi = " << trueNuPhi << std::endl;
+  if(verbosity_ >= 2)
+  {
+    std::cout << "trueNu: theta = " << trueNuTheta << ", phi = " << trueNuPhi << std::endl;
+  }
   LorentzVector trueNuP4;
   double trueAntiNuTheta = x[3];
   double trueAntiNuPhi = x[4];
-  std::cout << "trueAntiNu: theta = " << trueAntiNuTheta << ", phi = " << trueAntiNuPhi << std::endl;
+  if(verbosity_ >= 2)
+  {
+    std::cout << "trueAntiNu: theta = " << trueAntiNuTheta << ", phi = " << trueAntiNuPhi << std::endl;
+  }
   LorentzVector trueAntiNuP4;
   if ( chargedLeptonPermutation_ == kOnshellChargedLeptonPlus ) { 
     // lepton of positive charge (and hence neutrino) originates from on-shell W boson,
@@ -170,14 +176,23 @@ double MEMbbwwIntegrandDilepton_signal::Eval(const double* x) const
     //
     // Note: the energy (and four-vector) of the neutrino originating from the on-shell W boson has to be computed first!
     double trueNuEn = compNuEn_Wlnu(trueChargedLeptonPlusP4, trueNuTheta, trueNuPhi);
-    std::cout << "trueNuEn = " << trueNuEn << std::endl;
+    if(verbosity_ >= 2)
+    {
+      std::cout << "trueNuEn = " << trueNuEn << std::endl;
+    }
     if ( !(trueNuEn > 0.) ) return 0.;
     trueNuP4 = buildLorentzVector(trueNuEn, trueNuTheta, trueNuPhi);
     LorentzVector trueChargedLeptonPlus_Nu_ChargedLeptonMinusP4 = trueChargedLeptonPlusP4 + trueNuP4 + trueChargedLeptonMinusP4;
-    std::cout << "trueChargedLeptonPlus_Nu_ChargedLeptonMinusP4.mass = " << trueChargedLeptonPlus_Nu_ChargedLeptonMinusP4.mass() << std::endl;
+    if(verbosity_ >= 2)
+    {
+      std::cout << "trueChargedLeptonPlus_Nu_ChargedLeptonMinusP4.mass = " << trueChargedLeptonPlus_Nu_ChargedLeptonMinusP4.mass() << std::endl;
+    }
     if ( trueChargedLeptonPlus_Nu_ChargedLeptonMinusP4.mass() >= higgsBosonMass ) return 0.;
     double trueAntiNuEn = compNuStarEn_Hww(trueChargedLeptonPlus_Nu_ChargedLeptonMinusP4, trueAntiNuTheta, trueAntiNuPhi);
-    std::cout << "trueAntiNuEn = " << trueAntiNuEn << std::endl;
+    if(verbosity_ >= 2)
+    {
+      std::cout << "trueAntiNuEn = " << trueAntiNuEn << std::endl;
+    }
     if ( !(trueAntiNuEn > 0.) ) return 0.;
     trueAntiNuP4 = buildLorentzVector(trueAntiNuEn, trueAntiNuTheta, trueAntiNuPhi);
   } else {
@@ -186,31 +201,42 @@ double MEMbbwwIntegrandDilepton_signal::Eval(const double* x) const
     //
     // Note: the energy (and four-vector) of the anti-neutrino originating from the on-shell W boson has to be computed first!
     double trueAntiNuEn = compNuEn_Wlnu(trueChargedLeptonMinusP4, trueAntiNuTheta, trueAntiNuPhi);
-    std::cout << "trueAntiNuEn = " << trueAntiNuEn << std::endl;
+    if(verbosity_ >= 2)
+    {
+      std::cout << "trueAntiNuEn = " << trueAntiNuEn << std::endl;
+    }
     if ( !(trueAntiNuEn > 0.) ) return 0.;
     trueAntiNuP4 = buildLorentzVector(trueAntiNuEn, trueAntiNuTheta, trueAntiNuPhi);
     LorentzVector trueChargedLeptonMinus_AntiNu_ChargedLeptonPlusP4 = trueChargedLeptonMinusP4 + trueAntiNuP4 + trueChargedLeptonPlusP4;
-    std::cout << "trueChargedLeptonMinus_AntiNu_ChargedLeptonPlusP4.mass = " << trueChargedLeptonMinus_AntiNu_ChargedLeptonPlusP4.mass() << std::endl;
+    if(verbosity_ >= 2)
+    {
+      std::cout << "trueChargedLeptonMinus_AntiNu_ChargedLeptonPlusP4.mass = " << trueChargedLeptonMinus_AntiNu_ChargedLeptonPlusP4.mass() << std::endl;
+    }
     if ( trueChargedLeptonMinus_AntiNu_ChargedLeptonPlusP4.mass() >= higgsBosonMass ) return 0.;
     double trueNuEn = compNuStarEn_Hww(trueChargedLeptonMinus_AntiNu_ChargedLeptonPlusP4, trueNuTheta, trueNuPhi);
-    std::cout << "trueNuEn = " << trueNuEn << std::endl;
+    if(verbosity_ >= 2)
+    {
+      std::cout << "trueNuEn = " << trueNuEn << std::endl;
+    }
     if ( !(trueNuEn > 0.) ) return 0.;
     trueNuP4 = buildLorentzVector(trueNuEn, trueNuTheta, trueNuPhi);
   }
 
   LorentzVector trueSumP4 = trueBJet1P4 + trueBJet2P4 + trueChargedLeptonPlusP4 + trueNuP4 + trueChargedLeptonMinusP4 + trueAntiNuP4;
 
-  std::cout << "m(b bbar) = " << (trueBJet1P4 + trueBJet2P4).mass() << std::endl;
-  std::cout << "m(lep+ nu) = " << (trueChargedLeptonPlusP4 + trueNuP4).mass() << std::endl;
-  std::cout << "m(lep- nu) = " << (trueChargedLeptonMinusP4 + trueAntiNuP4).mass() << std::endl;
-  std::cout << "m(lep+ nu lep- nu) = " << (trueChargedLeptonPlusP4 + trueNuP4 + trueChargedLeptonMinusP4 + trueAntiNuP4).mass() << std::endl;
+  if(verbosity_ >= 2)
+  {
+    std::cout << "m(b bbar) = " << (trueBJet1P4 + trueBJet2P4).mass() << std::endl;
+    std::cout << "m(lep+ nu) = " << (trueChargedLeptonPlusP4 + trueNuP4).mass() << std::endl;
+    std::cout << "m(lep- nu) = " << (trueChargedLeptonMinusP4 + trueAntiNuP4).mass() << std::endl;
+    std::cout << "m(lep+ nu lep- nu) = " << (trueChargedLeptonPlusP4 + trueNuP4 + trueChargedLeptonMinusP4 + trueAntiNuP4).mass() << std::endl;
+  }
 
   // perform boost into zero-transverse-momentum (ZTM) frame 
   double ztmFramePx = trueSumP4.px();
   double ztmFramePy = trueSumP4.py();
   double ztmFrameEn = trueSumP4.energy();
   Vector boost(-ztmFramePx/ztmFrameEn, -ztmFramePy/ztmFrameEn, 0.);
-  //std::cout << "boost: Px = " << boost.x() << ", Py = " << boost.y() << ", Pz = " << boost.z() << std::endl;
   LorentzVector trueBJet1P4_ztm = ROOT::Math::VectorUtil::boost(trueBJet1P4, boost); 
   LorentzVector trueBJet2P4_ztm = ROOT::Math::VectorUtil::boost(trueBJet2P4, boost); 
   LorentzVector trueChargedLeptonPlusP4_ztm = ROOT::Math::VectorUtil::boost(trueChargedLeptonPlusP4, boost);
@@ -243,11 +269,10 @@ double MEMbbwwIntegrandDilepton_signal::Eval(const double* x) const
   double trueSumEn = trueSumP4.E();
   double xa = (trueSumEn + trueSumPz)/sqrtS_;
   double xb = (trueSumEn - trueSumPz)/sqrtS_;
-  //std::cout << "xa = " << xa << ", xb = " << xb << std::endl;
   if ( xa <= 0. || xa >= 1. ) return 0.;
   if ( xb <= 0. || xb >= 1. ) return 0.;
   double Q = 0.5*trueSumP4.mass();
-  assert(pdfIsInitialized_);
+  assert(pdf_);
   double fa = pdf_->xfxQ(21, xa, Q)/xa; // gluon distribution
   double fb = pdf_->xfxQ(21, xb, Q)/xb;
   double prob_PDF = (fa*fb);
@@ -287,14 +312,20 @@ double MEMbbwwIntegrandDilepton_signal::Eval(const double* x) const
   madgraphBJet2P4_[1] = trueBJet2P4_ztm.px();
   madgraphBJet2P4_[2] = trueBJet2P4_ztm.py();
   madgraphBJet2P4_[3] = trueBJet2P4_ztm.pz();
-  printMadGraphMomenta();
+  if(verbosity_ >= 2)
+  {
+    printMadGraphMomenta();
+  }
   double prob_ME = -1.;
   if ( madgraphIsInitialized_ ) {
     me_madgraph_.setHiggsWidth(2.); // CV: enlarge Higgs boson width to make ME evaluation robust against rounding errors
     me_madgraph_.setMomenta(madgraphMomenta_);
     me_madgraph_.sigmaKin();
     prob_ME = me_madgraph_.getMatrixElements()[0];
-    std::cout << "prob_ME = " << prob_ME << std::endl;
+    if(verbosity_ >= 2)
+    {
+      std::cout << "prob_ME = " << prob_ME << std::endl;
+    }
     if ( TMath::IsNaN(prob_ME) ) {
       std::cerr << "Warning: MadGraph returned NaN --> skipping event !!" << std::endl;
       printLorentzVector("b-jet1", trueBJet1P4_ztm);
@@ -314,9 +345,13 @@ double MEMbbwwIntegrandDilepton_signal::Eval(const double* x) const
 
   double trueHadRecoilPx = -(trueBJet1P4.px() + trueBJet2P4.px() + trueChargedLeptonPlusP4.px() + trueNuP4.px() + trueChargedLeptonMinusP4.px() + trueAntiNuP4.px());
   double trueHadRecoilPy = -(trueBJet1P4.py() + trueBJet2P4.py() + trueChargedLeptonPlusP4.py() + trueNuP4.py() + trueChargedLeptonMinusP4.py() + trueAntiNuP4.py());
-  std::cout << "hadRecoil:" << std::endl;
-  std::cout << " true Px = " << trueHadRecoilPx << ", Py = " << trueHadRecoilPy << std::endl;
-  std::cout << " rec. Px = " << measuredHadRecoilPx_ << ", Py = " << measuredHadRecoilPy_ << std::endl;
+  if(verbosity_ >= 2)
+  {
+    std::cout << "hadRecoil:" << std::endl;
+    std::cout << " true Px = " << trueHadRecoilPx << ", Py = " << trueHadRecoilPy << std::endl;
+    std::cout << " rec. Px = " << measuredHadRecoilPx_ << ", Py = " << measuredHadRecoilPy_ << std::endl;
+  }
+
   double prob_TF = bjet1TF_->Eval(trueBJet1P4.energy())*bjet2TF_->Eval(trueBJet2P4.energy())*hadRecoilTF_->Eval(trueHadRecoilPx, trueHadRecoilPy);
   if ( verbosity_ >= 2 ) {
     std::cout << "prob_TF = " << prob_TF << std::endl;
