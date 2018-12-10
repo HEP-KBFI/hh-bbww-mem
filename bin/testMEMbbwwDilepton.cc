@@ -33,23 +33,42 @@ main(int argc __attribute__((unused)),
   using namespace mem;
 
   // define measured momenta of b-jets and charged leptons
+  // event taken from /store/mc/RunIIFall17MiniAODv2/GluGluToHHTo2B2VTo2L2Nu_node_SM_13TeV-madgraph_correctedcfg/MINIAODSIM
+  //                  /PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/10000/EC1B2B42-F5AF-E811-84F1-ECB1D79E5C40.root
+  // 1:13:12012
+  //
+  // at generator level:
+  // pt =   7.891 eta = -2.125 phi = -0.064 mass = 0.000 pdgId = +13 status = 1
+  // pt = 191.000 eta = -0.941 phi = -0.857 mass = 0.000 pdgId = -14 status = 1
+  // pt = 192.500 eta = -0.750 phi = -0.855 mass = 0.000 pdgId = -11 status = 1
+  // pt = 157.500 eta = -0.654 phi = -0.869 mass = 0.000 pdgId = +12 status = 1
+  // pt = 294.000 eta = +0.011 phi = +2.617 mass = 0.000 pdgId = -5 status = 23
+  // pt =  93.500 eta = +0.016 phi = -2.898 mass = 0.000 pdgId = +5 status = 23
+  //
+  // gen jets:
+  // pt = 205.977 eta = -0.011 phi = +2.634 mass = 23.656 partonFlavour = -5
+  // pt = 87.232 eta = +0.049 phi = -2.891 mass = 6.625 partonFlavour = +5
+  //
+  // at reco level:
   const std::vector<MeasuredParticle> measuredParticles_signal = {
-    { MeasuredParticle::kElectron, 25.00, -1.00, +1.00, electronMass,   +1 }, // positron
-    { MeasuredParticle::kMuon,     15.00, +2.00, -1.00, muonMass,       -1 }, // muon
-    { MeasuredParticle::kBJet,     35.00,  0.00, +2.00, bottomQuarkMass    }, // first b-jet
-    { MeasuredParticle::kBJet,     25.00, +1.00, -2.00, bottomQuarkMass    }, // second b-jet
+    { MeasuredParticle::kElectron, 190.399, -0.750, -0.855, -0.047, +1 },
+    { MeasuredParticle::kMuon,       7.945, -2.128, -0.064,  0.106, -1 },
+    { MeasuredParticle::kBJet,     185.875, -0.006, +2.630, 21.625     },
+    { MeasuredParticle::kBJet,      94.812, +0.037, -2.917, 11.852     },
   };
 
   // define measured missing transverse momentum (MET)
-  const double measuredMEtPx_signal = +18.24;
-  const double measuredMEtPy_signal = -23.07;
+  const double measuredMEtPt_signal = 214.285;
+  const double measuredMEtPhi_signal = -0.806;
+  const double measuredMEtPx_signal = measuredMEtPt_signal * std::cos(measuredMEtPhi_signal);
+  const double measuredMEtPy_signal = measuredMEtPt_signal * std::sin(measuredMEtPhi_signal);
 
   // define MET uncertainty matrix
   TMatrixD measuredMEtCov_signal(2,2);
-  measuredMEtCov_signal[0][0] = 100.00;
-  measuredMEtCov_signal[1][0] =   0.00;
-  measuredMEtCov_signal[0][1] =   0.00;
-  measuredMEtCov_signal[1][1] = 100.00;
+  measuredMEtCov_signal[0][0] = 1364.000;
+  measuredMEtCov_signal[1][0] =  -43.125;
+  measuredMEtCov_signal[0][1] =  -43.125;
+  measuredMEtCov_signal[1][1] = 1006.000;
 
   /* This is a single ttbar->bW bW->blnu blnu background event for testing purposes */
 
@@ -70,6 +89,10 @@ main(int argc __attribute__((unused)),
   // pt = 32.875 eta = -3.398 phi = -0.803 mass = 171.500 pdgId = +6 status = 62
   // pt = 109.500 eta = +1.262 phi = +2.094 mass = 177.500 pdgId = -6 status = 62
   //
+  // gen jets:
+  // pt = 121.405 eta = +0.809 phi = +1.705 mass = 7.441 partonFlavour = -5
+  // pt = 67.967 eta = -1.407 phi = +0.277 mass = 6.715 partonFlavour = +5
+  //
   // at parton level:
   // pt = 54.490 eta = +0.621 phi = -1.811 mass = 0.106 E = 65.329 pdgId = +13
   // pt = 33.320 eta = +0.963 phi = +2.455 mass = 0.001 E = 49.990 pdgId = -14
@@ -80,8 +103,8 @@ main(int argc __attribute__((unused)),
   //
   // at reco level:
   const std::vector<MeasuredParticle> measuredParticles_background = {
-    { MeasuredParticle::kMuon,  51.867, +0.621, -1.825, 0.106, +1 },
-    { MeasuredParticle::kMuon,  33.838, -1.327, +2.852, 0.106, -1 },
+    { MeasuredParticle::kMuon,  51.867, +0.621, -1.825, 0.106, -1 },
+    { MeasuredParticle::kMuon,  33.838, -1.327, +2.852, 0.106, +1 },
     { MeasuredParticle::kBJet, 140.125, +0.800, +1.708, 9.930     },
     { MeasuredParticle::kBJet,  52.969, -1.397, +0.261, 8.555     },
   };
@@ -107,7 +130,7 @@ main(int argc __attribute__((unused)),
   const std::string madgraphFileName_signal     = "hhAnalysis/bbwwMEM/data/param_hh.dat";
   const std::string madgraphFileName_background = "hhAnalysis/bbwwMEM/data/param_ttbar.dat";
 
-  const int verbosity = 2;
+  const int verbosity = 0;
   MEMbbwwAlgoDilepton memAlgo(
     sqrtS, pdfName, findFile(madgraphFileName_signal), findFile(madgraphFileName_background), verbosity
   );
