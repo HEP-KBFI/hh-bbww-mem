@@ -72,12 +72,9 @@ std::vector<double> compBJet2En_Hbb(const LorentzVector& trueBJet1P4, const Lore
     std::vector<double> trueBJet2En;
     trueBJet2En.push_back(trueBJet2En_solution1);
     trueBJet2En.push_back(trueBJet2En_solution2);
-    //return std::pair<double, double>std::vector<double>(trueBJet2En_solution1, trueBJet2En_solution2);
     return trueBJet2En;
   } else {
-    //return 0.;
-    std::vector<double> trueBJet2En;
-    return trueBJet2En;
+    return std::vector<double>();
   }
 }
 
@@ -108,7 +105,7 @@ double compNuStarEn_Hww(const LorentzVector& trueEllNuEllStarP4, double trueNuSt
   }
 }
 
-double compBJetEn_top(const LorentzVector& trueEllNuP4, const LorentzVector& measuredBJetP4)
+std::vector<double> compBJetEn_top(const LorentzVector& trueEllNuP4, const LorentzVector& measuredBJetP4)
 {
   double delta_mt = 0.5*(topQuarkMass2 - (wBosonMass2 + bottomQuarkMass2));
   double a = trueEllNuP4.energy();  
@@ -122,11 +119,12 @@ double compBJetEn_top(const LorentzVector& trueEllNuP4, const LorentzVector& mea
     double term3 = b*sqrt_term2; // CV: taking the absolute value is not necessary, as we consider solutions with both signs anyway
     double trueBJetEn_solution1 = (term1 + term3)/a2_minus_b2;
     double trueBJetEn_solution2 = (term1 - term3)/a2_minus_b2;
-    double trueBJetEn = TMath::Max(trueBJetEn_solution1, trueBJetEn_solution2);
-    // CV: NEED TO RETURN STD::VECTOR WITH BOTH SOLUTIONS AND PICK SOLUTION THAT IS CLOSER TO TARGET MASS VALUE
+    std::vector<double> trueBJetEn;
+    trueBJetEn.push_back(trueBJetEn_solution1);
+    trueBJetEn.push_back(trueBJetEn_solution2);
     return trueBJetEn;
   } else {
-    return 0.;
+    return std::vector<double>();
   }
 }
 

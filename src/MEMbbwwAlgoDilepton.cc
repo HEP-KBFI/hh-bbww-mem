@@ -175,7 +175,9 @@ MEMbbwwAlgoDilepton::integrate(const std::vector<MeasuredParticle>& measuredPart
   initializeIntAlgo();
   result_.prob_signal_ = 0.;
   result_.probErr_signal_ = 0.;
-  for ( unsigned idxPermutation = 0; idxPermutation < 4; ++idxPermutation ) {
+  //for ( unsigned idxPermutation = 0; idxPermutation < 4; ++idxPermutation ) {
+  for ( unsigned idxPermutation = 3; idxPermutation < 4; ++idxPermutation ) {
+    std::cout << "idxPermutation = " << idxPermutation << std::endl;
     const MeasuredParticle* measuredBJet1 = nullptr;
     const MeasuredParticle* measuredBJet2 = nullptr;
     if ( idxPermutation == 0 || idxPermutation == 2 ) {
@@ -185,10 +187,6 @@ MEMbbwwAlgoDilepton::integrate(const std::vector<MeasuredParticle>& measuredPart
       measuredBJet1 = measuredSubleadingBJet_;
       measuredBJet2 = measuredLeadingBJet_;
     }
-    std::cout << "measuredChargedLeptonPlus = " << measuredChargedLeptonPlus_ << std::endl;
-    std::cout << "measuredChargedLeptonMinus = " << measuredChargedLeptonMinus_ << std::endl;
-    std::cout << "measuredBJet1 = " << measuredBJet1 << std::endl;
-    std::cout << "measuredBJet2 = " << measuredBJet2 << std::endl;
     integrand_signal_->setInputs(
       *measuredChargedLeptonPlus_, *measuredChargedLeptonMinus_, *measuredBJet1, *measuredBJet2, 
       measuredMEtPx_, measuredMEtPy_, measuredMEtCov_);
@@ -201,9 +199,9 @@ MEMbbwwAlgoDilepton::integrate(const std::vector<MeasuredParticle>& measuredPart
   result_.prob_signal_ /= 4.;
   result_.probErr_signal_ /= 4.;
   delete integrand_signal_;
-  //integrand_signal_ = nullptr;
+  integrand_signal_ = nullptr;
   delete intAlgo_;
-  //intAlgo_ = nullptr;
+  intAlgo_ = nullptr;
  
   MEMbbwwAlgoDilepton::gMEMIntegrand = integrand_background_;
   initializeIntAlgo();
@@ -227,9 +225,9 @@ MEMbbwwAlgoDilepton::integrate(const std::vector<MeasuredParticle>& measuredPart
   result_.prob_background_ /= 2.;
   result_.probErr_background_ /= 2.;
   delete integrand_background_;
-  //integrand_background_ = nullptr;
+  integrand_background_ = nullptr;
   delete intAlgo_;
-  //intAlgo_ = nullptr;
+  intAlgo_ = nullptr;
 
   clock_->Stop("<MEMbbwwAlgoDilepton::integrate>");
   if ( verbosity_ >= 1 ) {

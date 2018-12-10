@@ -118,27 +118,57 @@ double MEMbbwwIntegrandDilepton_background::Eval(const double* x) const
 
   const LorentzVector& trueChargedLeptonPlusP4 = measuredChargedLeptonPlus_.p4();
 
-  double trueNuTheta = x[1];
-  double trueNuPhi = x[2];
+  double trueNuTheta = x[0];
+  double trueNuPhi = x[1];
   double trueNuEn = compNuEn_Wlnu(trueChargedLeptonPlusP4, trueNuTheta, trueNuPhi);
   if ( !(trueNuEn > 0.) ) return 0.;
   LorentzVector trueNuP4 = buildLorentzVector(trueNuEn, trueNuTheta, trueNuPhi);
 
-  double trueBJet1En = compBJetEn_top(trueChargedLeptonPlusP4 + trueNuP4, measuredBJet1_.p4());
-  LorentzVector trueBJet1P4 = buildLorentzVector(trueBJet1En, measuredBJet1_.theta(), measuredBJet1_.phi(), measuredBJet1_.mass());
+  std::vector<double> trueBJet1En_solutions = compBJetEn_top(trueChargedLeptonPlusP4 + trueNuP4, measuredBJet1_.p4());
+  LorentzVector trueBJet1P4;
+  bool trueBJet1En_foundSolution = false;
+  double min_trueBJet1_deltaMass = 1.e+3;
+  for ( std::vector<double>::const_iterator trueBJet1En_solution = trueBJet1En_solutions.begin();
+	trueBJet1En_solution != trueBJet1En_solutions.end(); ++trueBJet1En_solution ) {
+    if ( (*trueBJet1En_solution) > 0. ) {
+      LorentzVector trueBJet1P4_solution = buildLorentzVector(*trueBJet1En_solution, measuredBJet1_.theta(), measuredBJet1_.phi(), measuredBJet1_.mass());
+      double trueBJet1_deltaMass = TMath::Abs((trueBJet1P4_solution + trueChargedLeptonPlusP4 + trueNuP4).mass() - topQuarkMass);
+      if ( trueBJet1_deltaMass < min_trueBJet1_deltaMass ) {
+	trueBJet1P4 = trueBJet1P4_solution;
+	trueBJet1En_foundSolution = true;
+	min_trueBJet1_deltaMass = trueBJet1_deltaMass;
+      }
+    }
+  }
+  if ( !trueBJet1En_foundSolution ) return 0.;
 
   const LorentzVector& trueChargedLeptonMinusP4 = measuredChargedLeptonMinus_.p4();
 
-  double trueAntiNuTheta = x[1];
-  double trueAntiNuPhi = x[2];
+  double trueAntiNuTheta = x[2];
+  double trueAntiNuPhi = x[3];
   double trueAntiNuEn = compNuEn_Wlnu(trueChargedLeptonMinusP4, trueAntiNuTheta, trueAntiNuPhi);
   if ( !(trueAntiNuEn > 0.) ) return 0.;
   LorentzVector trueAntiNuP4 = buildLorentzVector(trueAntiNuEn, trueAntiNuTheta, trueAntiNuPhi);
 
-  double trueBJet2En = compBJetEn_top(trueChargedLeptonMinusP4 + trueAntiNuP4, measuredBJet2_.p4());
-  LorentzVector trueBJet2P4 = buildLorentzVector(trueBJet2En, measuredBJet2_.theta(), measuredBJet2_.phi(), measuredBJet2_.mass());
+  std::vector<double> trueBJet2En_solutions = compBJetEn_top(trueChargedLeptonMinusP4 + trueAntiNuP4, measuredBJet2_.p4());
+  LorentzVector trueBJet2P4;
+  bool trueBJet2En_foundSolution = false;
+  double min_trueBJet2_deltaMass = 1.e+3;
+  for ( std::vector<double>::const_iterator trueBJet2En_solution = trueBJet2En_solutions.begin();
+	trueBJet2En_solution != trueBJet2En_solutions.end(); ++trueBJet2En_solution ) {
+    if ( (*trueBJet2En_solution) > 0. ) {
+      LorentzVector trueBJet2P4_solution = buildLorentzVector(*trueBJet2En_solution, measuredBJet2_.theta(), measuredBJet2_.phi(), measuredBJet2_.mass());
+      double trueBJet2_deltaMass = TMath::Abs((trueBJet2P4_solution + trueChargedLeptonMinusP4 + trueAntiNuP4).mass() - topQuarkMass);
+      if ( trueBJet2_deltaMass < min_trueBJet2_deltaMass ) {
+	trueBJet2P4 = trueBJet2P4_solution;
+	trueBJet2En_foundSolution = true;
+	min_trueBJet2_deltaMass = trueBJet2_deltaMass;
+      }
+    }
+  }
+  if ( !trueBJet2En_foundSolution ) return 0.;
 
-  LorentzVector trueSumP4 = trueBJet1P4 + trueBJet2P4 + trueChargedLeptonPlusP4 + trueNuP4 + trueChargedLeptonMinusP4 + trueAntiNuP4;
+  LorentzVector trueSumP4 = trueBJet1P4 + trueChargedLeptonPlusP4 + trueNuP4 + trueBJet2P4 + trueChargedLeptonMinusP4 + trueAntiNuP4;
 
   if(verbosity_ >= 2)
   {
@@ -167,7 +197,7 @@ double MEMbbwwIntegrandDilepton_background::Eval(const double* x) const
     printLorentzVector("lepton-", trueChargedLeptonMinusP4, measuredChargedLeptonMinus_.p4());
     printLorentzVector("anti-neutrino", trueAntiNuP4);
     printLorentzVector("b-jet2", trueBJet2P4, measuredBJet2_.p4());
-    LorentzVector trueSumP4 = trueBJet1P4 + trueBJet2P4 + trueChargedLeptonPlusP4 + trueNuP4 + trueChargedLeptonMinusP4 + trueAntiNuP4;
+    LorentzVector trueSumP4 = trueBJet1P4 + trueChargedLeptonPlusP4 + trueNuP4 + trueBJet2P4 + trueChargedLeptonMinusP4 + trueAntiNuP4;
     printLorentzVector("sum", trueSumP4);
     std::cout << "zero-transverse-momentum frame:" << std::endl;
     printLorentzVector("lepton+", trueChargedLeptonPlusP4_ztm);
@@ -176,7 +206,7 @@ double MEMbbwwIntegrandDilepton_background::Eval(const double* x) const
     printLorentzVector("lepton-", trueChargedLeptonMinusP4_ztm);
     printLorentzVector("anti-neutrino", trueAntiNuP4_ztm);
     printLorentzVector("b-jet2", trueBJet2P4_ztm);
-    LorentzVector trueSumP4_ztm = trueBJet1P4_ztm + trueBJet2P4_ztm + trueChargedLeptonPlusP4_ztm + trueNuP4_ztm + trueChargedLeptonMinusP4_ztm + trueAntiNuP4_ztm;
+    LorentzVector trueSumP4_ztm = trueBJet1P4_ztm + trueChargedLeptonPlusP4_ztm + trueNuP4_ztm + trueBJet2P4_ztm + trueChargedLeptonMinusP4_ztm + trueAntiNuP4_ztm;
     printLorentzVector("sum", trueSumP4_ztm);
   }
 
@@ -282,7 +312,7 @@ double MEMbbwwIntegrandDilepton_background::Eval(const double* x) const
   integrandValue *= prob_PDF;
   integrandValue *= prob_flux;
   integrandValue *= prob_ME;
-  integrandValue *= (trueBJet1P4_ztm.P()*trueBJet2P4_ztm.P()*prob_TF);
+  integrandValue *= (trueBJet1P4.P()*trueBJet2P4.P()*prob_TF);
   integrandValue *= jacobiFactor;
   if ( verbosity_ >= 2 ) {
     std::cout << "--> integrandValue = " << integrandValue << std::endl;

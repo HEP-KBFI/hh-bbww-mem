@@ -98,7 +98,7 @@ namespace mem
   std::vector<double> compBJet2En_Hbb(const LorentzVector&, const LorentzVector&);
   double compNuEn_Wlnu(const LorentzVector&, double, double);
   double compNuStarEn_Hww(const LorentzVector&, double, double);
-  double compBJetEn_top(const LorentzVector&, const LorentzVector&);
+  std::vector<double> compBJetEn_top(const LorentzVector&, const LorentzVector&);
 
   LorentzVector buildLorentzVector(double, double, double);
   LorentzVector buildLorentzVector(double, double, double, double);
