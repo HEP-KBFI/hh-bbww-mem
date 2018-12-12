@@ -20,6 +20,7 @@ MEMbbwwIntegrandBase::MEMbbwwIntegrandBase(double sqrtS, const std::string& madg
   , madgraphAntiNeutrinoP4_(nullptr)
   , madgraphBJet1P4_(nullptr)
   , madgraphBJet2P4_(nullptr)
+  , numMatrixElementEvaluations_(0)
   , errorCode_(0)
   , verbosity_(verbosity)
 {
@@ -43,7 +44,10 @@ MEMbbwwIntegrandBase::MEMbbwwIntegrandBase(double sqrtS, const std::string& madg
 
 MEMbbwwIntegrandBase::~MEMbbwwIntegrandBase()
 {
-  std::cout << "<MEMbbwwIntegrandBase::~MEMbbwwIntegrandBase>:" << std::endl;
+  if ( verbosity_ >= 1 ) 
+  {
+    std::cout << "<MEMbbwwIntegrandBase::~MEMbbwwIntegrandBase>:" << std::endl;
+  }
   
   delete [] intIntBounds_lower_;
   delete [] intIntBounds_upper_;

@@ -55,6 +55,9 @@ class MEMbbwwIntegrandBase
   /// (pure virtual function, overwritten by derived classes for signal and background)
   virtual double Eval(const double* x) const = 0;
 
+  /// get number of times the MadGraph matrix element was evaluated 
+  unsigned long getNumMatrixElementEvaluations() const { return numMatrixElementEvaluations_; }
+
   void setPDF(LHAPDF::PDF * pdf);
 
  protected:  
@@ -107,6 +110,7 @@ class MEMbbwwIntegrandBase
   double* madgraphBJet1P4_;
   double* madgraphBJet2P4_;
   mutable std::vector<double*> madgraphMomenta_;
+  unsigned long numMatrixElementEvaluations_;
 
   /// error code that can be passed on
   int errorCode_;

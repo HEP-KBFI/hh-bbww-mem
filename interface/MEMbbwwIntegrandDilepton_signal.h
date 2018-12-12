@@ -13,6 +13,10 @@ class MEMbbwwIntegrandDilepton_signal : public MEMbbwwIntegrandBase
   MEMbbwwIntegrandDilepton_signal(double, const std::string&, int);
   ~MEMbbwwIntegrandDilepton_signal();
 
+  /// fix (flag=true) mass of charged lepton plus neutrino originating from the decay of the "on-shell" W boson to mW,
+  /// or allow the mass to vary during the integration (flag=false)
+  void applyOnshellWmassConstraint(bool flag);
+
   /// set measured momenta of charged leptons and b-jets and of missing transverse momentum
   void setInputs(const mem::MeasuredParticle&, const mem::MeasuredParticle&, const mem::MeasuredParticle&, const mem::MeasuredParticle&, double, double, const TMatrixD&);
 
@@ -24,9 +28,17 @@ class MEMbbwwIntegrandDilepton_signal : public MEMbbwwIntegrandBase
   double Eval(const double* x) const;
 
  protected:  
+  /// initialize integration variables (grid)
+  void initializeIntVars();
+
   /// leading order (LO) matrix element obtained from MadGraph
   mutable mg5_BSM_gg_hh2bbWW_WW2lvlv me_madgraph_;
 
+  /// flag to either fix (applyOnshellWmassConstraint=true) mass of charged lepton plus neutrino originating from the decay of the "on-shell" W boson to mW,
+  /// or allow the mass to vary during the integration (applyOnshellWmassConstraint=false)
+  bool applyOnshellWmassConstraint_;
+
+  /// flag to switch between associations of lepton+ and lepton- to on-shell and off-shell W bosons
   int chargedLeptonPermutation_;
 };
 

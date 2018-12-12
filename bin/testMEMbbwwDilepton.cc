@@ -22,11 +22,23 @@ namespace
     }
     return inputFile.fullPath();
   }
+
+  void computeLikelihoodRatio(double prob_S, double probErr_S, double prob_B, double probErr_B, double& likelihoodRatio, double& likelihoodRatioErr)
+  {
+    double prob_SplusB = prob_S + prob_B;    
+    if ( prob_SplusB > 0. ) {
+      likelihoodRatio = prob_S/prob_SplusB;
+      double prob2_SplusB = mem::square(prob_SplusB);
+      likelihoodRatioErr = mem::square((prob_S/prob2_SplusB)*probErr_S) + mem::square((prob_B/prob2_SplusB)*probErr_B);
+    } else {
+      likelihoodRatio = 0.;
+      likelihoodRatioErr = 0.;
+    }
+  }
 }
 
 int
-main(int argc __attribute__((unused)),
-     char ** argv __attribute__((unused)))
+main(int argc __attribute__((unused)), char ** argv __attribute__((unused)))
 {
 
   /* This is a single HH->bbWW->bb lnulnu signal event for testing purposes */
@@ -51,14 +63,15 @@ main(int argc __attribute__((unused)),
     { MeasuredParticle::kBJet,      93.500, +0.016, -2.898, bottomQuarkMass     },
   };
 
-std::cout << "trueLep+: Pt = " << measuredParticles_signal[0].pt() << ", eta = " << measuredParticles_signal[0].eta() << ", phi = " << measuredParticles_signal[0].phi() << std::endl;
-MeasuredParticle trueNu(MeasuredParticle::kElectron, 157.500, -0.654, -0.869, 0.000);
-std::cout << "trueNuTheta = " << trueNu.theta() << std::endl;
-std::cout << "m(lep+ nu) = " << (measuredParticles_signal[0].p4() + trueNu.p4()).mass() << std::endl;
-std::cout << "trueLep-: Pt = " << measuredParticles_signal[2].pt() << ", eta = " << measuredParticles_signal[2].eta() << ", phi = " << measuredParticles_signal[2].phi() << std::endl;
-MeasuredParticle trueAntiNu(MeasuredParticle::kElectron, 191.000, -0.941, -0.857, 0.000);
-std::cout << "trueAntiNuTheta = " << trueAntiNu.theta() << std::endl;
-std::cout << "m(lep- nu) = " << (measuredParticles_signal[2].p4() + trueAntiNu.p4()).mass() << std::endl;
+//std::cout << "trueLep+: Pt = " << measuredParticles_signal[0].pt() << ", eta = " << measuredParticles_signal[0].eta() << ", phi = " << measuredParticles_signal[0].phi() << std::endl;
+//MeasuredParticle trueNu(MeasuredParticle::kElectron, 157.500, -0.654, -0.869, 0.000);
+//std::cout << "trueNu: En = " << trueNu.energy() << ", Theta = " << trueNu.theta() << std::endl;
+//std::cout << "m(lep+ nu) = " << (measuredParticles_signal[0].p4() + trueNu.p4()).mass() << std::endl;
+//std::cout << "trueLep-: Pt = " << measuredParticles_signal[1].pt() << ", eta = " << measuredParticles_signal[1].eta() << ", phi = " << measuredParticles_signal[1].phi() << std::endl;
+//MeasuredParticle trueAntiNu(MeasuredParticle::kElectron, 191.000, -0.941, -0.857, 0.000);
+//std::cout << "trueAntiNu: En = " << trueAntiNu.energy() << ", Theta = " << trueAntiNu.theta() << std::endl;
+//std::cout << "m(lep- nu) = " << (measuredParticles_signal[1].p4() + trueAntiNu.p4()).mass() << std::endl;
+//std::cout << "m(lep+ nu lep- nu) = " << (measuredParticles_signal[0].p4() + trueNu.p4() + measuredParticles_signal[1].p4() + trueAntiNu.p4()).mass() << std::endl;
   // gen jets:
   // pt = 205.977 eta = -0.011 phi = +2.634 mass = 23.656 partonFlavour = -5
   // pt =  87.232 eta = +0.049 phi = -2.891 mass =  6.625 partonFlavour = +5
@@ -73,7 +86,7 @@ std::cout << "m(lep- nu) = " << (measuredParticles_signal[2].p4() + trueAntiNu.p
 
   // define measured missing transverse momentum (MET)
   // at generator level:
-  std::cout << "trueNuPx = " << 157.500 * std::cos(-0.869) << ", trueAntiNuPx = " << 191.000 * std::cos(-0.857) << std::endl;
+//std::cout << "trueNuPx = " << 157.500 * std::cos(-0.869) << ", trueAntiNuPx = " << 191.000 * std::cos(-0.857) << std::endl;
   const double measuredMEtPx_signal = 157.500 * std::cos(-0.869) + 191.000 * std::cos(-0.857);
   const double measuredMEtPy_signal = 157.500 * std::sin(-0.869) + 191.000 * std::sin(-0.857);
   // at reco level:
@@ -88,7 +101,7 @@ std::cout << "m(lep- nu) = " << (measuredParticles_signal[2].p4() + trueAntiNu.p
   measuredMEtCov_signal[1][0] =  -43.125;
   measuredMEtCov_signal[0][1] =  -43.125;
   measuredMEtCov_signal[1][1] = 1006.000;
-
+ 
   /* This is a single ttbar->bW bW->blnu blnu background event for testing purposes */
 
   // define measured momenta of b-jets and charged leptons
@@ -158,38 +171,65 @@ std::cout << "m(lep- nu) = " << (measuredParticles_signal[2].p4() + trueAntiNu.p
   const std::string madgraphFileName_signal     = "hhAnalysis/bbwwMEM/data/param_hh.dat";
   const std::string madgraphFileName_background = "hhAnalysis/bbwwMEM/data/param_ttbar.dat";
 
-  const int verbosity = 2;
-  MEMbbwwAlgoDilepton memAlgo(
-    sqrtS, pdfName, findFile(madgraphFileName_signal), findFile(madgraphFileName_background), verbosity
-  );
+  /// fix (flag=true) mass of charged lepton plus neutrino originating from the decay of the "on-shell" W boson to mW,
+  /// or allow the mass to vary during the integration (flag=false)
+  ///
+  /// Note: flag has an effect on the likelihood of the HH->bbWW signal hypothesis only (not on the likelihood of the ttbar background hypothesis)
+  //const bool applyOnshellWmassConstraint_signal = true;
+  const bool applyOnshellWmassConstraint_signal = false;
+
+const int verbosity = 2;
+  //const int verbosity = 0;
+  MEMbbwwAlgoDilepton memAlgo(sqrtS, pdfName, findFile(madgraphFileName_signal), findFile(madgraphFileName_background), verbosity);
+  memAlgo.applyOnshellWmassConstraint_signal(applyOnshellWmassConstraint_signal);
   memAlgo.setIntMode(MEMbbwwAlgoDilepton::kVAMP);
   //memAlgo.setMaxObjFunctionCalls(20000);
-  memAlgo.setMaxObjFunctionCalls(1);
+memAlgo.setMaxObjFunctionCalls(1);
 
   std::cout << "processing signal event:\n";
+  std::cout << " m(bb) = " << (measuredParticles_signal[2].p4() + measuredParticles_signal[3].p4()).mass() << std::endl;
+  std::cout << " m(ll) = " << (measuredParticles_signal[0].p4() + measuredParticles_signal[1].p4()).mass() << std::endl;
+  std::cout << " m(bl+):" 
+	    << " 1st permutation = " << (measuredParticles_signal[0].p4() + measuredParticles_signal[2].p4()).mass() << "," 
+	    << " 2nd permutation = " << (measuredParticles_signal[0].p4() + measuredParticles_signal[3].p4()).mass() << std::endl;
+  std::cout << " m(bl-):" 
+	    << " 1st permutation = " << (measuredParticles_signal[1].p4() + measuredParticles_signal[2].p4()).mass() << "," 
+	    << " 2nd permutation = " << (measuredParticles_signal[1].p4() + measuredParticles_signal[3].p4()).mass() << std::endl;
   memAlgo.integrate(measuredParticles_signal, measuredMEtPx_signal, measuredMEtPy_signal, measuredMEtCov_signal);
+  std::cout << "numMatrixElementEvaluations:" 
+	    << " signal = " << memAlgo.getNumMatrixElementEvaluations_signal() << "," 
+	    << " background = " << memAlgo.getNumMatrixElementEvaluations_background() << std::endl;
   MEMbbwwAlgoDilepton::resultType result_sig = memAlgo.getResult();
-  const double ratio_signal    = result_sig.prob_signal_ / result_sig.prob_background_;
-  const double ratioErr_signal = ratio_signal * std::sqrt(
-    square(result_sig.probErr_signal_ / result_sig.prob_signal_) + square(result_sig.probErr_background_ / result_sig.prob_background_)
-  );
-  std::cout <<
-    " probability for signal hypothesis = "     << result_sig.prob_signal_     << " +/- " << result_sig.probErr_signal_     << "\n"
-    " probability for background hypothesis = " << result_sig.prob_background_ << " +/- " << result_sig.probErr_background_ << "\n"
-    "--> likelihood ratio = "                   << ratio_signal            << " +/- " << ratioErr_signal                    << '\n'
+  double likelihoodRatio_sig, likelihoodRatioErr_sig;
+  computeLikelihoodRatio(
+    result_sig.prob_signal_, result_sig.probErr_signal_, result_sig.prob_background_, result_sig.probErr_background_, 
+    likelihoodRatio_sig, likelihoodRatioErr_sig);
+  std::cout << " probability for signal hypothesis = "     << result_sig.prob_signal_     << " +/- " << result_sig.probErr_signal_     << "\n"
+	    << " probability for background hypothesis = " << result_sig.prob_background_ << " +/- " << result_sig.probErr_background_ << "\n"
+	    << "--> likelihood ratio = "                   << likelihoodRatio_sig         << " +/- " << likelihoodRatioErr_sig         << "\n"
   ;
-
+ 
   std::cout << "processing background event:\n";
+  std::cout << " m(bb) = " << (measuredParticles_background[2].p4() + measuredParticles_background[3].p4()).mass() << std::endl;
+  std::cout << " m(ll) = " << (measuredParticles_background[0].p4() + measuredParticles_background[1].p4()).mass() << std::endl;
+  std::cout << " m(bl+):" 
+	    << " 1st permutation = " << (measuredParticles_background[1].p4() + measuredParticles_background[2].p4()).mass() << "," 
+	    << " 2nd permutation = " << (measuredParticles_background[1].p4() + measuredParticles_background[3].p4()).mass() << std::endl;
+  std::cout << " m(bl-):" 
+	    << " 1st permutation = " << (measuredParticles_background[0].p4() + measuredParticles_background[2].p4()).mass() << "," 
+	    << " 2nd permutation = " << (measuredParticles_background[0].p4() + measuredParticles_background[3].p4()).mass() << std::endl;
   memAlgo.integrate(measuredParticles_background, measuredMEtPx_background, measuredMEtPy_background, measuredMEtCov_background);
+  std::cout << "numMatrixElementEvaluations:" 
+	    << " signal = " << memAlgo.getNumMatrixElementEvaluations_signal() << "," 
+	    << " background = " << memAlgo.getNumMatrixElementEvaluations_background() << std::endl;
   MEMbbwwAlgoDilepton::resultType result_bkg = memAlgo.getResult();
-  const double ratio_background    = result_bkg.prob_signal_ / result_bkg.prob_background_;
-  const double ratioErr_background = ratio_background * std::sqrt(
-    square(result_bkg.probErr_signal_ / result_bkg.prob_signal_) + square(result_bkg.probErr_background_ / result_bkg.prob_background_)
-  );
-  std::cout <<
-    " probability for signal hypothesis = "     << result_bkg.prob_signal_     << " +/- " << result_bkg.probErr_signal_     << "\n"
-    " probability for background hypothesis = " << result_bkg.prob_background_ << " +/- " << result_bkg.probErr_background_ << "\n"
-    "--> likelihood ratio = "                   << ratio_background        << " +/- " << ratioErr_background                << '\n'
+  double likelihoodRatio_bkg, likelihoodRatioErr_bkg;
+  computeLikelihoodRatio(
+    result_bkg.prob_signal_, result_bkg.probErr_signal_, result_bkg.prob_background_, result_bkg.probErr_background_, 
+    likelihoodRatio_bkg, likelihoodRatioErr_bkg);
+  std::cout << " probability for signal hypothesis = "     << result_bkg.prob_signal_     << " +/- " << result_bkg.probErr_signal_     << "\n"
+	    << " probability for background hypothesis = " << result_bkg.prob_background_ << " +/- " << result_bkg.probErr_background_ << "\n"
+	    << "--> likelihood ratio = "                   << likelihoodRatio_bkg         << " +/- " << likelihoodRatioErr_bkg         << "\n"
   ;
 
   return EXIT_SUCCESS;

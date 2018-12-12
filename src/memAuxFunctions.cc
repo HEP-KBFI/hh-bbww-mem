@@ -89,6 +89,17 @@ double compNuEn_Wlnu(const LorentzVector& trueChargedLeptonP4, double trueNuThet
   }
 }
 
+double compNuEn_Wlnu_unconstrained(const LorentzVector& trueChargedLeptonP4, double trueNuTheta, double trueNuPhi, double q2W)
+{
+  double denominator = 2.*trueChargedLeptonP4.energy()*(1. - compCosAngle(trueChargedLeptonP4, trueNuTheta, trueNuPhi));
+  if ( denominator > 1.e-3 ) {
+    double trueNuEn = q2W/denominator;
+    return trueNuEn;
+  } else {
+    return 0.;
+  }
+}
+
 double compNuStarEn_Hww(const LorentzVector& trueEllNuEllStarP4, double trueNuStarTheta, double trueNuStarPhi)
 {
   double trueEllNuEllStarMass = trueEllNuEllStarP4.mass();
@@ -173,6 +184,13 @@ double compJacobiFactor_Hbb(const LorentzVector& trueBJet1P4, const LorentzVecto
 }
  
 double compJacobiFactor_Wlnu(const LorentzVector& trueChargedLeptonP4, const LorentzVector& trueNuP4)
+{
+  double inverse_jacobiFactor = 2.*trueChargedLeptonP4.energy()*(1. - compCosAngle(trueChargedLeptonP4, trueNuP4));
+  if ( inverse_jacobiFactor < 1.e-3 ) inverse_jacobiFactor = 1.e-3;
+  return 1./inverse_jacobiFactor;
+}
+
+double compJacobiFactor_Wlnu_unconstrained(const LorentzVector& trueChargedLeptonP4, const LorentzVector& trueNuP4)
 {
   double inverse_jacobiFactor = 2.*trueChargedLeptonP4.energy()*(1. - compCosAngle(trueChargedLeptonP4, trueNuP4));
   if ( inverse_jacobiFactor < 1.e-3 ) inverse_jacobiFactor = 1.e-3;

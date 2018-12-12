@@ -18,6 +18,12 @@ class MEMbbwwAlgoDilepton
   MEMbbwwAlgoDilepton(double, const std::string&, const std::string&, const std::string& = "", int = 0);
   ~MEMbbwwAlgoDilepton();
 
+  /// fix (flag=true) mass of charged lepton plus neutrino originating from the decay of the "on-shell" W boson to mW,
+  /// or allow the mass to vary during the integration (flag=false)
+  ///
+  /// Note: flag has an effect on the likelihood of the HH->bbWW signal hypothesis only (not on the likelihood of the ttbar background hypothesis)
+  void applyOnshellWmassConstraint_signal(bool flag);
+
   /// number of function calls for VEGAS and VAMP integration (default is 100000)
   void setMaxObjFunctionCalls(unsigned maxObjFunctionCalls) 
   { 
@@ -46,6 +52,10 @@ class MEMbbwwAlgoDilepton
   /// return computing time (in seconds) spent on last call to integrate method
   double getComputingTime_cpu() const { return numSeconds_cpu_; }
   double getComputingTime_real() const { return numSeconds_real_; }
+
+  /// return number of times the MadGraph matrix element was evaluated 
+  unsigned long getNumMatrixElementEvaluations_signal() const { return numMatrixElementEvaluations_signal_; }
+  unsigned long getNumMatrixElementEvaluations_background() const { return numMatrixElementEvaluations_background_; }
 
   /// static pointer to this (needed for interfacing the likelihood function calls to VEGAS and VAMP integration)
   static const mem::MEMbbwwIntegrandBase* gMEMIntegrand;
@@ -94,6 +104,8 @@ class MEMbbwwAlgoDilepton
   TBenchmark* clock_;
   double numSeconds_cpu_;
   double numSeconds_real_;
+  unsigned long numMatrixElementEvaluations_signal_;
+  unsigned long numMatrixElementEvaluations_background_;
 
   /// verbosity level
   int verbosity_;
