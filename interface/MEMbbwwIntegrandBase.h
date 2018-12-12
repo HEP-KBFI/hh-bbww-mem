@@ -48,6 +48,9 @@ class MEMbbwwIntegrandBase
   const double* getIntBounds_lower() const { return intIntBounds_lower_; }
   const double* getIntBounds_upper() const { return intIntBounds_upper_; }
 
+  /// reset counter for number of times the MadGraph matrix element was evaluated 
+  void resetNumMatrixElementEvaluations() { numMatrixElementEvaluations_ = 0; }
+
   /// set measured momenta of charged leptons and b-jets and of missing transverse momentum
   virtual void setInputs(const mem::MeasuredParticle&, const mem::MeasuredParticle&, const mem::MeasuredParticle&, const mem::MeasuredParticle&, double, double, const TMatrixD&);
 

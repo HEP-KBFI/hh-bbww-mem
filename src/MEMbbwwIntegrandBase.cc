@@ -77,7 +77,7 @@ MEMbbwwIntegrandBase::setInputs(const MeasuredParticle& measuredChargedLeptonPlu
 				const MeasuredParticle& measuredBJet1, const MeasuredParticle& measuredBJet2,
 				double measuredMEtPx, double measuredMEtPy, const TMatrixD& measuredMEtCov)
 {
-  if ( verbosity_ ) {
+  if ( verbosity_ >= 1 ) {
     std::cout << "<MEMbbwwIntegrandBase::setInputs>:" << std::endl;
   }
   // reset 'MatrixInversion' error code

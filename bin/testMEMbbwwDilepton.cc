@@ -173,7 +173,7 @@ main(int argc __attribute__((unused)), char ** argv __attribute__((unused)))
   MEMbbwwAlgoDilepton memAlgo(sqrtS, pdfName, findFile(madgraphFileName_signal), findFile(madgraphFileName_background), verbosity);
   memAlgo.applyOnshellWmassConstraint_signal(applyOnshellWmassConstraint_signal);
   memAlgo.setIntMode(MEMbbwwAlgoDilepton::kVAMP);
-  memAlgo.setMaxObjFunctionCalls(20000);
+  memAlgo.setMaxObjFunctionCalls(1000);
 
   std::cout << "processing signal event:\n";
   std::cout << " m(bb) = " << (measuredParticles_signal[2].p4() + measuredParticles_signal[3].p4()).mass() << std::endl;
@@ -185,7 +185,6 @@ main(int argc __attribute__((unused)), char ** argv __attribute__((unused)))
 	    << " 1st permutation = " << (measuredParticles_signal[1].p4() + measuredParticles_signal[2].p4()).mass() << "," 
 	    << " 2nd permutation = " << (measuredParticles_signal[1].p4() + measuredParticles_signal[3].p4()).mass() << std::endl;
   memAlgo.integrate(measuredParticles_signal, measuredMEtPx_signal, measuredMEtPy_signal, measuredMEtCov_signal);
-  (const_cast<TBenchmark*>(memAlgo.getClock()))->Show("<MEMbbwwAlgoDilepton::integrate (signal event)>");
   std::cout << "numMatrixElementEvaluations:" 
 	    << " signal = " << memAlgo.getNumMatrixElementEvaluations_signal() << "," 
 	    << " background = " << memAlgo.getNumMatrixElementEvaluations_background() << std::endl;
@@ -202,7 +201,6 @@ main(int argc __attribute__((unused)), char ** argv __attribute__((unused)))
 	    << " 1st permutation = " << (measuredParticles_background[0].p4() + measuredParticles_background[2].p4()).mass() << "," 
 	    << " 2nd permutation = " << (measuredParticles_background[0].p4() + measuredParticles_background[3].p4()).mass() << std::endl;
   memAlgo.integrate(measuredParticles_background, measuredMEtPx_background, measuredMEtPy_background, measuredMEtCov_background);
-  (const_cast<TBenchmark*>(memAlgo.getClock()))->Show("<MEMbbwwAlgoDilepton::integrate (background event)>");
   std::cout << "numMatrixElementEvaluations:" 
 	    << " signal = " << memAlgo.getNumMatrixElementEvaluations_signal() << "," 
 	    << " background = " << memAlgo.getNumMatrixElementEvaluations_background() << std::endl;

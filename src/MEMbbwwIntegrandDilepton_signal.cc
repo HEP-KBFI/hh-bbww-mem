@@ -105,8 +105,7 @@ MEMbbwwIntegrandDilepton_signal::setInputs(const MeasuredParticle& measuredCharg
     measuredChargedLeptonPlus, measuredChargedLeptonMinus,
     measuredBJet1, measuredBJet2,
     measuredMEtPx, measuredMEtPy, measuredMEtCov);
-  numMatrixElementEvaluations_ = 0;
-
+  
   // set integration boundary for energy of first b-jet
   // to measured jet energy +/- 3 times expected energy resolution (rough estimate),
   // in order to increase efficiency of numeric integration
