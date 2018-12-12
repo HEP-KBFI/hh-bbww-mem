@@ -105,6 +105,7 @@ MEMbbwwIntegrandDilepton_signal::setInputs(const MeasuredParticle& measuredCharg
     measuredChargedLeptonPlus, measuredChargedLeptonMinus,
     measuredBJet1, measuredBJet2,
     measuredMEtPx, measuredMEtPy, measuredMEtCov);
+  numMatrixElementEvaluations_ = 0;
 
   // set integration boundary for energy of first b-jet
   // to measured jet energy +/- 3 times expected energy resolution (rough estimate),
@@ -325,6 +326,7 @@ double MEMbbwwIntegrandDilepton_signal::Eval(const double* x) const
     me_madgraph_.setMomenta(madgraphMomenta_);
     me_madgraph_.sigmaKin();
     prob_ME = me_madgraph_.getMatrixElements()[0];
+    ++numMatrixElementEvaluations_;
     if ( TMath::IsNaN(prob_ME) ) 
     {
       std::cerr << "Warning: MadGraph returned NaN --> skipping event !!" << std::endl;

@@ -79,6 +79,7 @@ MEMbbwwIntegrandDilepton_background::setInputs(const MeasuredParticle& measuredC
     measuredChargedLeptonPlus, measuredChargedLeptonMinus,
     measuredBJet1, measuredBJet2,
     measuredMEtPx, measuredMEtPy, measuredMEtCov);
+  numMatrixElementEvaluations_ = 0;
 
   // Cross section for Standard Model (SM) ttbar production @ 13 TeV center-of-mass energy
   // time branching fraction for the decay ttbar->bbWW->bblnulnu (excluding electrons and muons from tau decays)
@@ -261,6 +262,7 @@ double MEMbbwwIntegrandDilepton_background::Eval(const double* x) const
     me_madgraph_.setMomenta(madgraphMomenta_);
     me_madgraph_.sigmaKin();
     prob_ME = me_madgraph_.getMatrixElements()[0];
+     ++numMatrixElementEvaluations_;
     if ( TMath::IsNaN(prob_ME) ) 
     {
       std::cerr << "Warning: MadGraph returned NaN --> skipping event !!" << std::endl;

@@ -180,6 +180,7 @@ MEMbbwwAlgoDilepton::integrate(const std::vector<MeasuredParticle>& measuredPart
 
   result_.prob_signal_ = 0.;
   result_.probErr_signal_ = 0.;
+  result_.permutations_signal_.clear();
   for ( unsigned idxPermutation = 0; idxPermutation < 4; ++idxPermutation ) {
     const MeasuredParticle* measuredBJet1 = nullptr;
     const MeasuredParticle* measuredBJet2 = nullptr;
@@ -194,12 +195,30 @@ MEMbbwwAlgoDilepton::integrate(const std::vector<MeasuredParticle>& measuredPart
       *measuredChargedLeptonPlus_, *measuredChargedLeptonMinus_, *measuredBJet1, *measuredBJet2, 
       measuredMEtPx_, measuredMEtPy_, measuredMEtCov_);
     int chargedLeptonPermutation = MEMbbwwIntegrandDilepton_signal::kPermutationUndefined;
-    if ( idxPermutation == 0 || idxPermutation == 1 ) chargedLeptonPermutation = MEMbbwwIntegrandDilepton_signal::kOnshellChargedLeptonPlus;
-    else chargedLeptonPermutation = MEMbbwwIntegrandDilepton_signal::kOnshellChargedLeptonMinus;
+    if ( idxPermutation == 0 || idxPermutation == 1 ) {
+      chargedLeptonPermutation = MEMbbwwIntegrandDilepton_signal::kOnshellChargedLeptonPlus;
+    } else {
+      chargedLeptonPermutation = MEMbbwwIntegrandDilepton_signal::kOnshellChargedLeptonMinus;
+    }
     integrand_signal_->setOnshellChargedLepton(chargedLeptonPermutation);
     MEMbbwwAlgoDilepton::gMEMIntegrand = integrand_signal_;
     initializeIntAlgo();
-    MEMbbwwAlgoDilepton::runIntAlgo(integrand_signal_, result_.prob_signal_, result_.probErr_signal_);
+    double prob_permutation, probErr_permutation;
+    MEMbbwwAlgoDilepton::runIntAlgo(integrand_signal_, prob_permutation, probErr_permutation);
+    result_.prob_signal_ += prob_permutation;
+    result_.probErr_signal_ += probErr_permutation;
+    const MeasuredParticle* measuredChargedLeptonFromOnshellW = nullptr;
+    const MeasuredParticle* measuredChargedLeptonFromOffshellW = nullptr;
+    if ( chargedLeptonPermutation == MEMbbwwIntegrandDilepton_signal::kOnshellChargedLeptonPlus ) {
+      measuredChargedLeptonFromOnshellW = measuredChargedLeptonPlus_;
+      measuredChargedLeptonFromOffshellW = measuredChargedLeptonMinus_;
+    } else {
+      measuredChargedLeptonFromOnshellW = measuredChargedLeptonMinus_;
+      measuredChargedLeptonFromOffshellW = measuredChargedLeptonPlus_;
+    }
+    result_.permutations_signal_.push_back(MEMbbwwPermutationDilepton_sig(
+      prob_permutation, probErr_permutation, 
+      *measuredBJet1, *measuredBJet2, *measuredChargedLeptonFromOnshellW, *measuredChargedLeptonFromOffshellW));
     delete intAlgo_;
     intAlgo_ = nullptr;
   }
@@ -209,28 +228,35 @@ MEMbbwwAlgoDilepton::integrate(const std::vector<MeasuredParticle>& measuredPart
  
   result_.prob_background_ = 0.;
   result_.probErr_background_ = 0.;
+  result_.permutations_background_.clear();
   for ( unsigned idxPermutation = 0; idxPermutation < 2; ++idxPermutation ) {
-    const MeasuredParticle* measuredBJet1 = nullptr;
-    const MeasuredParticle* measuredBJet2 = nullptr;
+    const MeasuredParticle* measuredBJetFromTop = nullptr;
+    const MeasuredParticle* measuredBJetFromAntiTop = nullptr;
     if ( idxPermutation == 0 ) {
-      measuredBJet1 = measuredLeadingBJet_;
-      measuredBJet2 = measuredSubleadingBJet_;
+      measuredBJetFromTop = measuredLeadingBJet_;
+      measuredBJetFromAntiTop  = measuredSubleadingBJet_;
     } else {
-      measuredBJet1 = measuredSubleadingBJet_;
-      measuredBJet2 = measuredLeadingBJet_;
+      measuredBJetFromTop = measuredSubleadingBJet_;
+      measuredBJetFromAntiTop  = measuredLeadingBJet_;
     }
     integrand_background_->setInputs(
-      *measuredChargedLeptonPlus_, *measuredChargedLeptonMinus_, *measuredBJet1, *measuredBJet2, 
+      *measuredChargedLeptonPlus_, *measuredChargedLeptonMinus_, *measuredBJetFromTop, *measuredBJetFromAntiTop, 
       measuredMEtPx_, measuredMEtPy_, measuredMEtCov_);
     MEMbbwwAlgoDilepton::gMEMIntegrand = integrand_background_;
     initializeIntAlgo();
-    MEMbbwwAlgoDilepton::runIntAlgo(integrand_background_, result_.prob_background_, result_.probErr_background_);
+    double prob_permutation, probErr_permutation;
+    MEMbbwwAlgoDilepton::runIntAlgo(integrand_background_, prob_permutation, probErr_permutation);
+    result_.prob_background_ += prob_permutation;
+    result_.probErr_background_ += probErr_permutation;
+    result_.permutations_background_.push_back(MEMbbwwPermutationDilepton_bkg(
+      prob_permutation, probErr_permutation, 
+      *measuredBJetFromTop, *measuredChargedLeptonPlus_, *measuredBJetFromAntiTop, *measuredChargedLeptonMinus_));
     delete intAlgo_;
     intAlgo_ = nullptr;
   }
   result_.prob_background_ /= 2.;
   result_.probErr_background_ /= 2.;
-  numMatrixElementEvaluations_background_ = integrand_signal_->getNumMatrixElementEvaluations();
+  numMatrixElementEvaluations_background_ = integrand_background_->getNumMatrixElementEvaluations();
 
   clock_->Stop("<MEMbbwwAlgoDilepton::integrate>");
   if ( verbosity_ >= 0 ) {
@@ -273,14 +299,12 @@ void MEMbbwwAlgoDilepton::runIntAlgo(mem::MEMbbwwIntegrandBase* integrand, doubl
       std::cout << std::endl;
     }
   }
-  double p = 0.; 
-  double pErr = 0.;  
+  prob = 0.; 
+  probErr = 0.;  
   if ( intMode_ == kVEGAS ) { 
-    intAlgo_->integrate(&g_C, xl, xu, numDimensions, p, pErr);
+    intAlgo_->integrate(&g_C, xl, xu, numDimensions, prob, probErr);
   } else if ( intMode_ == kVAMP ) {
-    intAlgo_->integrate(&g_Fortran, xl, xu, numDimensions, p, pErr);
+    intAlgo_->integrate(&g_Fortran, xl, xu, numDimensions, prob, probErr);
   } else assert(0); 
-  prob += p;
-  probErr += pErr;
 }
 

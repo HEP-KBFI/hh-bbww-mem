@@ -9,6 +9,10 @@
 
 #include <FWCore/ParameterSet/interface/FileInPath.h>
 
+#include <vector>
+#include <string>
+#include <ostream>
+
 namespace
 {
   std::string
@@ -21,19 +25,6 @@ namespace
       assert(0);
     }
     return inputFile.fullPath();
-  }
-
-  void computeLikelihoodRatio(double prob_S, double probErr_S, double prob_B, double probErr_B, double& likelihoodRatio, double& likelihoodRatioErr)
-  {
-    double prob_SplusB = prob_S + prob_B;    
-    if ( prob_SplusB > 0. ) {
-      likelihoodRatio = prob_S/prob_SplusB;
-      double prob2_SplusB = mem::square(prob_SplusB);
-      likelihoodRatioErr = mem::square((prob_S/prob2_SplusB)*probErr_S) + mem::square((prob_B/prob2_SplusB)*probErr_B);
-    } else {
-      likelihoodRatio = 0.;
-      likelihoodRatioErr = 0.;
-    }
   }
 }
 
@@ -178,7 +169,7 @@ main(int argc __attribute__((unused)), char ** argv __attribute__((unused)))
   //const bool applyOnshellWmassConstraint_signal = true;
   const bool applyOnshellWmassConstraint_signal = false;
 
-  const int verbosity = 1;
+  const int verbosity = 0;
   MEMbbwwAlgoDilepton memAlgo(sqrtS, pdfName, findFile(madgraphFileName_signal), findFile(madgraphFileName_background), verbosity);
   memAlgo.applyOnshellWmassConstraint_signal(applyOnshellWmassConstraint_signal);
   memAlgo.setIntMode(MEMbbwwAlgoDilepton::kVAMP);
@@ -194,18 +185,12 @@ main(int argc __attribute__((unused)), char ** argv __attribute__((unused)))
 	    << " 1st permutation = " << (measuredParticles_signal[1].p4() + measuredParticles_signal[2].p4()).mass() << "," 
 	    << " 2nd permutation = " << (measuredParticles_signal[1].p4() + measuredParticles_signal[3].p4()).mass() << std::endl;
   memAlgo.integrate(measuredParticles_signal, measuredMEtPx_signal, measuredMEtPy_signal, measuredMEtCov_signal);
+  (const_cast<TBenchmark*>(memAlgo.getClock()))->Show("<MEMbbwwAlgoDilepton::integrate (signal event)>");
   std::cout << "numMatrixElementEvaluations:" 
 	    << " signal = " << memAlgo.getNumMatrixElementEvaluations_signal() << "," 
 	    << " background = " << memAlgo.getNumMatrixElementEvaluations_background() << std::endl;
-  MEMbbwwAlgoDilepton::resultType result_sig = memAlgo.getResult();
-  double likelihoodRatio_sig, likelihoodRatioErr_sig;
-  computeLikelihoodRatio(
-    result_sig.prob_signal_, result_sig.probErr_signal_, result_sig.prob_background_, result_sig.probErr_background_, 
-    likelihoodRatio_sig, likelihoodRatioErr_sig);
-  std::cout << " probability for signal hypothesis = "     << result_sig.prob_signal_     << " +/- " << result_sig.probErr_signal_     << "\n"
-	    << " probability for background hypothesis = " << result_sig.prob_background_ << " +/- " << result_sig.probErr_background_ << "\n"
-	    << "--> likelihood ratio = "                   << likelihoodRatio_sig         << " +/- " << likelihoodRatioErr_sig         << "\n"
-  ;
+  const MEMbbwwResultDilepton& result_sig = memAlgo.getResult();
+  std::cout << result_sig << std::endl;
  
   std::cout << "processing background event:\n";
   std::cout << " m(bb) = " << (measuredParticles_background[2].p4() + measuredParticles_background[3].p4()).mass() << std::endl;
@@ -217,18 +202,12 @@ main(int argc __attribute__((unused)), char ** argv __attribute__((unused)))
 	    << " 1st permutation = " << (measuredParticles_background[0].p4() + measuredParticles_background[2].p4()).mass() << "," 
 	    << " 2nd permutation = " << (measuredParticles_background[0].p4() + measuredParticles_background[3].p4()).mass() << std::endl;
   memAlgo.integrate(measuredParticles_background, measuredMEtPx_background, measuredMEtPy_background, measuredMEtCov_background);
+  (const_cast<TBenchmark*>(memAlgo.getClock()))->Show("<MEMbbwwAlgoDilepton::integrate (background event)>");
   std::cout << "numMatrixElementEvaluations:" 
 	    << " signal = " << memAlgo.getNumMatrixElementEvaluations_signal() << "," 
 	    << " background = " << memAlgo.getNumMatrixElementEvaluations_background() << std::endl;
-  MEMbbwwAlgoDilepton::resultType result_bkg = memAlgo.getResult();
-  double likelihoodRatio_bkg, likelihoodRatioErr_bkg;
-  computeLikelihoodRatio(
-    result_bkg.prob_signal_, result_bkg.probErr_signal_, result_bkg.prob_background_, result_bkg.probErr_background_, 
-    likelihoodRatio_bkg, likelihoodRatioErr_bkg);
-  std::cout << " probability for signal hypothesis = "     << result_bkg.prob_signal_     << " +/- " << result_bkg.probErr_signal_     << "\n"
-	    << " probability for background hypothesis = " << result_bkg.prob_background_ << " +/- " << result_bkg.probErr_background_ << "\n"
-	    << "--> likelihood ratio = "                   << likelihoodRatio_bkg         << " +/- " << likelihoodRatioErr_bkg         << "\n"
-  ;
+  const MEMbbwwResultDilepton& result_bkg = memAlgo.getResult();
+  std::cout << result_bkg << std::endl;
 
   return EXIT_SUCCESS;
 }

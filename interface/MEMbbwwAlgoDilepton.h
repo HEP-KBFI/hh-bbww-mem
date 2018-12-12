@@ -5,6 +5,7 @@
 #include "hhAnalysis/bbwwMEM/interface/MEMbbwwIntegrandDilepton_background.h"
 #include "hhAnalysis/bbwwMEM/interface/MEMIntegratorBase.h"
 #include "hhAnalysis/bbwwMEM/interface/MeasuredParticle.h"
+#include "hhAnalysis/bbwwMEM/interface/MEMResult.h"
 
 #include <TBenchmark.h>
 #include <TMatrixD.h>
@@ -40,14 +41,7 @@ class MEMbbwwAlgoDilepton
   void integrate(const std::vector<mem::MeasuredParticle>&, double, double, const TMatrixD&);
 
   /// return probabilities for signal and background hypotheses
-  struct resultType
-  {
-    double prob_signal_;
-    double probErr_signal_;
-    double prob_background_;
-    double probErr_background_;
-  };
-  resultType getResult() const { return result_; }
+  const MEMbbwwResultDilepton& getResult() const { return result_; }
 
   /// return computing time (in seconds) spent on last call to integrate method
   double getComputingTime_cpu() const { return numSeconds_cpu_; }
@@ -56,6 +50,9 @@ class MEMbbwwAlgoDilepton
   /// return number of times the MadGraph matrix element was evaluated 
   unsigned long getNumMatrixElementEvaluations_signal() const { return numMatrixElementEvaluations_signal_; }
   unsigned long getNumMatrixElementEvaluations_background() const { return numMatrixElementEvaluations_background_; }
+
+  /// return TBenchmark object recording computing time
+  const TBenchmark* getClock() const { return clock_; }
 
   /// static pointer to this (needed for interfacing the likelihood function calls to VEGAS and VAMP integration)
   static const mem::MEMbbwwIntegrandBase* gMEMIntegrand;
@@ -98,7 +95,7 @@ class MEMbbwwAlgoDilepton
   double precision_;
 
   /// result of integration (probabilities for signal and background hypotheses)
-  resultType result_;
+  MEMbbwwResultDilepton result_;
 
   /// clock for measuring run-time of algorithm
   TBenchmark* clock_;

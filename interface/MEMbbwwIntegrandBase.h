@@ -110,7 +110,7 @@ class MEMbbwwIntegrandBase
   double* madgraphBJet1P4_;
   double* madgraphBJet2P4_;
   mutable std::vector<double*> madgraphMomenta_;
-  unsigned long numMatrixElementEvaluations_;
+  mutable unsigned long numMatrixElementEvaluations_;
 
   /// error code that can be passed on
   int errorCode_;
