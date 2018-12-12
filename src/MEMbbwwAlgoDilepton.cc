@@ -180,9 +180,7 @@ MEMbbwwAlgoDilepton::integrate(const std::vector<MeasuredParticle>& measuredPart
 
   result_.prob_signal_ = 0.;
   result_.probErr_signal_ = 0.;
-  //for ( unsigned idxPermutation = 0; idxPermutation < 4; ++idxPermutation ) {
-for ( unsigned idxPermutation = 2; idxPermutation <= 2; ++idxPermutation ) {
-std::cout << "idxPermutation = " << idxPermutation << std::endl;
+  for ( unsigned idxPermutation = 0; idxPermutation < 4; ++idxPermutation ) {
     const MeasuredParticle* measuredBJet1 = nullptr;
     const MeasuredParticle* measuredBJet2 = nullptr;
     if ( idxPermutation == 0 || idxPermutation == 2 ) {
@@ -212,8 +210,6 @@ std::cout << "idxPermutation = " << idxPermutation << std::endl;
   result_.prob_background_ = 0.;
   result_.probErr_background_ = 0.;
   for ( unsigned idxPermutation = 0; idxPermutation < 2; ++idxPermutation ) {
-//for ( unsigned idxPermutation = 1; idxPermutation <= 1; ++idxPermutation ) {
-//std::cout << "idxPermutation = " << idxPermutation << std::endl;
     const MeasuredParticle* measuredBJet1 = nullptr;
     const MeasuredParticle* measuredBJet2 = nullptr;
     if ( idxPermutation == 0 ) {

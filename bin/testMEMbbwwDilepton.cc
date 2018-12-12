@@ -178,13 +178,11 @@ main(int argc __attribute__((unused)), char ** argv __attribute__((unused)))
   //const bool applyOnshellWmassConstraint_signal = true;
   const bool applyOnshellWmassConstraint_signal = false;
 
-const int verbosity = 2;
-  //const int verbosity = 0;
+  const int verbosity = 1;
   MEMbbwwAlgoDilepton memAlgo(sqrtS, pdfName, findFile(madgraphFileName_signal), findFile(madgraphFileName_background), verbosity);
   memAlgo.applyOnshellWmassConstraint_signal(applyOnshellWmassConstraint_signal);
   memAlgo.setIntMode(MEMbbwwAlgoDilepton::kVAMP);
-  //memAlgo.setMaxObjFunctionCalls(20000);
-memAlgo.setMaxObjFunctionCalls(1);
+  memAlgo.setMaxObjFunctionCalls(20000);
 
   std::cout << "processing signal event:\n";
   std::cout << " m(bb) = " << (measuredParticles_signal[2].p4() + measuredParticles_signal[3].p4()).mass() << std::endl;
