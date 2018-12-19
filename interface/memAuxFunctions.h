@@ -79,6 +79,14 @@ namespace mem
   const double hbar_c = 0.1973; // GeV fm
   //-----------------------------------------------------------------------------
 
+  /// define flags used to switch between associations of lepton+ and lepton- to on-shell and off-shell W bosons
+  /// in case of signal hypothesis in dilepton channel
+  enum { kPermutationUndefined2L, kOnshellChargedLeptonPlus, kOnshellChargedLeptonMinus };
+
+  /// define flags used to switch between associations of charged lepton and (light quark) jet pair to on-shell and off-shell W bosons
+  /// in case of signal hypothesis in single lepton channel
+  enum { kPermutationUndefined1L, kOnshellChargedLepton, kOffshellChargedLepton };
+
   /**
      \typedef mem::Vector
      \brief   spacial momentum vector (equivalent to reco::Candidate::Vector)
@@ -100,6 +108,7 @@ namespace mem
   double compNuEn_Wlnu_unconstrained(const LorentzVector&, double, double, double);
   double compNuStarEn_Hww(const LorentzVector&, double, double);
   std::vector<double> compBJetEn_top(const LorentzVector&, const LorentzVector&);
+  double compHadWJet2En_Wjj(const LorentzVector&, double, double);
 
   LorentzVector buildLorentzVector(double, double, double);
   LorentzVector buildLorentzVector(double, double, double, double);
@@ -109,6 +118,7 @@ namespace mem
   double compJacobiFactor_Wlnu_unconstrained(const LorentzVector&, const LorentzVector&);
   double compJacobiFactor_Hww(const LorentzVector&, const LorentzVector&);
   double compJacobiFactor_top(const LorentzVector&, const LorentzVector&);
+  double compJacobiFactor_Wjj(const LorentzVector&, const LorentzVector&);
 }
 
 #endif

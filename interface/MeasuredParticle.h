@@ -17,9 +17,10 @@ class MeasuredParticle
    */
   enum kType {
     kUndefinedType,
-    kElectron,      /* < electron */ 
-    kMuon,          /* < muon     */
-    kBJet           /* < b-jet    */
+    kElectron,      /* <          electron                                              */ 
+    kMuon,          /* <              muon                                              */
+    kBJet,          /* <             b-jet                                              */
+    kHadWJet        /* < (light quark) jet, produced in the hadronic decay of a W boson */
   };
 
   MeasuredParticle();
@@ -63,11 +64,6 @@ class MeasuredParticle
   /// return the measured momentum vector of the particle in the labframe
   const Vector& p3() const { return p3_; }
     
-  /// return auxiliary data-members to speed-up numerical computations
-  double cosPhi_sinTheta() const { return cosPhi_sinTheta_; }
-  double sinPhi_sinTheta() const { return sinPhi_sinTheta_; }
-  double cosTheta() const { return cosTheta_; }
-
  protected:
   /// set measured momentum in all coordinates systems
   void initialize();
@@ -102,9 +98,6 @@ class MeasuredParticle
 
   /// auxiliary data-members to speed-up numerical computations
   double theta_;
-  double cosPhi_sinTheta_;
-  double sinPhi_sinTheta_;
-  double cosTheta_;
 };
 
 }

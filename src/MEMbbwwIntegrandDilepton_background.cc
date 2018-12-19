@@ -8,7 +8,7 @@
 using namespace mem;
 
 MEMbbwwIntegrandDilepton_background::MEMbbwwIntegrandDilepton_background(double sqrtS, const std::string& madgraphFileName, int verbosity)
-  : MEMbbwwIntegrandBase(sqrtS, madgraphFileName, verbosity)
+  : MEMbbwwIntegrandDilepton(sqrtS, madgraphFileName, verbosity)
 {
   if ( verbosity_ ) {
     std::cout << "<MEMbbwwIntegrandDilepton_background::MEMbbwwIntegrandDilepton_background>:" << std::endl;
@@ -19,16 +19,16 @@ MEMbbwwIntegrandDilepton_background::MEMbbwwIntegrandDilepton_background(double 
   intIntBounds_lower_ = new double[intNumDimensions_];
   intIntBounds_upper_ = new double[intNumDimensions_];
   intVarNames_.clear();
-  intVarNames_.push_back("nu1Theta"); 
+  intVarNames_.push_back("Nu1Theta"); 
   intIntBounds_lower_[0] = 0.;
   intIntBounds_upper_[0] = TMath::Pi();
-  intVarNames_.push_back("nu1Phi"); 
+  intVarNames_.push_back("Nu1Phi"); 
   intIntBounds_lower_[1] = -TMath::Pi();
   intIntBounds_upper_[1] = +TMath::Pi();
-  intVarNames_.push_back("nu2Theta"); 
+  intVarNames_.push_back("Nu2Theta"); 
   intIntBounds_lower_[2] = 0.;
   intIntBounds_upper_[2] = TMath::Pi();
-  intVarNames_.push_back("nu2Phi"); 
+  intVarNames_.push_back("Nu2Phi"); 
   intIntBounds_lower_[3] = -TMath::Pi();
   intIntBounds_upper_[3] = +TMath::Pi();
 
@@ -75,7 +75,7 @@ MEMbbwwIntegrandDilepton_background::setInputs(const MeasuredParticle& measuredC
     std::cout << "<MEMbbwwIntegrandDilepton_background::setInputs>:" << std::endl;
   }
 
-  MEMbbwwIntegrandBase::setInputs(
+  MEMbbwwIntegrandDilepton::setInputs(
     measuredChargedLeptonPlus, measuredChargedLeptonMinus,
     measuredBJet1, measuredBJet2,
     measuredMEtPx, measuredMEtPy, measuredMEtCov);
@@ -92,7 +92,6 @@ MEMbbwwIntegrandDilepton_background::setInputs(const MeasuredParticle& measuredC
   // in order to reduce computing time required for numeric integration
   double numerator = square(topQuarkMass*topQuarkWidth)*square(wBosonMass*wBosonWidth);
   double denominator = 1.;
-  denominator *= (square(higgsBosonMass*higgsBosonWidth)*wBosonMass*wBosonWidth);
   denominator *= (TMath::Power(2., 23)*TMath::Power(TMath::Pi(), 14));
   denominator *= measuredChargedLeptonPlus.energy();
   denominator *= measuredChargedLeptonMinus.energy();
@@ -288,7 +287,8 @@ double MEMbbwwIntegrandDilepton_background::Eval(const double* x) const
     std::cout << " true Px = " << trueHadRecoilPx << ", Py = " << trueHadRecoilPy << std::endl;
     std::cout << " rec. Px = " << measuredHadRecoilPx_ << ", Py = " << measuredHadRecoilPy_ << std::endl;
   }
-  double prob_TF = bjet1TF_->Eval(trueBJet1P4.energy())*bjet2TF_->Eval(trueBJet2P4.energy())*hadRecoilTF_->Eval(trueHadRecoilPx, trueHadRecoilPy);
+  double prob_TF = bjet1TF_->Eval(trueBJet1P4.energy())*bjet2TF_->Eval(trueBJet2P4.energy());
+  prob_TF *= hadRecoilTF_->Eval(trueHadRecoilPx, trueHadRecoilPy);
   if ( verbosity_ >= 2 ) 
   {
     std::cout << "prob_TF = " << prob_TF << std::endl;

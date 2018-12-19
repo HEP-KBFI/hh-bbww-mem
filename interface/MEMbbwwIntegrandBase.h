@@ -51,9 +51,6 @@ class MEMbbwwIntegrandBase
   /// reset counter for number of times the MadGraph matrix element was evaluated 
   void resetNumMatrixElementEvaluations() { numMatrixElementEvaluations_ = 0; }
 
-  /// set measured momenta of charged leptons and b-jets and of missing transverse momentum
-  virtual void setInputs(const mem::MeasuredParticle&, const mem::MeasuredParticle&, const mem::MeasuredParticle&, const mem::MeasuredParticle&, double, double, const TMatrixD&);
-
   /// evaluate integrand for given value of integration variables x
   /// (pure virtual function, overwritten by derived classes for signal and background)
   virtual double Eval(const double* x) const = 0;
@@ -61,14 +58,16 @@ class MEMbbwwIntegrandBase
   /// get number of times the MadGraph matrix element was evaluated 
   unsigned long getNumMatrixElementEvaluations() const { return numMatrixElementEvaluations_; }
 
-  void setPDF(LHAPDF::PDF * pdf);
+  /// set parton distribution function (PDF)
+  void setPDF(LHAPDF::PDF* pdf);
 
  protected:  
-  /// pointer to parton-distribution-functions (PDF)
-  LHAPDF::PDF * pdf_;
+  /// pointer to parton-distribution-function (PDF)
+  LHAPDF::PDF* pdf_;
 
+  /// print four-vectors passed to MadGraph 
   void printMadGraphMomenta() const;
-
+  
   /// integration variables
   unsigned intNumDimensions_;
   std::vector<std::string> intVarNames_; 
@@ -76,8 +75,6 @@ class MEMbbwwIntegrandBase
   double* intIntBounds_upper_;
 
   /// measured momenta of charged leptons and b-jets
-  MeasuredParticle measuredChargedLeptonPlus_;
-  MeasuredParticle measuredChargedLeptonMinus_;
   MeasuredParticle measuredBJet1_; 
   MeasuredParticle measuredBJet2_;
 
@@ -102,14 +99,11 @@ class MEMbbwwIntegrandBase
   /// normalization factor for probability densitity w_1(y|yhat)
   double normFactor_;
 
+  /// file with MadGraph model parameters and four-vectors used to evaluate MadGraph matrix element
   std::string madgraphFileName_;
   bool madgraphIsInitialized_;
   double* madgraphGluon1P4_;
   double* madgraphGluon2P4_;
-  double* madgraphChargedLeptonPlusP4_;
-  double* madgraphNeutrinoP4_;
-  double* madgraphChargedLeptonMinusP4_;
-  double* madgraphAntiNeutrinoP4_;
   double* madgraphBJet1P4_;
   double* madgraphBJet2P4_;
   mutable std::vector<double*> madgraphMomenta_;

@@ -139,6 +139,17 @@ std::vector<double> compBJetEn_top(const LorentzVector& trueEllNuP4, const Loren
   }
 }
 
+double compHadWJet2En_Wjj(const LorentzVector& trueHadWJet1P4, double trueHadWJet2Theta, double trueHadWJet2Phi)
+{
+  double denominator = 2.*trueHadWJet1P4.energy()*(1. - compCosAngle(trueHadWJet1P4, trueHadWJet2Theta, trueHadWJet2Phi));
+  if ( denominator > 1.e-3 ) {
+    double trueHadWJet2En = wBosonMass2/denominator;
+    return trueHadWJet2En;
+  } else {
+    return 0.;
+  }
+}
+
 LorentzVector buildLorentzVector(double energy, double theta, double phi)
 {
   // special version of "buildLorentzVector" function for massless particles (neutrinos)
@@ -216,6 +227,13 @@ double compJacobiFactor_top(const LorentzVector& trueEllNuP4, const LorentzVecto
   } else {
     return 0.;
   }
+}
+
+double compJacobiFactor_Wjj(const LorentzVector& trueHadWJet1P4, const LorentzVector& trueHadWJet2P4)
+{
+  double inverse_jacobiFactor = 2.*trueHadWJet1P4.energy()*(1. - compCosAngle(trueHadWJet1P4, trueHadWJet2P4));
+  if ( inverse_jacobiFactor < 1.e-3 ) inverse_jacobiFactor = 1.e-3;
+  return 1./inverse_jacobiFactor;
 }
 
 }

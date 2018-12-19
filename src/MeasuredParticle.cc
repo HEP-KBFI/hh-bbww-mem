@@ -60,9 +60,6 @@ void MeasuredParticle::initialize()
   p4_ = LorentzVector(px_, py_, pz_, energy_);
   p3_ = Vector(px_, py_, pz_);
   theta_ = p4_.theta();
-  cosPhi_sinTheta_ = TMath::Cos(phi_)*TMath::Sin(theta_);
-  sinPhi_sinTheta_ = TMath::Sin(phi_)*TMath::Sin(theta_);
-  cosTheta_ = TMath::Cos(theta_);
 }
 
 std::string MeasuredParticle::type_string() const
@@ -70,5 +67,6 @@ std::string MeasuredParticle::type_string() const
   if      ( type_ == kElectron ) return "electron";
   else if ( type_ == kMuon     ) return "muon";
   else if ( type_ == kBJet     ) return "b-jet";
+  else if ( type_ == kHadWJet  ) return "jet from W->jj";
   else assert(0);
 }

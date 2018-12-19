@@ -1,13 +1,13 @@
 #ifndef hhAnalysis_bbwwMEM_MEMbbwwIntegrandDilepton_signal_h
 #define hhAnalysis_bbwwMEM_MEMbbwwIntegrandDilepton_signal_h
 
-#include "hhAnalysis/bbwwMEM/interface/MEMbbwwIntegrandBase.h"
+#include "hhAnalysis/bbwwMEM/interface/MEMbbwwIntegrandDilepton.h"
 #include "hhAnalysis/bbwwMEM/interface/mg5/me/mg5_gg_hh2bbWW_WW2lvlv.h"
 
 namespace mem
 {
 
-class MEMbbwwIntegrandDilepton_signal : public MEMbbwwIntegrandBase
+class MEMbbwwIntegrandDilepton_signal : public MEMbbwwIntegrandDilepton
 {
  public:
   MEMbbwwIntegrandDilepton_signal(double, const std::string&, int);
@@ -18,10 +18,11 @@ class MEMbbwwIntegrandDilepton_signal : public MEMbbwwIntegrandBase
   void applyOnshellWmassConstraint(bool flag);
 
   /// set measured momenta of charged leptons and b-jets and of missing transverse momentum
-  void setInputs(const mem::MeasuredParticle&, const mem::MeasuredParticle&, const mem::MeasuredParticle&, const mem::MeasuredParticle&, double, double, const TMatrixD&);
+  void setInputs(const mem::MeasuredParticle&, const mem::MeasuredParticle&, const mem::MeasuredParticle&, const mem::MeasuredParticle&, 
+		 double, double, const TMatrixD&);
 
   /// switch between associations of lepton+ and lepton- to on-shell and off-shell W bosons
-  enum { kPermutationUndefined, kOnshellChargedLeptonPlus, kOnshellChargedLeptonMinus };
+  //enum { kPermutationUndefined, kOnshellChargedLeptonPlus, kOnshellChargedLeptonMinus };
   void setOnshellChargedLepton(int chargedLeptonPermutation);
 
   /// evaluate integrand for given value of integration variables x
