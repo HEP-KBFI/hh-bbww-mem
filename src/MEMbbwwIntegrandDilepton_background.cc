@@ -187,7 +187,6 @@ double MEMbbwwIntegrandDilepton_background::Eval(const double* x) const
     std::cout << "m(lep- nu) = " << (trueChargedLeptonMinusP4 + trueAntiNuP4).mass() << std::endl;
     std::cout << "m(b lep+ nu) = " << (trueBJet1P4 + trueChargedLeptonPlusP4 + trueNuP4).mass() << std::endl;
     std::cout << "m(bbar lep- nu) = " << (trueBJet2P4 + trueChargedLeptonMinusP4 + trueAntiNuP4).mass() << std::endl;
-    LorentzVector trueSumP4 = trueBJet1P4 + trueChargedLeptonPlusP4 + trueNuP4 + trueBJet2P4 + trueChargedLeptonMinusP4 + trueAntiNuP4;
     printLorentzVector("sum", trueSumP4);
     std::cout << "zero-transverse-momentum frame:" << std::endl;
     printLorentzVector("lepton+", trueChargedLeptonPlusP4_ztm);
@@ -287,6 +286,7 @@ double MEMbbwwIntegrandDilepton_background::Eval(const double* x) const
     std::cout << " true Px = " << trueHadRecoilPx << ", Py = " << trueHadRecoilPy << std::endl;
     std::cout << " rec. Px = " << measuredHadRecoilPx_ << ", Py = " << measuredHadRecoilPy_ << std::endl;
   }
+
   double prob_TF = bjet1TF_->Eval(trueBJet1P4.energy())*bjet2TF_->Eval(trueBJet2P4.energy());
   prob_TF *= hadRecoilTF_->Eval(trueHadRecoilPx, trueHadRecoilPy);
   if ( verbosity_ >= 2 ) 

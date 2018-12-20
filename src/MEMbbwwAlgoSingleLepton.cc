@@ -15,17 +15,17 @@
 using namespace mem;
 
 MEMbbwwAlgoSingleLepton::MEMbbwwAlgoSingleLepton(double sqrtS, 
-					 const std::string& pdfName, 
-					 const std::string& madgraphFileName_signal, const std::string& madgraphFileName_background, 
-					 int verbosity) 
+						 const std::string& pdfName, 
+						 const std::string& madgraphFileName_signal, const std::string& madgraphFileName_background, 
+						 int verbosity) 
   : MEMbbwwAlgoBase(sqrtS, pdfName, madgraphFileName_signal, madgraphFileName_background, verbosity)   
-//, integrand_signal_(nullptr)
+  , integrand_signal_(nullptr)
   , integrand_background_(nullptr)
   , maxNumHadWJetPairs_(8)
   , sortHadJetPairOption_(kSortHadWJetPairsByMass)
 { 
-//integrand_signal_ = new MEMbbwwIntegrandSingleLepton_signal(sqrtS_, madgraphFileName_signal_, verbosity_);
-//integrand_signal_->setPDF(pdf_);
+  integrand_signal_ = new MEMbbwwIntegrandSingleLepton_signal(sqrtS_, madgraphFileName_signal_, verbosity_);
+  integrand_signal_->setPDF(pdf_);
   integrand_background_ = new MEMbbwwIntegrandSingleLepton_background(sqrtS_, madgraphFileName_background_, verbosity_);
   integrand_background_->setPDF(pdf_);
   
@@ -37,15 +37,14 @@ MEMbbwwAlgoSingleLepton::MEMbbwwAlgoSingleLepton(double sqrtS,
 
 MEMbbwwAlgoSingleLepton::~MEMbbwwAlgoSingleLepton() 
 {
-//delete integrand_signal_;
+  delete integrand_signal_;
   delete integrand_background_;
 }
 
 void 
 MEMbbwwAlgoSingleLepton::applyOnshellWmassConstraint_signal(bool flag) 
 { 
-  std::cout << "flag = " << flag << std::endl;
-//integrand_signal_->applyOnshellWmassConstraint(flag);
+  integrand_signal_->applyOnshellWmassConstraint(flag);
 }
 
 namespace
@@ -179,7 +178,7 @@ MEMbbwwAlgoSingleLepton::integrate(const std::vector<MeasuredParticle>& measured
 
   size_t numHadWJetPairs = measuredHadWJetPairs_.size();
   if ( maxNumHadWJetPairs_ > 0 ) numHadWJetPairs = std::min(numHadWJetPairs, (size_t)maxNumHadWJetPairs_);
-/*
+
   clock_->Start("<MEMbbwwAlgoSingleLepton::integrate (signal hypothesis)>");
   result_.prob_signal_ = 0.;
   result_.probErr_signal_ = 0.;
@@ -232,7 +231,7 @@ MEMbbwwAlgoSingleLepton::integrate(const std::vector<MeasuredParticle>& measured
   if ( verbosity_ >= 0 ) {
     clock_->Show("<MEMbbwwAlgoSingleLepton::integrate (signal hypothesis)>");
   }
- */
+ 
   clock_->Start("<MEMbbwwAlgoSingleLepton::integrate (background hypothesis)>");
   result_.prob_background_ = 0.;
   result_.probErr_background_ = 0.;

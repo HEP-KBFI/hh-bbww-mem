@@ -104,18 +104,17 @@ namespace mem
   void printLorentzVector(const std::string&, const LorentzVector&, const LorentzVector&);
 
   std::vector<double> compBJet2En_Hbb(const LorentzVector&, const LorentzVector&);
-  double compNuEn_Wlnu(const LorentzVector&, double, double);
-  double compNuEn_Wlnu_unconstrained(const LorentzVector&, double, double, double);
+  double compNuEn_Wlnu(const LorentzVector&, double, double, double = wBosonMass2);
   double compNuStarEn_Hww(const LorentzVector&, double, double);
   std::vector<double> compBJetEn_top(const LorentzVector&, const LorentzVector&);
-  double compHadWJet2En_Wjj(const LorentzVector&, double, double);
+  double compHadWJet2En_Wjj(const LorentzVector&, const LorentzVector&, double = wBosonMass2);
+  double compHadWJet2En_Hww(const LorentzVector&, const LorentzVector&);
 
   LorentzVector buildLorentzVector(double, double, double);
   LorentzVector buildLorentzVector(double, double, double, double);
 
   double compJacobiFactor_Hbb(const LorentzVector&, const LorentzVector&);
   double compJacobiFactor_Wlnu(const LorentzVector&, const LorentzVector&);
-  double compJacobiFactor_Wlnu_unconstrained(const LorentzVector&, const LorentzVector&);
   double compJacobiFactor_Hww(const LorentzVector&, const LorentzVector&);
   double compJacobiFactor_top(const LorentzVector&, const LorentzVector&);
   double compJacobiFactor_Wjj(const LorentzVector&, const LorentzVector&);

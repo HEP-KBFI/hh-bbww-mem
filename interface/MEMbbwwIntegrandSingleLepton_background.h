@@ -14,7 +14,8 @@ class MEMbbwwIntegrandSingleLepton_background : public MEMbbwwIntegrandSingleLep
   ~MEMbbwwIntegrandSingleLepton_background();
 
   /// set measured momenta of charged lepton, jets from W->jj decay, and b-jets and of missing transverse momentum
-  void setInputs(const mem::MeasuredParticle&, const mem::MeasuredParticle&, const mem::MeasuredParticle&, const mem::MeasuredParticle&, const mem::MeasuredParticle&, 
+  void setInputs(const mem::MeasuredParticle&, const mem::MeasuredParticle&, 
+		 const mem::MeasuredParticle&, const mem::MeasuredParticle&, const mem::MeasuredParticle&, 
 		 double, double, const TMatrixD&);
 
   /// evaluate integrand for given value of integration variables x

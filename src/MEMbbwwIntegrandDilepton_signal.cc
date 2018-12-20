@@ -194,7 +194,7 @@ double MEMbbwwIntegrandDilepton_signal::Eval(const double* x) const
       trueNuEn = compNuEn_Wlnu(trueChargedLeptonPlusP4, trueNuTheta, trueNuPhi);
     } else {
       double q2W = x[5];
-      trueNuEn = compNuEn_Wlnu_unconstrained(trueChargedLeptonPlusP4, trueNuTheta, trueNuPhi, q2W);
+      trueNuEn = compNuEn_Wlnu(trueChargedLeptonPlusP4, trueNuTheta, trueNuPhi, q2W);
     }
     if ( !(trueNuEn > 0.) ) return 0.;
     trueNuP4 = buildLorentzVector(trueNuEn, trueNuTheta, trueNuPhi);
@@ -213,7 +213,7 @@ double MEMbbwwIntegrandDilepton_signal::Eval(const double* x) const
       trueAntiNuEn = compNuEn_Wlnu(trueChargedLeptonMinusP4, trueAntiNuTheta, trueAntiNuPhi);
     } else {
       double q2W = x[5];
-      trueAntiNuEn = compNuEn_Wlnu_unconstrained(trueChargedLeptonMinusP4, trueAntiNuTheta, trueAntiNuPhi, q2W);
+      trueAntiNuEn = compNuEn_Wlnu(trueChargedLeptonMinusP4, trueAntiNuTheta, trueAntiNuPhi, q2W);
     }
     if ( !(trueAntiNuEn > 0.) ) return 0.;
     trueAntiNuP4 = buildLorentzVector(trueAntiNuEn, trueAntiNuTheta, trueAntiNuPhi);
@@ -250,7 +250,6 @@ double MEMbbwwIntegrandDilepton_signal::Eval(const double* x) const
     std::cout << "m(lep+ nu) = " << (trueChargedLeptonPlusP4 + trueNuP4).mass() << std::endl;
     std::cout << "m(lep- nu) = " << (trueChargedLeptonMinusP4 + trueAntiNuP4).mass() << std::endl;
     std::cout << "m(lep+ nu lep- nu) = " << (trueChargedLeptonPlusP4 + trueNuP4 + trueChargedLeptonMinusP4 + trueAntiNuP4).mass() << std::endl;
-    LorentzVector trueSumP4 = trueBJet1P4 + trueBJet2P4 + trueChargedLeptonPlusP4 + trueNuP4 + trueChargedLeptonMinusP4 + trueAntiNuP4;
     printLorentzVector("sum", trueSumP4);
     std::cout << "zero-transverse-momentum frame:" << std::endl;
     printLorentzVector("b-jet1", trueBJet1P4_ztm);
@@ -361,19 +360,17 @@ double MEMbbwwIntegrandDilepton_signal::Eval(const double* x) const
 
   double jacobiFactor = compJacobiFactor_Hbb(trueBJet1P4, trueBJet2P4);
   if ( chargedLeptonPermutation_ == kOnshellChargedLeptonPlus ) { 
-    if ( applyOnshellWmassConstraint_ ) {
-      jacobiFactor *= compJacobiFactor_Wlnu(trueChargedLeptonPlusP4, trueNuP4);
-    } else {
-      jacobiFactor *= compJacobiFactor_Wlnu_unconstrained(trueChargedLeptonPlusP4, trueNuP4);
-    }
+    //---------------------------------------------------------------------------
+    // CV: Jacobi factor is the same for case that W mass constraint is applied to on-shell W boson and for the case that it is not applied
+    jacobiFactor *= compJacobiFactor_Wlnu(trueChargedLeptonPlusP4, trueNuP4);
+    //---------------------------------------------------------------------------
     LorentzVector trueChargedLeptonPlus_Nu_ChargedLeptonMinusP4 = trueChargedLeptonPlusP4 + trueNuP4 + trueChargedLeptonMinusP4;
     jacobiFactor *= compJacobiFactor_Hww(trueChargedLeptonPlus_Nu_ChargedLeptonMinusP4, trueAntiNuP4);
   } else {
-    if ( applyOnshellWmassConstraint_ ) {
-      jacobiFactor *= compJacobiFactor_Wlnu(trueChargedLeptonMinusP4, trueAntiNuP4);
-    } else {
-      jacobiFactor *= compJacobiFactor_Wlnu_unconstrained(trueChargedLeptonMinusP4, trueAntiNuP4);
-    }
+    //---------------------------------------------------------------------------
+    // CV: Jacobi factor is the same for case that W mass constraint is applied to on-shell W boson and for the case that it is not applied
+    jacobiFactor *= compJacobiFactor_Wlnu(trueChargedLeptonMinusP4, trueAntiNuP4);
+    //---------------------------------------------------------------------------
     LorentzVector trueChargedLeptonMinus_AntiNu_ChargedLeptonPlusP4 = trueChargedLeptonMinusP4 + trueAntiNuP4 + trueChargedLeptonPlusP4;
     jacobiFactor *= compJacobiFactor_Hww(trueChargedLeptonMinus_AntiNu_ChargedLeptonPlusP4, trueNuP4);
   }  

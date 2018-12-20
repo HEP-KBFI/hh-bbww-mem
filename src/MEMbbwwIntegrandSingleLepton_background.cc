@@ -148,7 +148,7 @@ double MEMbbwwIntegrandSingleLepton_background::Eval(const double* x) const
   double trueHadWJet1En = x[2];
   LorentzVector trueHadWJet1P4 = buildLorentzVector(trueHadWJet1En, measuredHadWJet1_.theta(), measuredHadWJet1_.phi());
 
-  double trueHadWJet2En = compHadWJet2En_Wjj(trueHadWJet1P4, measuredHadWJet2_.theta(), measuredHadWJet2_.phi());
+  double trueHadWJet2En = compHadWJet2En_Wjj(trueHadWJet1P4, measuredHadWJet2_.p4());
   if ( !(trueHadWJet2En > 0.) ) return 0.;
   LorentzVector trueHadWJet2P4 = buildLorentzVector(trueHadWJet2En, measuredHadWJet2_.theta(), measuredHadWJet2_.phi());
 
@@ -211,7 +211,6 @@ double MEMbbwwIntegrandSingleLepton_background::Eval(const double* x) const
     std::cout << "m(W->jj) = " << (trueHadWJet1P4 + trueHadWJet2P4).mass() << std::endl;
     std::cout << Form("m(%s %s nu) = ", bjet1_label.data(), chargedLepton_shortLabel.data()) << (trueBJet1P4 + trueChargedLeptonP4 + trueNuP4).mass() << std::endl;
     std::cout << Form("m(%s W->jj) = ", bjet2_label.data()) << (trueBJet2P4 + trueHadWJet1P4 + trueHadWJet2P4).mass() << std::endl;
-    LorentzVector trueSumP4 = trueBJet1P4 + trueChargedLeptonP4 + trueNuP4 + trueBJet2P4 + trueHadWJet1P4 + trueHadWJet2P4;
     printLorentzVector("sum", trueSumP4);
     std::cout << "zero-transverse-momentum frame:" << std::endl;
     printLorentzVector(Form("%s", chargedLepton_longLabel.data()), trueChargedLeptonP4_ztm);
@@ -333,6 +332,7 @@ double MEMbbwwIntegrandSingleLepton_background::Eval(const double* x) const
     std::cout << " true Px = " << trueHadRecoilPx << ", Py = " << trueHadRecoilPy << std::endl;
     std::cout << " rec. Px = " << measuredHadRecoilPx_ << ", Py = " << measuredHadRecoilPy_ << std::endl;
   }
+
   double prob_TF = bjet1TF_->Eval(trueBJet1P4.energy())*bjet2TF_->Eval(trueBJet2P4.energy());
   prob_TF *= (hadWJet1TF_->Eval(trueHadWJet1P4.energy())*hadWJet2TF_->Eval(trueHadWJet2P4.energy()));
   prob_TF *= hadRecoilTF_->Eval(trueHadRecoilPx, trueHadRecoilPy);

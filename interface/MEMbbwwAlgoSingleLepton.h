@@ -2,7 +2,7 @@
 #define hhAnalysis_bbwwMEM_MEMbbwwAlgoSingleLepton_h
 
 #include "hhAnalysis/bbwwMEM/interface/MEMbbwwAlgoBase.h"
-//#include "hhAnalysis/bbwwMEM/interface/MEMbbwwIntegrandSingleLepton_signal.h"
+#include "hhAnalysis/bbwwMEM/interface/MEMbbwwIntegrandSingleLepton_signal.h"
 #include "hhAnalysis/bbwwMEM/interface/MEMbbwwIntegrandSingleLepton_background.h"
 #include "hhAnalysis/bbwwMEM/interface/MEMIntegratorBase.h"
 #include "hhAnalysis/bbwwMEM/interface/MeasuredParticle.h"
@@ -75,7 +75,7 @@ class MEMbbwwAlgoSingleLepton : public MEMbbwwAlgoBase
   void setMeasuredParticles(const std::vector<mem::MeasuredParticle>&);
 
   /// pointers to integration classes for signal and background hypotheses
-//mem::MEMbbwwIntegrandSingleLepton_signal* integrand_signal_;
+  mem::MEMbbwwIntegrandSingleLepton_signal* integrand_signal_;
   mem::MEMbbwwIntegrandSingleLepton_background* integrand_background_;
 
   /// measured momenta of charged leptons, b-jets, and (light quark) jets originating from hadronic decay of W boson

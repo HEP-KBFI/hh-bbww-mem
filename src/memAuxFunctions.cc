@@ -78,18 +78,7 @@ std::vector<double> compBJet2En_Hbb(const LorentzVector& trueBJet1P4, const Lore
   }
 }
 
-double compNuEn_Wlnu(const LorentzVector& trueChargedLeptonP4, double trueNuTheta, double trueNuPhi)
-{
-  double denominator = 2.*trueChargedLeptonP4.energy()*(1. - compCosAngle(trueChargedLeptonP4, trueNuTheta, trueNuPhi));
-  if ( denominator > 1.e-3 ) {
-    double trueNuEn = wBosonMass2/denominator;
-    return trueNuEn;
-  } else {
-    return 0.;
-  }
-}
-
-double compNuEn_Wlnu_unconstrained(const LorentzVector& trueChargedLeptonP4, double trueNuTheta, double trueNuPhi, double q2W)
+double compNuEn_Wlnu(const LorentzVector& trueChargedLeptonP4, double trueNuTheta, double trueNuPhi, double q2W)
 {
   double denominator = 2.*trueChargedLeptonP4.energy()*(1. - compCosAngle(trueChargedLeptonP4, trueNuTheta, trueNuPhi));
   if ( denominator > 1.e-3 ) {
@@ -139,11 +128,27 @@ std::vector<double> compBJetEn_top(const LorentzVector& trueEllNuP4, const Loren
   }
 }
 
-double compHadWJet2En_Wjj(const LorentzVector& trueHadWJet1P4, double trueHadWJet2Theta, double trueHadWJet2Phi)
+double compHadWJet2En_Wjj(const LorentzVector& trueHadWJet1P4, const LorentzVector& measuredHadWJet2P4, double q2W)
 {
-  double denominator = 2.*trueHadWJet1P4.energy()*(1. - compCosAngle(trueHadWJet1P4, trueHadWJet2Theta, trueHadWJet2Phi));
+  double denominator = 2.*trueHadWJet1P4.energy()*(1. - compCosAngle(trueHadWJet1P4, measuredHadWJet2P4));
   if ( denominator > 1.e-3 ) {
-    double trueHadWJet2En = wBosonMass2/denominator;
+    double trueHadWJet2En = q2W/denominator;
+    return trueHadWJet2En;
+  } else {
+    return 0.;
+  }
+}
+
+double compHadWJet2En_Hww(const LorentzVector& trueEllNuHadWJet1P4, const LorentzVector& measuredHadWJet2P4)
+{
+  double trueEllNuHadWJet1Mass = trueEllNuHadWJet1P4.mass();
+  double delta_mH = 0.5*(higgsBosonMass2 - trueEllNuHadWJet1Mass*trueEllNuHadWJet1Mass);
+  if ( !(delta_mH > 0.) ) return 0.;
+  double a = trueEllNuHadWJet1P4.energy();
+  double b = trueEllNuHadWJet1P4.P()*compCosAngle(trueEllNuHadWJet1P4, measuredHadWJet2P4);
+  double a_minus_b = a - b;
+  if ( a_minus_b > 1.e-3 ) {
+    double trueHadWJet2En = delta_mH/a_minus_b;
     return trueHadWJet2En;
   } else {
     return 0.;
@@ -195,13 +200,6 @@ double compJacobiFactor_Hbb(const LorentzVector& trueBJet1P4, const LorentzVecto
 }
  
 double compJacobiFactor_Wlnu(const LorentzVector& trueChargedLeptonP4, const LorentzVector& trueNuP4)
-{
-  double inverse_jacobiFactor = 2.*trueChargedLeptonP4.energy()*(1. - compCosAngle(trueChargedLeptonP4, trueNuP4));
-  if ( inverse_jacobiFactor < 1.e-3 ) inverse_jacobiFactor = 1.e-3;
-  return 1./inverse_jacobiFactor;
-}
-
-double compJacobiFactor_Wlnu_unconstrained(const LorentzVector& trueChargedLeptonP4, const LorentzVector& trueNuP4)
 {
   double inverse_jacobiFactor = 2.*trueChargedLeptonP4.energy()*(1. - compCosAngle(trueChargedLeptonP4, trueNuP4));
   if ( inverse_jacobiFactor < 1.e-3 ) inverse_jacobiFactor = 1.e-3;
