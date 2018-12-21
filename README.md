@@ -13,10 +13,32 @@ output standalone ttbar
 output standalone_cpp ttbar
 display diagrams
 
+generate g g > t t~, ( t > w+ b, w+ > l+ vl ), ( t~ > w- b~, w- > j j )
+output standalone ttbar_sl_pos
+output standalone_cpp ttbar_sl_pos
+display diagrams
+
+generate g g > t t~, ( t > w+ b, w+ > j j ), ( t~ > w- b~, w- > l- vl~ )
+output standalone ttbar_sl_neg
+output standalone_cpp ttbar_sl_neg
+display diagrams
+
 import BSM_gg_hh
 generate g g > h h, ( h > b b~ ), ( h > w+ w-, w+ > l+ vl, w- > l- vl~ )
 output standalone hh_bbww
 output standalone_cpp hh_bbww
+display diagrams
+
+import BSM_gg_hh
+generate g g > h h, ( h > b b~ ), ( h > w+ w-, w+ > l+ vl, w- > j j )
+output standalone hh_bbww_sl_pos
+output standalone_cpp hh_bbww_sl_pos
+display diagrams
+
+import BSM_gg_hh
+generate g g > h h, ( h > b b~ ), ( h > w+ w-, w+ > j j, w- > l- vl~ )
+output standalone hh_bbww_sl_neg
+output standalone_cpp hh_bbww_sl_neg
 display diagrams
 ```
 
