@@ -12,6 +12,8 @@
 
 #include <complex> 
 
+#ifndef MDL_MT_masses
+#define MDL_MT_masses
 extern "C"
 {
   extern struct
@@ -19,6 +21,7 @@ extern "C"
     double MDL_MT;
   } masses_;
 }
+#endif  // MDL_MT_masses
 
 class Parameters_BSM_gg_hh2bbWW_Wp2lv_Wn2jj
 {

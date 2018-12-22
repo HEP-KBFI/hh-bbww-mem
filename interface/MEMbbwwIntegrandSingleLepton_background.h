@@ -2,7 +2,8 @@
 #define hhAnalysis_bbwwMEM_MEMbbwwIntegrandSingleLepton_background_h
 
 #include "hhAnalysis/bbwwMEM/interface/MEMbbwwIntegrandSingleLepton.h"
-//#include "hhAnalysis/bbwwMEM/interface/mg5/me/mg5_ttbar2WbWb_XXX.h" <-- TO BE UPDATED !!
+#include "hhAnalysis/bbwwMEM/interface/mg5/me/mg5_ttbar2WbWb_Wp2jj_Wn2vl.h"
+#include "hhAnalysis/bbwwMEM/interface/mg5/me/mg5_ttbar2WbWb_Wp2lv_Wn2jj.h"
 
 namespace mem
 {
@@ -23,7 +24,10 @@ class MEMbbwwIntegrandSingleLepton_background : public MEMbbwwIntegrandSingleLep
 
  protected:  
   /// leading order (LO) matrix element obtained from MadGraph
-//mutable mg5_sm_ttbar2WbWb_XXX me_madgraph_;
+  ///
+  /// Note: separate matrix elements are used for events with leptons of positive and events with leptons of negative charge
+  mutable mg5_sm_ttbar2WbWb_Wp2lv_Wn2jj me_madgraph_chargedLeptonPlus_;
+  mutable mg5_sm_ttbar2WbWb_Wp2jj_Wn2vl me_madgraph_chargedLeptonMinus_;
 };
 
 }

@@ -25,13 +25,14 @@ class MEMbbwwIntegrandDilepton : public MEMbbwwIntegrandBase
  protected:  
   /// measured momenta of charged leptons
   MeasuredParticle measuredChargedLeptonPlus_;
-  MeasuredParticle measuredChargedLeptonMinus_;
+  MeasuredParticle measuredChargedLeptonMinus_;  
 
   /// four-vectors used to evaluate MadGraph matrix element
   double* madgraphChargedLeptonPlusP4_;
   double* madgraphNeutrinoP4_;
   double* madgraphChargedLeptonMinusP4_;
   double* madgraphAntiNeutrinoP4_;
+  mutable std::vector<double*> madgraphMomenta_;
 };
 
 }

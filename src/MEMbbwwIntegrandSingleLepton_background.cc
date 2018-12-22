@@ -33,14 +33,16 @@ MEMbbwwIntegrandSingleLepton_background::MEMbbwwIntegrandSingleLepton_background
   // initialize MadGraph
   if ( madgraphFileName != "" ) {
     std::cout << "initializing MadGraph ME for ttbar background using " << madgraphFileName << " file." << std::endl;
-//me_madgraph_.initProc(madgraphFileName);
+    me_madgraph_chargedLeptonPlus_.initProc(madgraphFileName);
+    me_madgraph_chargedLeptonMinus_.initProc(madgraphFileName);
     madgraphIsInitialized_ = true;
   } else {
     std::cerr << "Error in <MEMbbwwIntegrandSingleLepton_background>: No param.dat file for MadGraph given !!" << std::endl;
     assert(0);
   }
 
-  // define ordering of four-vectors passed to MadGraph when evaluating the matrix element:
+  // define ordering of four-vectors passed to MadGraph when evaluating the matrix element
+  // for events containing leptons of positive charge:
   //   1) first incoming gluon
   //   2) second incoming gluon
   //   3) outgoing charged lepton
@@ -50,16 +52,36 @@ MEMbbwwIntegrandSingleLepton_background::MEMbbwwIntegrandSingleLepton_background
   //   7) second outgoing jet from W->jj decay
   //   8) outgoing anti-b quark (b-jet)
   //
-  // Note: the ordering needs to match the labels 1-8 as they are defined in the Feynman diagram doc/mg5/ttbar.ps
-// CV: ORDER NEEDS TO BE CHECKED/UPDATED !!
-  madgraphMomenta_.push_back(madgraphGluon1P4_);
-  madgraphMomenta_.push_back(madgraphGluon2P4_);
-  madgraphMomenta_.push_back(madgraphChargedLeptonP4_);
-  madgraphMomenta_.push_back(madgraphNeutrinoP4_);
-  madgraphMomenta_.push_back(madgraphBJet1P4_);
-  madgraphMomenta_.push_back(madgraphHadWJet1P4_);
-  madgraphMomenta_.push_back(madgraphHadWJet2P4_);
-  madgraphMomenta_.push_back(madgraphBJet2P4_);
+  // Note: the ordering needs to match the labels 1-8 as they are defined in the Feynman diagram doc/mg5/ttbar_sl_pos.ps
+  madgraphMomenta_chargedLeptonPlus_.push_back(madgraphGluon1P4_);
+  madgraphMomenta_chargedLeptonPlus_.push_back(madgraphGluon2P4_);
+  madgraphMomenta_chargedLeptonPlus_.push_back(madgraphChargedLeptonP4_);
+  madgraphMomenta_chargedLeptonPlus_.push_back(madgraphNeutrinoP4_);
+  madgraphMomenta_chargedLeptonPlus_.push_back(madgraphBJet1P4_);
+  madgraphMomenta_chargedLeptonPlus_.push_back(madgraphHadWJet1P4_);
+  madgraphMomenta_chargedLeptonPlus_.push_back(madgraphHadWJet2P4_);
+  madgraphMomenta_chargedLeptonPlus_.push_back(madgraphBJet2P4_);
+
+  // define ordering of four-vectors passed to MadGraph when evaluating the matrix element
+  // for events containing leptons of negative charge:
+  //   1) first incoming gluon
+  //   2) second incoming gluon
+  //   3) first outgoing jet from W->jj decay
+  //   4) second outgoing jet from W->jj decay
+  //   5) outgoing b quark (b-jet)
+  //   6) outgoing charged lepton
+  //   7) outgoing neutrino
+  //   8) outgoing anti-b quark (b-jet)
+  //
+  // Note: the ordering needs to match the labels 1-8 as they are defined in the Feynman diagram doc/mg5/ttbar_sl_neg.ps
+  madgraphMomenta_chargedLeptonMinus_.push_back(madgraphGluon1P4_);
+  madgraphMomenta_chargedLeptonMinus_.push_back(madgraphGluon2P4_);
+  madgraphMomenta_chargedLeptonMinus_.push_back(madgraphHadWJet1P4_);
+  madgraphMomenta_chargedLeptonMinus_.push_back(madgraphHadWJet2P4_);
+  madgraphMomenta_chargedLeptonMinus_.push_back(madgraphBJet1P4_);
+  madgraphMomenta_chargedLeptonMinus_.push_back(madgraphChargedLeptonP4_);
+  madgraphMomenta_chargedLeptonMinus_.push_back(madgraphNeutrinoP4_);
+  madgraphMomenta_chargedLeptonMinus_.push_back(madgraphBJet2P4_);
 }
 
 MEMbbwwIntegrandSingleLepton_background::~MEMbbwwIntegrandSingleLepton_background()
@@ -274,24 +296,24 @@ double MEMbbwwIntegrandSingleLepton_background::Eval(const double* x) const
   madgraphBJet2P4_[1] = trueBJet2P4_ztm.px();
   madgraphBJet2P4_[2] = trueBJet2P4_ztm.py();
   madgraphBJet2P4_[3] = trueBJet2P4_ztm.pz();
-  if ( verbosity_ >= 2 )
-  {
-    printMadGraphMomenta();
-  }
   double prob_ME = -1.;
   if ( madgraphIsInitialized_ ) {    
     if ( measuredChargedLepton_.charge() > 0 ) {
-      // CV: need to use different MadGraph matrix elements for case that charged lepton has positive and negative charge ?
-      //    (and will the ordering of madgraphMomenta be different in the two cases ? --> check momentum labels in .ps files)
-//me_madgraph_.setMomenta(madgraphMomenta_);
-//me_madgraph_.sigmaKin();
-//prob_ME = me_madgraph_.getMatrixElements()[0];
+      if ( verbosity_ >= 2 )
+      {
+	printMadGraphMomenta(madgraphMomenta_chargedLeptonPlus_);
+      }
+      me_madgraph_chargedLeptonPlus_.setMomenta(madgraphMomenta_chargedLeptonPlus_);
+      me_madgraph_chargedLeptonPlus_.sigmaKin();
+      prob_ME = me_madgraph_chargedLeptonPlus_.getMatrixElements()[0];
     } else if ( measuredChargedLepton_.charge() < 0 ) {
-      // CV: need to use different MadGraph matrix elements for case that charged lepton has positive and negative charge ?
-      //    (and will the ordering of madgraphMomenta be different in the two cases ? --> check momentum labels in .ps files)
-//me_madgraph_.setMomenta(madgraphMomenta_);
-//me_madgraph_.sigmaKin();
-//prob_ME = me_madgraph_.getMatrixElements()[0];
+      if ( verbosity_ >= 2 )
+      {
+	printMadGraphMomenta(madgraphMomenta_chargedLeptonMinus_);
+      }
+      me_madgraph_chargedLeptonMinus_.setMomenta(madgraphMomenta_chargedLeptonMinus_);
+      me_madgraph_chargedLeptonMinus_.sigmaKin();
+      prob_ME = me_madgraph_chargedLeptonMinus_.getMatrixElements()[0];
     } else assert(0);
     ++numMatrixElementEvaluations_;
     if ( TMath::IsNaN(prob_ME) ) 

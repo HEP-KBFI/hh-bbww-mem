@@ -22,33 +22,55 @@ MEMbbwwIntegrandSingleLepton_signal::MEMbbwwIntegrandSingleLepton_signal(double 
   // initialize MadGraph
   if ( madgraphFileName != "" ) {
     std::cout << "initializing MadGraph ME for HH signal using " << madgraphFileName << " file." << std::endl;
-//me_madgraph_.initProc(madgraphFileName);
+    me_madgraph_chargedLeptonPlus_.initProc(madgraphFileName);
+    me_madgraph_chargedLeptonMinus_.initProc(madgraphFileName);
     madgraphIsInitialized_ = true;
   } else {
     std::cerr << "Error in <MEMbbwwIntegrandSingleLepton_signal>: No param.dat file for MadGraph given !!" << std::endl;
     assert(0);
   }
 
-  // define ordering of four-vectors passed to MadGraph when evaluating the matrix element:
+  // define ordering of four-vectors passed to MadGraph when evaluating the matrix element
+  // for events containing leptons of positive charge:
   //   1) first incoming gluon
   //   2) second incoming gluon
   //   3) first outgoing b quark (b-jet)
   //   4) second outgoing b quark (b-jet)
-  //   5) outgoing lepton of positive charge
+  //   5) outgoing charged lepton
   //   6) outgoing neutrino
-  //   7) outgoing lepton of negative charge
-  //   8) outgoing anti-neutrino
+  //   7) first outgoing jet from W->jj decay
+  //   8) second outgoing jet from W->jj decay
   //
-  // Note: the ordering needs to match the labels 1-8 as they are defined in the Feynman diagram doc/mg5/hh.ps
-// CV: ORDER NEEDS TO BE CHECKED/UPDATED !!
-  madgraphMomenta_.push_back(madgraphGluon1P4_);
-  madgraphMomenta_.push_back(madgraphGluon2P4_);
-  madgraphMomenta_.push_back(madgraphBJet1P4_);
-  madgraphMomenta_.push_back(madgraphBJet2P4_);
-  madgraphMomenta_.push_back(madgraphChargedLeptonP4_);
-  madgraphMomenta_.push_back(madgraphNeutrinoP4_);
-  madgraphMomenta_.push_back(madgraphHadWJet1P4_);
-  madgraphMomenta_.push_back(madgraphHadWJet2P4_);
+  // Note: the ordering needs to match the labels 1-8 as they are defined in the Feynman diagram doc/mg5/hh_sl_pos.ps
+  madgraphMomenta_chargedLeptonPlus_.push_back(madgraphGluon1P4_);
+  madgraphMomenta_chargedLeptonPlus_.push_back(madgraphGluon2P4_);
+  madgraphMomenta_chargedLeptonPlus_.push_back(madgraphBJet1P4_);
+  madgraphMomenta_chargedLeptonPlus_.push_back(madgraphBJet2P4_);
+  madgraphMomenta_chargedLeptonPlus_.push_back(madgraphChargedLeptonP4_);
+  madgraphMomenta_chargedLeptonPlus_.push_back(madgraphNeutrinoP4_);
+  madgraphMomenta_chargedLeptonPlus_.push_back(madgraphHadWJet1P4_);
+  madgraphMomenta_chargedLeptonPlus_.push_back(madgraphHadWJet2P4_);
+
+  // define ordering of four-vectors passed to MadGraph when evaluating the matrix element
+  // for events containing leptons of negative charge:
+  //   1) first incoming gluon
+  //   2) second incoming gluon
+  //   3) first outgoing b quark (b-jet)
+  //   4) second outgoing b quark (b-jet)
+  //   5) first outgoing jet from W->jj decay
+  //   6) second outgoing jet from W->jj decay
+  //   7) outgoing charged lepton
+  //   8) outgoing neutrino
+  //
+  // Note: the ordering needs to match the labels 1-8 as they are defined in the Feynman diagram doc/mg5/hh_sl_neg.ps
+  madgraphMomenta_chargedLeptonMinus_.push_back(madgraphGluon1P4_);
+  madgraphMomenta_chargedLeptonMinus_.push_back(madgraphGluon2P4_);
+  madgraphMomenta_chargedLeptonMinus_.push_back(madgraphBJet1P4_);
+  madgraphMomenta_chargedLeptonMinus_.push_back(madgraphBJet2P4_);
+  madgraphMomenta_chargedLeptonMinus_.push_back(madgraphHadWJet1P4_);
+  madgraphMomenta_chargedLeptonMinus_.push_back(madgraphHadWJet2P4_);
+  madgraphMomenta_chargedLeptonMinus_.push_back(madgraphChargedLeptonP4_);
+  madgraphMomenta_chargedLeptonMinus_.push_back(madgraphNeutrinoP4_);
 }
 
 MEMbbwwIntegrandSingleLepton_signal::~MEMbbwwIntegrandSingleLepton_signal()
@@ -330,25 +352,26 @@ double MEMbbwwIntegrandSingleLepton_signal::Eval(const double* x) const
   madgraphBJet2P4_[1] = trueBJet2P4_ztm.px();
   madgraphBJet2P4_[2] = trueBJet2P4_ztm.py();
   madgraphBJet2P4_[3] = trueBJet2P4_ztm.pz();
-  if ( verbosity_ >= 2 )
-  {
-    printMadGraphMomenta();
-  }
   double prob_ME = -1.;
   if ( madgraphIsInitialized_ ) {
-//me_madgraph_.setHiggsWidth(2.); // CV: enlarge Higgs boson width to make ME evaluation robust against rounding errors
     if ( measuredChargedLepton_.charge() > 0 ) {
-      // CV: need to use different MadGraph matrix elements for case that charged lepton has positive and negative charge ?
-      //    (and will the ordering of madgraphMomenta be different in the two cases ? --> check momentum labels in .ps files)
-//me_madgraph_.setMomenta(madgraphMomenta_);
-//me_madgraph_.sigmaKin();
-//prob_ME = me_madgraph_.getMatrixElements()[0];
+      if ( verbosity_ >= 2 )
+      {
+        printMadGraphMomenta(madgraphMomenta_chargedLeptonPlus_);
+      }
+      me_madgraph_chargedLeptonPlus_.setHiggsWidth(2.); // CV: enlarge Higgs boson width to make ME evaluation robust against rounding errors
+      me_madgraph_chargedLeptonPlus_.setMomenta(madgraphMomenta_chargedLeptonPlus_);
+      me_madgraph_chargedLeptonPlus_.sigmaKin();
+      prob_ME = me_madgraph_chargedLeptonPlus_.getMatrixElements()[0];
     } else if ( measuredChargedLepton_.charge() < 0 ) {
-      // CV: need to use different MadGraph matrix elements for case that charged lepton has positive and negative charge ?
-      //    (and will the ordering of madgraphMomenta be different in the two cases ? --> check momentum labels in .ps files)
-//me_madgraph_.setMomenta(madgraphMomenta_);
-//me_madgraph_.sigmaKin();
-//prob_ME = me_madgraph_.getMatrixElements()[0];
+      if ( verbosity_ >= 2 )
+      {
+        printMadGraphMomenta(madgraphMomenta_chargedLeptonMinus_);
+      }
+      me_madgraph_chargedLeptonMinus_.setHiggsWidth(2.); // CV: enlarge Higgs boson width to make ME evaluation robust against rounding errors
+      me_madgraph_chargedLeptonMinus_.setMomenta(madgraphMomenta_chargedLeptonMinus_);
+      me_madgraph_chargedLeptonMinus_.sigmaKin();
+      prob_ME = me_madgraph_chargedLeptonMinus_.getMatrixElements()[0];
     } else assert(0);
     ++numMatrixElementEvaluations_;
     if ( TMath::IsNaN(prob_ME) ) 

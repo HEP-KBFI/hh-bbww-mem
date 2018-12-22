@@ -38,6 +38,8 @@ class MEMbbwwIntegrandSingleLepton : public MEMbbwwIntegrandBase
   double* madgraphNeutrinoP4_;
   double* madgraphHadWJet1P4_;
   double* madgraphHadWJet2P4_;
+  mutable std::vector<double*> madgraphMomenta_chargedLeptonPlus_;
+  mutable std::vector<double*> madgraphMomenta_chargedLeptonMinus_;
 };
 
 }

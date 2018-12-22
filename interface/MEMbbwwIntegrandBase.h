@@ -66,7 +66,7 @@ class MEMbbwwIntegrandBase
   LHAPDF::PDF* pdf_;
 
   /// print four-vectors passed to MadGraph 
-  void printMadGraphMomenta() const;
+  void printMadGraphMomenta(const std::vector<double*>& ) const;
   
   /// integration variables
   unsigned intNumDimensions_;
@@ -106,7 +106,6 @@ class MEMbbwwIntegrandBase
   double* madgraphGluon2P4_;
   double* madgraphBJet1P4_;
   double* madgraphBJet2P4_;
-  mutable std::vector<double*> madgraphMomenta_;
   mutable unsigned long numMatrixElementEvaluations_;
 
   /// error code that can be passed on

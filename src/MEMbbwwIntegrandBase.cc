@@ -61,16 +61,16 @@ MEMbbwwIntegrandBase::setPDF(LHAPDF::PDF * pdf)
 }
 
 void 
-MEMbbwwIntegrandBase::printMadGraphMomenta() const
+MEMbbwwIntegrandBase::printMadGraphMomenta(const std::vector<double*>& madgraphMomenta) const
 {
   std::cout << "<MEMbbwwIntegrandBase::printMadGraphMomenta>:" << std::endl;
-  size_t numParticles = madgraphMomenta_.size();
+  size_t numParticles = madgraphMomenta.size();
   for ( size_t idxParticle = 0; idxParticle < numParticles; ++idxParticle ) {
     std::cout << "particle #" << idxParticle << ":" 
-	      << " En = " << madgraphMomenta_[idxParticle][0] << "," 
-	      << " Px = " << madgraphMomenta_[idxParticle][1] << ","
-	      << " Py = " << madgraphMomenta_[idxParticle][2] << ","
-	      << " Pz = " << madgraphMomenta_[idxParticle][3] << std::endl;
+	      << " En = " << madgraphMomenta[idxParticle][0] << "," 
+	      << " Px = " << madgraphMomenta[idxParticle][1] << ","
+	      << " Py = " << madgraphMomenta[idxParticle][2] << ","
+	      << " Pz = " << madgraphMomenta[idxParticle][3] << std::endl;
   }
 }
 

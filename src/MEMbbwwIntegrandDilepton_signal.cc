@@ -315,7 +315,7 @@ double MEMbbwwIntegrandDilepton_signal::Eval(const double* x) const
   madgraphBJet2P4_[3] = trueBJet2P4_ztm.pz();
   if ( verbosity_ >= 2 )
   {
-    printMadGraphMomenta();
+    printMadGraphMomenta(madgraphMomenta_);
   }
   double prob_ME = -1.;
   if ( madgraphIsInitialized_ ) {

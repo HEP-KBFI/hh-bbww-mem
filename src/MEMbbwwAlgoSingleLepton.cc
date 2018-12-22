@@ -142,6 +142,7 @@ MEMbbwwAlgoSingleLepton::setMeasuredParticles(const std::vector<mem::MeasuredPar
 	measuredHadWJet1 != measuredHadWJets_.end(); ++measuredHadWJet1 ) {
     for ( std::vector<const mem::MeasuredParticle*>::const_iterator measuredHadWJet2 = measuredHadWJets_.begin();
 	measuredHadWJet2 != measuredHadWJets_.end(); ++measuredHadWJet2 ) {
+      // CV: add both permutations of measuredHadWJet1 and measuredHadWJet2
       measuredHadWJetPairs_.push_back(MeasuredHadWJetPair(**measuredHadWJet1, **measuredHadWJet2));
     }
   }
