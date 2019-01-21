@@ -18,10 +18,15 @@ class MEMbbwwAlgoBase
   MEMbbwwAlgoBase(double, const std::string&, const std::string&, const std::string& = "", int = 0);
   virtual ~MEMbbwwAlgoBase();
 
-  /// number of function calls for VEGAS and VAMP integration (default is 100000)
-  void setMaxObjFunctionCalls(unsigned maxObjFunctionCalls) 
+  /// number of function calls for VEGAS and VAMP integration for signal hypothesis (default is 10000)
+  void setMaxObjFunctionCalls_signal(unsigned maxObjFunctionCalls) 
   { 
-    maxObjFunctionCalls_ = maxObjFunctionCalls;
+    maxObjFunctionCalls_signal_ = maxObjFunctionCalls;
+  }
+  /// number of function calls for VEGAS and VAMP integration for background hypothesis (default is 100000)
+  void setMaxObjFunctionCalls_background(unsigned maxObjFunctionCalls) 
+  { 
+    maxObjFunctionCalls_background_ = maxObjFunctionCalls;
   }
 
   /// set integration algorithm (either VEGAS or VAMP algorithm)
@@ -58,7 +63,7 @@ class MEMbbwwAlgoBase
   virtual void setMeasuredMEt_and_Cov(double, double, const TMatrixD&);
 
   /// initialize integration algorithm (either VEGAS or VAMP)
-  void initializeIntAlgo();
+  void initializeIntAlgo(unsigned maxObjFunctionCalls);
 
   /// run actual integration to compute compatibility of measured particles and MET with either signal or background hypothesis,
   /// and for one particular permutation of measured charged leptons and b-jets
@@ -79,7 +84,8 @@ class MEMbbwwAlgoBase
   /// interface to integration algorithm (either VEGAS or VAMP)
   int intMode_;
   mem::MEMIntegratorBase* intAlgo_;
-  unsigned maxObjFunctionCalls_;
+  unsigned maxObjFunctionCalls_signal_;
+  unsigned maxObjFunctionCalls_background_;
   double precision_;
 
   /// clock for measuring run-time of algorithm

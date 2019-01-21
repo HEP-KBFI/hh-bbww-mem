@@ -43,7 +43,8 @@ MEMbbwwAlgoBase::MEMbbwwAlgoBase(double sqrtS,
   , sqrtS_(sqrtS)
   , intMode_(kVAMP)
   , intAlgo_(nullptr)
-  , maxObjFunctionCalls_(20000)
+  , maxObjFunctionCalls_signal_(10000)
+  , maxObjFunctionCalls_background_(100000)
   , precision_(1.e-3)
   , clock_(nullptr)
   , numSeconds_cpu_(-1.)
@@ -101,17 +102,17 @@ void MEMbbwwAlgoBase::setMeasuredMEt_and_Cov(double measuredMEtPx, double measur
   }
 }
 
-void MEMbbwwAlgoBase::initializeIntAlgo()
+void MEMbbwwAlgoBase::initializeIntAlgo(unsigned maxObjFunctionCalls)
 {
   if ( intMode_ == kVEGAS ) {
-    unsigned numCallsGridOpt = TMath::Nint(0.20*maxObjFunctionCalls_);
-    unsigned numCallsIntEval = TMath::Nint(0.80*maxObjFunctionCalls_);
+    unsigned numCallsGridOpt = TMath::Nint(0.20*maxObjFunctionCalls);
+    unsigned numCallsIntEval = TMath::Nint(0.80*maxObjFunctionCalls);
     intAlgo_ = new MEMIntegratorVEGAS(
       numCallsGridOpt, numCallsIntEval, 
       2., 1);
   } else if ( intMode_ == kVAMP ) {
-    unsigned numCallsGridOpt = TMath::Nint(0.20*maxObjFunctionCalls_);
-    unsigned numCallsIntEval = TMath::Nint(0.80*maxObjFunctionCalls_);
+    unsigned numCallsGridOpt = TMath::Nint(0.20*maxObjFunctionCalls);
+    unsigned numCallsIntEval = TMath::Nint(0.80*maxObjFunctionCalls);
     intAlgo_ = new MEMIntegratorVAMP(
       numCallsGridOpt, numCallsIntEval);
   } else {

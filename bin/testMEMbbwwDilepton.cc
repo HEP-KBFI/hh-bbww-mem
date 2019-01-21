@@ -31,7 +31,6 @@ namespace
 int
 main(int argc __attribute__((unused)), char ** argv __attribute__((unused)))
 {
-
   /* This is a single HH->bbWW->bb lnulnu signal event for testing purposes */
   using namespace mem;
 
@@ -54,15 +53,6 @@ main(int argc __attribute__((unused)), char ** argv __attribute__((unused)))
     { MeasuredParticle::kBJet,      93.500, +0.016, -2.898, bottomQuarkMass     },
   };
 
-//std::cout << "trueLep+: Pt = " << measuredParticles_signal[0].pt() << ", eta = " << measuredParticles_signal[0].eta() << ", phi = " << measuredParticles_signal[0].phi() << std::endl;
-//MeasuredParticle trueNu(MeasuredParticle::kElectron, 157.500, -0.654, -0.869, 0.000);
-//std::cout << "trueNu: En = " << trueNu.energy() << ", Theta = " << trueNu.theta() << std::endl;
-//std::cout << "m(lep+ nu) = " << (measuredParticles_signal[0].p4() + trueNu.p4()).mass() << std::endl;
-//std::cout << "trueLep-: Pt = " << measuredParticles_signal[1].pt() << ", eta = " << measuredParticles_signal[1].eta() << ", phi = " << measuredParticles_signal[1].phi() << std::endl;
-//MeasuredParticle trueAntiNu(MeasuredParticle::kElectron, 191.000, -0.941, -0.857, 0.000);
-//std::cout << "trueAntiNu: En = " << trueAntiNu.energy() << ", Theta = " << trueAntiNu.theta() << std::endl;
-//std::cout << "m(lep- nu) = " << (measuredParticles_signal[1].p4() + trueAntiNu.p4()).mass() << std::endl;
-//std::cout << "m(lep+ nu lep- nu) = " << (measuredParticles_signal[0].p4() + trueNu.p4() + measuredParticles_signal[1].p4() + trueAntiNu.p4()).mass() << std::endl;
   // gen jets:
   // pt = 205.977 eta = -0.011 phi = +2.634 mass = 23.656 partonFlavour = -5
   // pt =  87.232 eta = +0.049 phi = -2.891 mass =  6.625 partonFlavour = +5
@@ -77,7 +67,6 @@ main(int argc __attribute__((unused)), char ** argv __attribute__((unused)))
 
   // define measured missing transverse momentum (MET)
   // at generator level:
-//std::cout << "trueNuPx = " << 157.500 * std::cos(-0.869) << ", trueAntiNuPx = " << 191.000 * std::cos(-0.857) << std::endl;
   const double measuredMEtPx_signal = 157.500 * std::cos(-0.869) + 191.000 * std::cos(-0.857);
   const double measuredMEtPy_signal = 157.500 * std::sin(-0.869) + 191.000 * std::sin(-0.857);
   // at reco level:
@@ -173,7 +162,8 @@ main(int argc __attribute__((unused)), char ** argv __attribute__((unused)))
   MEMbbwwAlgoDilepton memAlgo(sqrtS, pdfName, findFile(madgraphFileName_signal), findFile(madgraphFileName_background), verbosity);
   memAlgo.applyOnshellWmassConstraint_signal(applyOnshellWmassConstraint_signal);
   memAlgo.setIntMode(MEMbbwwAlgoDilepton::kVAMP);
-  memAlgo.setMaxObjFunctionCalls(1000);
+  memAlgo.setMaxObjFunctionCalls_signal(2500);
+  memAlgo.setMaxObjFunctionCalls_background(25000);
 
   std::cout << "processing signal event:\n";
   std::cout << " m(bb) = " << (measuredParticles_signal[2].p4() + measuredParticles_signal[3].p4()).mass() << std::endl;

@@ -19,10 +19,10 @@ MEMbbwwIntegrandDilepton::MEMbbwwIntegrandDilepton(double sqrtS, const std::stri
 
 MEMbbwwIntegrandDilepton::~MEMbbwwIntegrandDilepton()
 {
-  if ( verbosity_ >= 1 ) 
-  {
-    std::cout << "<MEMbbwwIntegrandDilepton::~MEMbbwwIntegrandDilepton>:" << std::endl;
-  }
+  //if ( verbosity_ >= 1 ) 
+  //{
+  //  std::cout << "<MEMbbwwIntegrandDilepton::~MEMbbwwIntegrandDilepton>:" << std::endl;
+  //}
   
   delete [] madgraphChargedLeptonPlusP4_;
   delete [] madgraphNeutrinoP4_;

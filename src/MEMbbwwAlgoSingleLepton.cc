@@ -172,15 +172,18 @@ MEMbbwwAlgoSingleLepton::integrate(const std::vector<MeasuredParticle>& measured
   }
 
   clock_->Reset();
-  clock_->Start("<MEMbbwwAlgoSingleLepton::integrate (total)>");
+  //const std::string label_total = "<MEMbbwwAlgoSingleLepton::integrate (total)>";
+  const std::string label_total = "<MEMbbwwAlgoSingleLepton::integrate>";
+  clock_->Start(label_total.data());
 
   setMeasuredParticles(measuredParticles);
   setMeasuredMEt_and_Cov(measuredMEtPx, measuredMEtPy, measuredMEtCov);
 
   size_t numHadWJetPairs = measuredHadWJetPairs_.size();
   if ( maxNumHadWJetPairs_ > 0 ) numHadWJetPairs = std::min(numHadWJetPairs, (size_t)maxNumHadWJetPairs_);
-
-  clock_->Start("<MEMbbwwAlgoSingleLepton::integrate (signal hypothesis)>");
+  
+  //const std::string label_signal = "<MEMbbwwAlgoSingleLepton::integrate (signal hypothesis)>";
+  //clock_->Start(label_signal.data());
   result_.prob_signal_ = 0.;
   result_.probErr_signal_ = 0.;
   result_.permutations_signal_.clear();
@@ -211,7 +214,7 @@ MEMbbwwAlgoSingleLepton::integrate(const std::vector<MeasuredParticle>& measured
       }
       integrand_signal_->setOnshellChargedLepton(chargedLeptonPermutation);
       MEMbbwwAlgoSingleLepton::gMEMIntegrand = integrand_signal_;
-      initializeIntAlgo();
+      initializeIntAlgo(maxObjFunctionCalls_signal_);
       double prob_permutation, probErr_permutation;
       MEMbbwwAlgoSingleLepton::runIntAlgo(integrand_signal_, prob_permutation, probErr_permutation);
       result_.prob_signal_ += prob_permutation;
@@ -228,12 +231,13 @@ MEMbbwwAlgoSingleLepton::integrate(const std::vector<MeasuredParticle>& measured
   result_.prob_signal_ /= numPermutations_signal;
   result_.probErr_signal_ /= numPermutations_signal;
   numMatrixElementEvaluations_signal_ = integrand_signal_->getNumMatrixElementEvaluations();
-  clock_->Stop("<MEMbbwwAlgoSingleLepton::integrate (signal hypothesis)>");
-  if ( verbosity_ >= 0 ) {
-    clock_->Show("<MEMbbwwAlgoSingleLepton::integrate (signal hypothesis)>");
-  }
+  //clock_->Stop(label_signal.data().data());
+  //if ( verbosity_ >= 0 ) {
+  //  clock_->Show(label_signal.data().data());
+  //}
  
-  clock_->Start("<MEMbbwwAlgoSingleLepton::integrate (background hypothesis)>");
+  //const std::string label_background = "<MEMbbwwAlgoSingleLepton::integrate (background hypothesis)>";
+  //clock_->Start(label_background.data());
   result_.prob_background_ = 0.;
   result_.probErr_background_ = 0.;
   result_.permutations_background_.clear();
@@ -257,7 +261,7 @@ MEMbbwwAlgoSingleLepton::integrate(const std::vector<MeasuredParticle>& measured
 	*measuredHadWJet1, *measuredHadWJet2,
         measuredMEtPx_, measuredMEtPy_, measuredMEtCov_);
       MEMbbwwAlgoSingleLepton::gMEMIntegrand = integrand_background_;
-      initializeIntAlgo();
+      initializeIntAlgo(maxObjFunctionCalls_background_);
       double prob_permutation, probErr_permutation;
       MEMbbwwAlgoSingleLepton::runIntAlgo(integrand_background_, prob_permutation, probErr_permutation);
       result_.prob_background_ += prob_permutation;
@@ -273,15 +277,15 @@ MEMbbwwAlgoSingleLepton::integrate(const std::vector<MeasuredParticle>& measured
   result_.prob_background_ /= numPermutations_background;
   result_.probErr_background_ /= numPermutations_background;
   numMatrixElementEvaluations_background_ = integrand_background_->getNumMatrixElementEvaluations();
-  clock_->Stop("<MEMbbwwAlgoSingleLepton::integrate (background hypothesis)>");
-  if ( verbosity_ >= 0 ) {
-    clock_->Show("<MEMbbwwAlgoSingleLepton::integrate (background hypothesis)>");
-  }
+  //clock_->Stop(label_background.data());
+  //if ( verbosity_ >= 0 ) {
+  //  clock_->Show(label_background.data());
+  //}
 
-  clock_->Stop("<MEMbbwwAlgoSingleLepton::integrate (total)>");
+  clock_->Stop(label_total.data());
   if ( verbosity_ >= 0 ) {
-    clock_->Show("<MEMbbwwAlgoSingleLepton::integrate> (total)");
+    clock_->Show(label_total.data());
   }
-  numSeconds_cpu_ = clock_->GetCpuTime("<MEMbbwwAlgoSingleLepton::integrate (total)>");
-  numSeconds_real_ = clock_->GetRealTime("<MEMbbwwAlgoSingleLepton::integrate (total)>");
+  numSeconds_cpu_ = clock_->GetCpuTime(label_total.data());
+  numSeconds_real_ = clock_->GetRealTime(label_total.data());
 }

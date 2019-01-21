@@ -106,12 +106,15 @@ MEMbbwwAlgoDilepton::integrate(const std::vector<MeasuredParticle>& measuredPart
   }
 
   clock_->Reset();
-  clock_->Start("<MEMbbwwAlgoDilepton::integrate (total)>");
+  //const std::string label_total = "<MEMbbwwAlgoDilepton::integrate (total)>";
+  const std::string label_total = "<MEMbbwwAlgoDilepton::integrate>";
+  clock_->Start(label_total.data());
 
   setMeasuredParticles(measuredParticles);
   setMeasuredMEt_and_Cov(measuredMEtPx, measuredMEtPy, measuredMEtCov);
 
-  clock_->Start("<MEMbbwwAlgoDilepton::integrate (signal hypothesis)>");
+  //const std::string label_signal = "<MEMbbwwAlgoDilepton::integrate (signal hypothesis)>";
+  //clock_->Start(label_signal.data());
   result_.prob_signal_ = 0.;
   result_.probErr_signal_ = 0.;
   result_.permutations_signal_.clear();
@@ -137,7 +140,7 @@ MEMbbwwAlgoDilepton::integrate(const std::vector<MeasuredParticle>& measuredPart
     }
     integrand_signal_->setOnshellChargedLepton(chargedLeptonPermutation);
     MEMbbwwAlgoDilepton::gMEMIntegrand = integrand_signal_;
-    initializeIntAlgo();
+    initializeIntAlgo(maxObjFunctionCalls_signal_);
     double prob_permutation, probErr_permutation;
     MEMbbwwAlgoDilepton::runIntAlgo(integrand_signal_, prob_permutation, probErr_permutation);
     result_.prob_signal_ += prob_permutation;
@@ -161,12 +164,13 @@ MEMbbwwAlgoDilepton::integrate(const std::vector<MeasuredParticle>& measuredPart
   result_.prob_signal_ /= 4.;
   result_.probErr_signal_ /= 4.;
   numMatrixElementEvaluations_signal_ = integrand_signal_->getNumMatrixElementEvaluations();
-  clock_->Stop("<MEMbbwwAlgoDilepton::integrate (signal hypothesis)>");
-  if ( verbosity_ >= 0 ) {
-    clock_->Show("<MEMbbwwAlgoDilepton::integrate (signal hypothesis)>");
-  }
-  
-  clock_->Start("<MEMbbwwAlgoDilepton::integrate (background hypothesis)>");
+  //clock_->Stop(label_signal.data().data());
+  //if ( verbosity_ >= 0 ) {
+  //  clock_->Show(label_signal.data().data());
+  //}
+
+  //const std::string label_background = "<MEMbbwwAlgoDilepton::integrate (background hypothesis)>";
+  //clock_->Start(label_background.data());
   result_.prob_background_ = 0.;
   result_.probErr_background_ = 0.;
   result_.permutations_background_.clear();
@@ -185,7 +189,7 @@ MEMbbwwAlgoDilepton::integrate(const std::vector<MeasuredParticle>& measuredPart
       *measuredChargedLeptonPlus_, *measuredChargedLeptonMinus_, *measuredBJetFromTop, *measuredBJetFromAntiTop, 
       measuredMEtPx_, measuredMEtPy_, measuredMEtCov_);
     MEMbbwwAlgoDilepton::gMEMIntegrand = integrand_background_;
-    initializeIntAlgo();
+    initializeIntAlgo(maxObjFunctionCalls_background_);
     double prob_permutation, probErr_permutation;
     MEMbbwwAlgoDilepton::runIntAlgo(integrand_background_, prob_permutation, probErr_permutation);
     result_.prob_background_ += prob_permutation;
@@ -199,15 +203,15 @@ MEMbbwwAlgoDilepton::integrate(const std::vector<MeasuredParticle>& measuredPart
   result_.prob_background_ /= 2.;
   result_.probErr_background_ /= 2.;
   numMatrixElementEvaluations_background_ = integrand_background_->getNumMatrixElementEvaluations();
-  clock_->Stop("<MEMbbwwAlgoDilepton::integrate (background hypothesis)>");
-  if ( verbosity_ >= 0 ) {
-    clock_->Show("<MEMbbwwAlgoDilepton::integrate (background hypothesis)>");
-  }
+  //clock_->Stop(label_background.data());
+  //if ( verbosity_ >= 0 ) {
+  //  clock_->Show(label_background.data());
+  //}
 
-  clock_->Stop("<MEMbbwwAlgoDilepton::integrate (total)>");
+  clock_->Stop(label_total.data());
   if ( verbosity_ >= 0 ) {
-    clock_->Show("<MEMbbwwAlgoDilepton::integrate (total)>");
+    clock_->Show(label_total.data());
   }
-  numSeconds_cpu_ = clock_->GetCpuTime("<MEMbbwwAlgoDilepton::integrate (total)>");
-  numSeconds_real_ = clock_->GetRealTime("<MEMbbwwAlgoDilepton::integrate (total)>");
+  numSeconds_cpu_ = clock_->GetCpuTime(label_total.data());
+  numSeconds_real_ = clock_->GetRealTime(label_total.data());
 }

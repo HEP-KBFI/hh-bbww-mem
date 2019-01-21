@@ -36,10 +36,10 @@ MEMbbwwIntegrandBase::MEMbbwwIntegrandBase(double sqrtS, const std::string& madg
 
 MEMbbwwIntegrandBase::~MEMbbwwIntegrandBase()
 {
-  if ( verbosity_ >= 1 ) 
-  {
-    std::cout << "<MEMbbwwIntegrandBase::~MEMbbwwIntegrandBase>:" << std::endl;
-  }
+  //if ( verbosity_ >= 1 ) 
+  //{
+  //  std::cout << "<MEMbbwwIntegrandBase::~MEMbbwwIntegrandBase>:" << std::endl;
+  //}
   
   delete [] intIntBounds_lower_;
   delete [] intIntBounds_upper_;

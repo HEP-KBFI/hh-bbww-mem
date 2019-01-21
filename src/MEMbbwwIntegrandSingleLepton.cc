@@ -22,10 +22,10 @@ MEMbbwwIntegrandSingleLepton::MEMbbwwIntegrandSingleLepton(double sqrtS, const s
 
 MEMbbwwIntegrandSingleLepton::~MEMbbwwIntegrandSingleLepton()
 {
-  if ( verbosity_ >= 1 ) 
-  {
-    std::cout << "<MEMbbwwIntegrandSingleLepton::~MEMbbwwIntegrandSingleLepton>:" << std::endl;
-  }
+  //if ( verbosity_ >= 1 ) 
+  //{
+  //  std::cout << "<MEMbbwwIntegrandSingleLepton::~MEMbbwwIntegrandSingleLepton>:" << std::endl;
+  //}
 
   delete hadWJet1TF_;
   delete hadWJet2TF_;
