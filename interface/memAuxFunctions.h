@@ -102,13 +102,17 @@ namespace mem
 
   void printLorentzVector(const std::string&, const LorentzVector&);
   void printLorentzVector(const std::string&, const LorentzVector&, const LorentzVector&);
+  void printLorentzVector_NA(const std::string&, const LorentzVector&);
 
-  std::vector<double> compBJet2En_Hbb(const LorentzVector&, const LorentzVector&);
+  std::vector<double> compBJetEn_Hbb(const LorentzVector&, double, double);
   double compNuEn_Wlnu(const LorentzVector&, double, double, double = wBosonMass2);
   double compNuStarEn_Hww(const LorentzVector&, double, double);
-  std::vector<double> compBJetEn_top(const LorentzVector&, const LorentzVector&);
-  double compHadWJet2En_Wjj(const LorentzVector&, const LorentzVector&, double = wBosonMass2);
-  double compHadWJet2En_Hww(const LorentzVector&, const LorentzVector&);
+  std::vector<double> compBJetEn_top(const LorentzVector&, double, double);
+  double compHadWJet2En_Wjj(const LorentzVector&, double, double, double = wBosonMass2);
+  double compHadWJet2En_Hww(const LorentzVector&, double, double);
+
+  LorentzVector findBJetEn_solution_Hbb(const std::vector<double>&, double, double, const LorentzVector&, bool&);
+  LorentzVector findBJetEn_solution_top(const std::vector<double>&, double, double, const LorentzVector&, bool&);
 
   LorentzVector buildLorentzVector(double, double, double);
   LorentzVector buildLorentzVector(double, double, double, double);

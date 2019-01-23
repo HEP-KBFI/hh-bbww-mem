@@ -20,14 +20,16 @@ class MEMbbwwIntegrandSingleLepton : public MEMbbwwIntegrandBase
   virtual ~MEMbbwwIntegrandSingleLepton();
   
   /// set measured momenta of charged leptons and b-jets and of missing transverse momentum
-  virtual void setInputs(const mem::MeasuredParticle&, const mem::MeasuredParticle&, const mem::MeasuredParticle&, const mem::MeasuredParticle&, const mem::MeasuredParticle&,
+  virtual void setInputs(const mem::MeasuredParticle*, 
+			 const mem::MeasuredParticle*, const mem::MeasuredParticle*, 
+			 const mem::MeasuredParticle*, const mem::MeasuredParticle*,
 			 double, double, const TMatrixD&);
 
  protected:  
   /// measured momenta of charged lepton and of the two jets from the W->jj decay
-  MeasuredParticle measuredChargedLepton_;
-  MeasuredParticle measuredHadWJet1_;
-  MeasuredParticle measuredHadWJet2_;
+  const MeasuredParticle* measuredChargedLepton_;
+  const MeasuredParticle* measuredHadWJet1_;
+  const MeasuredParticle* measuredHadWJet2_;
 
   /// transfer functions for jets from W->jj decay
   HadWJetTF* hadWJet1TF_;

@@ -12,7 +12,8 @@ MEMbbwwIntegrandSingleLepton_signal::MEMbbwwIntegrandSingleLepton_signal(double 
   , applyOnshellWmassConstraint_(true)
   , chargedLeptonPermutation_(kPermutationUndefined1L)
 {
-  if ( verbosity_ ) {
+  if ( verbosity_ ) 
+  {
     std::cout << "<MEMbbwwIntegrandSingleLepton_signal::MEMbbwwIntegrandSingleLepton_signal>:" << std::endl;
   }
 
@@ -20,12 +21,15 @@ MEMbbwwIntegrandSingleLepton_signal::MEMbbwwIntegrandSingleLepton_signal(double 
   initializeIntVars();
 
   // initialize MadGraph
-  if ( madgraphFileName != "" ) {
+  if ( madgraphFileName != "" ) 
+  {
     std::cout << "initializing MadGraph ME for HH signal using " << madgraphFileName << " file." << std::endl;
     me_madgraph_chargedLeptonPlus_.initProc(madgraphFileName);
     me_madgraph_chargedLeptonMinus_.initProc(madgraphFileName);
     madgraphIsInitialized_ = true;
-  } else {
+  } 
+  else 
+  {
     std::cerr << "Error in <MEMbbwwIntegrandSingleLepton_signal>: No param.dat file for MadGraph given !!" << std::endl;
     assert(0);
   }
@@ -83,25 +87,25 @@ MEMbbwwIntegrandSingleLepton_signal::initializeIntVars()
   if ( !applyOnshellWmassConstraint_ ) {
     intNumDimensions_ += 1;
   }
-  intIntBounds_lower_ = new double[intNumDimensions_];
-  intIntBounds_upper_ = new double[intNumDimensions_];
+  intBounds_lower_ = new double[intNumDimensions_];
+  intBounds_upper_ = new double[intNumDimensions_];
   intVarNames_.clear();
   intVarNames_.push_back("BJet1En"); 
-  intIntBounds_lower_[0] = -1.; // to be set as function of measured b-jet energy and expected b-jet energy resolution
-  intIntBounds_upper_[0] = -1.;
+  intBounds_lower_[0] = -1.; // to be set as function of measured b-jet energy and expected b-jet energy resolution
+  intBounds_upper_[0] = -1.;
   intVarNames_.push_back("NuTheta"); 
-  intIntBounds_lower_[1] = 0.;
-  intIntBounds_upper_[1] = TMath::Pi();
+  intBounds_lower_[1] = 0.;
+  intBounds_upper_[1] = TMath::Pi();
   intVarNames_.push_back("NuPhi"); 
-  intIntBounds_lower_[2] = -TMath::Pi();
-  intIntBounds_upper_[2] = +TMath::Pi();
+  intBounds_lower_[2] = -TMath::Pi();
+  intBounds_upper_[2] = +TMath::Pi();
   intVarNames_.push_back("HadWJet1En"); 
-  intIntBounds_lower_[3] = -1.; // to be set as function of measured jet energy and expected jet energy resolution
-  intIntBounds_upper_[3] = -1.;
+  intBounds_lower_[3] = -1.; // to be set as function of measured jet energy and expected jet energy resolution
+  intBounds_upper_[3] = -1.;
   if ( !applyOnshellWmassConstraint_ ) {
     intVarNames_.push_back("q2W"); 
-    intIntBounds_lower_[4] = 0.;
-    intIntBounds_upper_[4] = square(wBosonMass + 3.*wBosonWidth);
+    intBounds_lower_[4] = 0.;
+    intBounds_upper_[4] = square(wBosonMass + 3.*wBosonWidth);
   }
 }
 
@@ -113,12 +117,13 @@ MEMbbwwIntegrandSingleLepton_signal::applyOnshellWmassConstraint(bool flag)
 }
 
 void 
-MEMbbwwIntegrandSingleLepton_signal::setInputs(const MeasuredParticle& measuredChargedLepton, 
-					       const MeasuredParticle& measuredHadWJet1, const MeasuredParticle& measuredHadWJet2,
-					       const MeasuredParticle& measuredBJet1, const MeasuredParticle& measuredBJet2,
+MEMbbwwIntegrandSingleLepton_signal::setInputs(const MeasuredParticle* measuredChargedLepton, 
+					       const MeasuredParticle* measuredHadWJet1, const MeasuredParticle* measuredHadWJet2,
+					       const MeasuredParticle* measuredBJet1, const MeasuredParticle* measuredBJet2,
 					       double measuredMEtPx, double measuredMEtPy, const TMatrixD& measuredMEtCov)
 {
-  if ( verbosity_ ) {
+  if ( verbosity_ ) 
+  {
     std::cout << "<MEMbbwwIntegrandSingleLepton_signal::setInputs>:" << std::endl;
   }
 
@@ -131,18 +136,18 @@ MEMbbwwIntegrandSingleLepton_signal::setInputs(const MeasuredParticle& measuredC
   // set integration boundary for energy of first b-jet
   // to measured jet energy +/- 3 times expected energy resolution (rough estimate),
   // in order to increase efficiency of numeric integration
-  double measuredBJet1En = measuredBJet1.energy();
-  double measuredBJet1EnRes = 0.50*TMath::Sqrt(measuredBJet1.energy());
-  intIntBounds_lower_[0] = TMath::Max(10., measuredBJet1En - 3.*measuredBJet1EnRes);
-  intIntBounds_upper_[0] = measuredBJet1En + 3.*measuredBJet1EnRes;
+  double measuredBJet1En = measuredBJet1_->energy();
+  double measuredBJet1EnRes = 0.50*TMath::Sqrt(measuredBJet1_->energy());
+  intBounds_lower_[0] = TMath::Max(10., measuredBJet1En - 3.*measuredBJet1EnRes);
+  intBounds_upper_[0] = measuredBJet1En + 3.*measuredBJet1EnRes;
 
   // set integration boundary for energy of first jet from W->jj decay
   // to measured jet energy +/- 3 times expected energy resolution (rough estimate),
   // in order to increase efficiency of numeric integration
-  double measuredHadWJet1En = measuredHadWJet1.energy();
-  double measuredHadWJet1EnRes = 0.50*TMath::Sqrt(measuredHadWJet1.energy());
-  intIntBounds_lower_[3] = TMath::Max(10., measuredHadWJet1En - 3.*measuredHadWJet1EnRes);
-  intIntBounds_upper_[3] = measuredHadWJet1En + 3.*measuredHadWJet1EnRes;
+  double measuredHadWJet1En = measuredHadWJet1_->energy();
+  double measuredHadWJet1EnRes = 0.50*TMath::Sqrt(measuredHadWJet1_->energy());
+  intBounds_lower_[3] = TMath::Max(10., measuredHadWJet1En - 3.*measuredHadWJet1EnRes);
+  intBounds_upper_[3] = measuredHadWJet1En + 3.*measuredHadWJet1EnRes;
   
   // Standard Model (SM) cross section for (non-resonant) HH production @ 13 TeV center-of-mass energy
   // time branching fraction for the decay HH->bbWW->bblnulnu (excluding electrons and muons from tau decays)
@@ -156,15 +161,16 @@ MEMbbwwIntegrandSingleLepton_signal::setInputs(const MeasuredParticle& measuredC
   // in order to reduce computing time required for numeric integration
   double numerator = square(higgsBosonMass*higgsBosonWidth)*wBosonMass*wBosonWidth;
   double denominator = 1.;
-  if ( applyOnshellWmassConstraint_ ) {
+  if ( applyOnshellWmassConstraint_ ) 
+  {
     denominator *= (TMath::Pi()*wBosonMass*wBosonWidth);
   }
   denominator *= (TMath::Power(2., 25)*TMath::Power(TMath::Pi(), 18));
-  denominator *= measuredChargedLepton.energy();
-  denominator *= (measuredHadWJet1.p()*measuredHadWJet1.energy());
-  denominator *= (measuredHadWJet2.p()*measuredHadWJet2.energy());
-  denominator *= (measuredBJet1.p()*measuredBJet1.energy());
-  denominator *= (measuredBJet2.p()*measuredBJet2.energy());
+  denominator *= measuredChargedLepton_->energy();
+  denominator *= (measuredHadWJet1_->p()*measuredHadWJet1_->energy());
+  denominator *= (measuredHadWJet2_->p()*measuredHadWJet2_->energy());
+  denominator *= (measuredBJet1_->p()*measuredBJet1_->energy());
+  denominator *= (measuredBJet2_->p()*measuredBJet2_->energy());
   denominator *= (crossSection_signal*square(sqrtS_));
   assert(denominator > 0.);
   normFactor_ = numerator/denominator;
@@ -186,44 +192,35 @@ double MEMbbwwIntegrandSingleLepton_signal::Eval(const double* x) const
   assert(chargedLeptonPermutation_ == kOnshellChargedLepton || chargedLeptonPermutation_ == kOffshellChargedLepton);
 
   double trueBJet1En = x[0];
-  LorentzVector trueBJet1P4 = buildLorentzVector(trueBJet1En, measuredBJet1_.theta(), measuredBJet1_.phi(), measuredBJet1_.mass());
+  LorentzVector trueBJet1P4 = buildLorentzVector(trueBJet1En, measuredBJet1_->theta(), measuredBJet1_->phi(), bottomQuarkMass);
 
-  std::vector<double> trueBJet2En_solutions = compBJet2En_Hbb(trueBJet1P4, measuredBJet2_.p4());
-  LorentzVector trueBJet2P4;
+  std::vector<double> trueBJet2En_solutions = compBJetEn_Hbb(trueBJet1P4, measuredBJet2_->theta(), measuredBJet2_->phi());
   bool trueBJet2En_foundSolution = false;
-  double min_trueBJet2_deltaMass = 1.e+3;
-  for ( std::vector<double>::const_iterator trueBJet2En_solution = trueBJet2En_solutions.begin();
-	trueBJet2En_solution != trueBJet2En_solutions.end(); ++trueBJet2En_solution ) {
-    if ( (*trueBJet2En_solution) > 0. ) {
-      LorentzVector trueBJet2P4_solution = buildLorentzVector(*trueBJet2En_solution, measuredBJet2_.theta(), measuredBJet2_.phi(), measuredBJet2_.mass());
-      double trueBJet2_deltaMass = TMath::Abs((trueBJet1P4 + trueBJet2P4_solution).mass() - higgsBosonMass);
-      if ( trueBJet2_deltaMass < min_trueBJet2_deltaMass ) {
-	trueBJet2P4 = trueBJet2P4_solution;
-	trueBJet2En_foundSolution = true;
-	min_trueBJet2_deltaMass = trueBJet2_deltaMass;
-      }
-    }
-  }
+  LorentzVector trueBJet2P4 = findBJetEn_solution_Hbb(trueBJet2En_solutions, measuredBJet2_->theta(), measuredBJet2_->phi(), trueBJet1P4, trueBJet2En_foundSolution);
   if ( !trueBJet2En_foundSolution ) return 0.;
 
-  const LorentzVector& trueChargedLeptonP4 = measuredChargedLepton_.p4();
+  const LorentzVector& trueChargedLeptonP4 = measuredChargedLepton_->p4();
 
   double trueHadWJet1En = x[3];
-  LorentzVector trueHadWJet1P4 = buildLorentzVector(trueHadWJet1En, measuredHadWJet1_.theta(), measuredHadWJet1_.phi());
+  LorentzVector trueHadWJet1P4 = buildLorentzVector(trueHadWJet1En, measuredHadWJet1_->theta(), measuredHadWJet1_->phi());
 
   double trueNuTheta = x[1];
   double trueNuPhi = x[2];
   LorentzVector trueNuP4;
   LorentzVector trueHadWJet2P4;
-  if ( chargedLeptonPermutation_ == kOnshellChargedLepton ) { 
+  if ( chargedLeptonPermutation_ == kOnshellChargedLepton ) 
+  { 
     // charged lepton and neutrino originate from on-shell W boson,
     // while the two jets from W->jj decay originate from off-shell W boson
     //
     // Note: the energy (and four-vector) of the neutrino originating from the on-shell W boson has to be computed first!
     double trueNuEn;
-    if ( applyOnshellWmassConstraint_ ) {
+    if ( applyOnshellWmassConstraint_ ) 
+    {
       trueNuEn = compNuEn_Wlnu(trueChargedLeptonP4, trueNuTheta, trueNuPhi);
-    } else {
+    } 
+    else 
+    {
       double q2W = x[4];
       trueNuEn = compNuEn_Wlnu(trueChargedLeptonP4, trueNuTheta, trueNuPhi, q2W);
     }
@@ -231,23 +228,28 @@ double MEMbbwwIntegrandSingleLepton_signal::Eval(const double* x) const
     trueNuP4 = buildLorentzVector(trueNuEn, trueNuTheta, trueNuPhi);
     LorentzVector trueChargedLepton_Nu_HadWJet1P4 = trueChargedLeptonP4 + trueNuP4 + trueHadWJet1P4;
     if ( trueChargedLepton_Nu_HadWJet1P4.mass() >= higgsBosonMass ) return 0.;
-    double trueHadWJet2En = compHadWJet2En_Hww(trueChargedLepton_Nu_HadWJet1P4, measuredHadWJet2_.p4());
+    double trueHadWJet2En = compHadWJet2En_Hww(trueChargedLepton_Nu_HadWJet1P4, measuredHadWJet2_->theta(), measuredHadWJet2_->phi());
     if ( !(trueHadWJet2En > 0.) ) return 0.;
-    trueHadWJet2P4 = buildLorentzVector(trueHadWJet2En, measuredHadWJet2_.theta(), measuredHadWJet2_.phi());
-  } else {
+    trueHadWJet2P4 = buildLorentzVector(trueHadWJet2En, measuredHadWJet2_->theta(), measuredHadWJet2_->phi());
+  } 
+  else 
+  {
     // the two jets from W->jj decay originate from on-shell W boson,
     // while charged lepton and neutrino originate from off-shell W boson
     //
     // Note: the energy (and four-vector) of the two jets from W->jj decay originating from the on-shell W boson has to be computed first!
     double trueHadWJet2En;
-    if ( applyOnshellWmassConstraint_ ) {
-      trueHadWJet2En = compHadWJet2En_Wjj(trueHadWJet1P4, measuredHadWJet2_.p4());
-    } else {
+    if ( applyOnshellWmassConstraint_ ) 
+    {
+      trueHadWJet2En = compHadWJet2En_Wjj(trueHadWJet1P4, measuredHadWJet2_->theta(), measuredHadWJet2_->phi());
+    } 
+    else 
+    {
       double q2W = x[4];
-      trueHadWJet2En = compHadWJet2En_Wjj(trueHadWJet1P4, measuredHadWJet2_.p4(), q2W);
+      trueHadWJet2En = compHadWJet2En_Wjj(trueHadWJet1P4, measuredHadWJet2_->theta(), measuredHadWJet2_->phi(), q2W);
     }
     if ( !(trueHadWJet2En > 0.) ) return 0.;
-    trueHadWJet2P4 = buildLorentzVector(trueHadWJet2En, measuredHadWJet2_.theta(), measuredHadWJet2_.phi());
+    trueHadWJet2P4 = buildLorentzVector(trueHadWJet2En, measuredHadWJet2_->theta(), measuredHadWJet2_->phi());
     LorentzVector trueHadWJet1_HadWJet2_ChargedLeptonP4 = trueHadWJet1P4 + trueHadWJet2P4 + trueChargedLeptonP4;
     if ( trueHadWJet1_HadWJet2_ChargedLeptonP4.mass() >= higgsBosonMass ) return 0.;
     double trueNuEn = compNuStarEn_Hww(trueHadWJet1_HadWJet2_ChargedLeptonP4, trueNuTheta, trueNuPhi);
@@ -272,19 +274,23 @@ double MEMbbwwIntegrandSingleLepton_signal::Eval(const double* x) const
   {
     std::string chargedLepton_shortLabel;
     std::string chargedLepton_longLabel;
-    if ( measuredChargedLepton_.charge() > 0 ) {
+    if ( measuredChargedLepton_->charge() > 0 ) 
+    {
       chargedLepton_shortLabel = "lep+";
       chargedLepton_longLabel = "lepton+";
-    } else if ( measuredChargedLepton_.charge() < 0 ) {
+    } 
+    else if ( measuredChargedLepton_->charge() < 0 ) 
+    {
       chargedLepton_shortLabel = "lep-";
       chargedLepton_longLabel = "lepton-";
-    } else assert(0);
-    printLorentzVector("b-jet1", trueBJet1P4, measuredBJet1_.p4());
-    printLorentzVector("b-jet2", trueBJet2P4, measuredBJet2_.p4());
-    printLorentzVector(Form("%s", chargedLepton_longLabel.data()), trueChargedLeptonP4, measuredChargedLepton_.p4());
+    } 
+    else assert(0);
+    printLorentzVector("b-jet1", trueBJet1P4, measuredBJet1_->p4());
+    printLorentzVector("b-jet2", trueBJet2P4, measuredBJet2_->p4());
+    printLorentzVector(Form("%s", chargedLepton_longLabel.data()), trueChargedLeptonP4, measuredChargedLepton_->p4());
     printLorentzVector("neutrino", trueNuP4);
-    printLorentzVector("jet1 from W->jj", trueHadWJet1P4, measuredHadWJet1_.p4());
-    printLorentzVector("jet2 from W->jj", trueHadWJet2P4, measuredHadWJet2_.p4());
+    printLorentzVector("jet1 from W->jj", trueHadWJet1P4, measuredHadWJet1_->p4());
+    printLorentzVector("jet2 from W->jj", trueHadWJet2P4, measuredHadWJet2_->p4());
     std::cout << "m(b bbar) = " << (trueBJet1P4 + trueBJet2P4).mass() << std::endl;
     std::cout << Form("m(%s nu) = ", chargedLepton_shortLabel.data()) << (trueChargedLeptonP4 + trueNuP4).mass() << std::endl;
     std::cout << "m(W->jj) = " << (trueHadWJet1P4 + trueHadWJet2P4).mass() << std::endl;
@@ -353,8 +359,10 @@ double MEMbbwwIntegrandSingleLepton_signal::Eval(const double* x) const
   madgraphBJet2P4_[2] = trueBJet2P4_ztm.py();
   madgraphBJet2P4_[3] = trueBJet2P4_ztm.pz();
   double prob_ME = -1.;
-  if ( madgraphIsInitialized_ ) {
-    if ( measuredChargedLepton_.charge() > 0 ) {
+  if ( madgraphIsInitialized_ ) 
+  {
+    if ( measuredChargedLepton_->charge() > 0 ) 
+    {
       if ( verbosity_ >= 2 )
       {
         printMadGraphMomenta(madgraphMomenta_chargedLeptonPlus_);
@@ -363,7 +371,9 @@ double MEMbbwwIntegrandSingleLepton_signal::Eval(const double* x) const
       me_madgraph_chargedLeptonPlus_.setMomenta(madgraphMomenta_chargedLeptonPlus_);
       me_madgraph_chargedLeptonPlus_.sigmaKin();
       prob_ME = me_madgraph_chargedLeptonPlus_.getMatrixElements()[0];
-    } else if ( measuredChargedLepton_.charge() < 0 ) {
+    } 
+    else if ( measuredChargedLepton_->charge() < 0 ) 
+    {
       if ( verbosity_ >= 2 )
       {
         printMadGraphMomenta(madgraphMomenta_chargedLeptonMinus_);
@@ -372,17 +382,22 @@ double MEMbbwwIntegrandSingleLepton_signal::Eval(const double* x) const
       me_madgraph_chargedLeptonMinus_.setMomenta(madgraphMomenta_chargedLeptonMinus_);
       me_madgraph_chargedLeptonMinus_.sigmaKin();
       prob_ME = me_madgraph_chargedLeptonMinus_.getMatrixElements()[0];
-    } else assert(0);
+    } 
+    else assert(0);
     ++numMatrixElementEvaluations_;
     if ( TMath::IsNaN(prob_ME) ) 
     {
       std::cerr << "Warning: MadGraph returned NaN --> skipping event !!" << std::endl;
       std::string chargedLepton_label;
-      if ( measuredChargedLepton_.charge() > 0 ) {
+      if ( measuredChargedLepton_->charge() > 0 ) 
+      {
 	chargedLepton_label = "lepton+";
-      } else if ( measuredChargedLepton_.charge() < 0 ) {
+      } 
+      else if ( measuredChargedLepton_->charge() < 0 ) 
+      {
 	chargedLepton_label = "lepton-";
-      } else assert(0);
+      } 
+      else assert(0);
       printLorentzVector("b-jet1", trueBJet1P4_ztm);
       printLorentzVector("b-jet2", trueBJet2P4_ztm);
       printLorentzVector(Form("%s", chargedLepton_label.data()), trueChargedLeptonP4_ztm);
@@ -416,14 +431,17 @@ double MEMbbwwIntegrandSingleLepton_signal::Eval(const double* x) const
   }
 
   double jacobiFactor = compJacobiFactor_Hbb(trueBJet1P4, trueBJet2P4);
-  if ( chargedLeptonPermutation_ == kOnshellChargedLepton ) { 
+  if ( chargedLeptonPermutation_ == kOnshellChargedLepton ) 
+  { 
     //---------------------------------------------------------------------------
     // CV: Jacobi factor is the same for case that W mass constraint is applied to on-shell W boson and for the case that it is not applied
     jacobiFactor *= compJacobiFactor_Wlnu(trueChargedLeptonP4, trueNuP4);
     //---------------------------------------------------------------------------
     LorentzVector trueChargedLepton_Nu_HadWJet1P4 = trueChargedLeptonP4 + trueNuP4 + trueHadWJet1P4;
     jacobiFactor *= compJacobiFactor_Hww(trueChargedLepton_Nu_HadWJet1P4, trueHadWJet2P4);
-  } else {
+  } 
+  else 
+  {
     //---------------------------------------------------------------------------
     // CV: Jacobi factor is the same for case that W mass constraint is applied to on-shell W boson and for the case that it is not applied
     jacobiFactor *= compJacobiFactor_Wjj(trueHadWJet1P4, trueHadWJet2P4);

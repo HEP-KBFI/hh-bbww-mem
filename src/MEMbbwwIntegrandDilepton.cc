@@ -31,11 +31,12 @@ MEMbbwwIntegrandDilepton::~MEMbbwwIntegrandDilepton()
 }
 
 void 
-MEMbbwwIntegrandDilepton::setInputs(const MeasuredParticle& measuredChargedLeptonPlus, const MeasuredParticle& measuredChargedLeptonMinus,
-				    const MeasuredParticle& measuredBJet1, const MeasuredParticle& measuredBJet2,
+MEMbbwwIntegrandDilepton::setInputs(const MeasuredParticle* measuredChargedLeptonPlus, const MeasuredParticle* measuredChargedLeptonMinus,
+				    const MeasuredParticle* measuredBJet1, const MeasuredParticle* measuredBJet2,
 				    double measuredMEtPx, double measuredMEtPy, const TMatrixD& measuredMEtCov)
 {
-  if ( verbosity_ >= 1 ) {
+  if ( verbosity_ >= 1 ) 
+  {
     std::cout << "<MEMbbwwIntegrandDilepton::setInputs>:" << std::endl;
   }
   // reset 'MatrixInversion' error code
@@ -48,14 +49,31 @@ MEMbbwwIntegrandDilepton::setInputs(const MeasuredParticle& measuredChargedLepto
   measuredMEtPy_ = measuredMEtPy;
   measuredMEtCov_.ResizeTo(2,2);
   measuredMEtCov_ = measuredMEtCov;
-  measuredHadRecoilPx_ = -(measuredChargedLeptonPlus_.px() + measuredChargedLeptonMinus_.px() + measuredBJet1_.px() + measuredBJet2_.px() + measuredMEtPx_);
-  measuredHadRecoilPy_ = -(measuredChargedLeptonPlus_.py() + measuredChargedLeptonMinus_.py() + measuredBJet1_.py() + measuredBJet2_.py() + measuredMEtPy_);
+  measuredHadRecoilPx_ = -(measuredChargedLeptonPlus_->px() + measuredChargedLeptonMinus_->px() + measuredMEtPx_);
+  measuredHadRecoilPy_ = -(measuredChargedLeptonPlus_->py() + measuredChargedLeptonMinus_->py() + measuredMEtPy_);
+  if ( measuredBJet1_ ) 
+  {
+    measuredHadRecoilPx_ -= measuredBJet1_->px();
+    measuredHadRecoilPy_ -= measuredBJet1_->py();    
+  }
+  if ( measuredBJet2_ ) 
+  {
+    measuredHadRecoilPx_ -= measuredBJet2_->px();
+    measuredHadRecoilPy_ -= measuredBJet2_->py();
+  }
   // set measured momenta of b-jets and of missing transverse momentum
   // in transfer function (TF) objects
-  bjet1TF_->setInputs(measuredBJet1_.p4());
-  bjet2TF_->setInputs(measuredBJet2_.p4());
+  if ( measuredBJet1_ ) 
+  {
+    bjet1TF_->setInputs(measuredBJet1_->p4());
+  }
+  if ( measuredBJet2_ ) 
+  {
+    bjet2TF_->setInputs(measuredBJet2_->p4());
+  }
   hadRecoilTF_->setInputs(measuredHadRecoilPx_, measuredHadRecoilPy_, measuredMEtCov_);
-  if ( hadRecoilTF_->getErrorCode() ) {
+  if ( hadRecoilTF_->getErrorCode() ) 
+  {
     errorCode_ |= MatrixInversion;
   }
 }

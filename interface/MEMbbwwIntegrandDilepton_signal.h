@@ -18,7 +18,8 @@ class MEMbbwwIntegrandDilepton_signal : public MEMbbwwIntegrandDilepton
   void applyOnshellWmassConstraint(bool flag);
 
   /// set measured momenta of charged leptons and b-jets and of missing transverse momentum
-  void setInputs(const mem::MeasuredParticle&, const mem::MeasuredParticle&, const mem::MeasuredParticle&, const mem::MeasuredParticle&, 
+  void setInputs(const mem::MeasuredParticle*, const mem::MeasuredParticle*, 
+		 const mem::MeasuredParticle*, const mem::MeasuredParticle*, 
 		 double, double, const TMatrixD&);
 
   /// switch between associations of lepton+ and lepton- to on-shell and off-shell W bosons
@@ -38,6 +39,12 @@ class MEMbbwwIntegrandDilepton_signal : public MEMbbwwIntegrandDilepton
   /// flag to either fix (applyOnshellWmassConstraint=true) mass of charged lepton plus neutrino originating from the decay of the "on-shell" W boson to mW,
   /// or allow the mass to vary during the integration (applyOnshellWmassConstraint=false)
   bool applyOnshellWmassConstraint_;
+
+  /// index of integration variables for theta and phi of either b-jet1 or b-jet2 in case one b-jet is "missing", i.e. not reconstructed
+  int offsetBJet1Theta_;
+  int offsetBJet1Phi_;
+  int offsetBJet2Theta_;
+  int offsetBJet2Phi_;
 
   /// flag to switch between associations of lepton+ and lepton- to on-shell and off-shell W bosons
   int chargedLeptonPermutation_;

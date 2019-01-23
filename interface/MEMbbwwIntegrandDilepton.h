@@ -19,13 +19,14 @@ class MEMbbwwIntegrandDilepton : public MEMbbwwIntegrandBase
   virtual ~MEMbbwwIntegrandDilepton();
   
   /// set measured momenta of charged leptons and b-jets and of missing transverse momentum
-  virtual void setInputs(const mem::MeasuredParticle&, const mem::MeasuredParticle&, const mem::MeasuredParticle&, const mem::MeasuredParticle&, 
+  virtual void setInputs(const mem::MeasuredParticle*, const mem::MeasuredParticle*, 
+			 const mem::MeasuredParticle*, const mem::MeasuredParticle*, 
 			 double, double, const TMatrixD&);
 
  protected:  
   /// measured momenta of charged leptons
-  MeasuredParticle measuredChargedLeptonPlus_;
-  MeasuredParticle measuredChargedLeptonMinus_;  
+  const MeasuredParticle* measuredChargedLeptonPlus_;
+  const MeasuredParticle* measuredChargedLeptonMinus_;  
 
   /// four-vectors used to evaluate MadGraph matrix element
   double* madgraphChargedLeptonPlusP4_;

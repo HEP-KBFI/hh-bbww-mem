@@ -19,8 +19,9 @@ class MEMbbwwIntegrandSingleLepton_signal : public MEMbbwwIntegrandSingleLepton
   void applyOnshellWmassConstraint(bool flag);
 
   // set measured momenta of charged lepton, jets from W->jj decay, and b-jets and of missing transverse momentum
-  void setInputs(const mem::MeasuredParticle&, const mem::MeasuredParticle&, 
-		 const mem::MeasuredParticle&, const mem::MeasuredParticle&, const mem::MeasuredParticle&, 
+  void setInputs(const mem::MeasuredParticle*, 
+		 const mem::MeasuredParticle*, const mem::MeasuredParticle*, 
+		 const mem::MeasuredParticle*, const mem::MeasuredParticle*, 
 		 double, double, const TMatrixD&);
 
   /// switch between associations of charged lepton and (light quark) jet pair to on-shell and off-shell W bosons

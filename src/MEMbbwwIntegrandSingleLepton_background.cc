@@ -11,32 +11,36 @@ using namespace mem;
 MEMbbwwIntegrandSingleLepton_background::MEMbbwwIntegrandSingleLepton_background(double sqrtS, const std::string& madgraphFileName, int verbosity)
   : MEMbbwwIntegrandSingleLepton(sqrtS, madgraphFileName, verbosity)
 {
-  if ( verbosity_ ) {
+  if ( verbosity_ ) 
+  {
     std::cout << "<MEMbbwwIntegrandSingleLepton_background::MEMbbwwIntegrandSingleLepton_background>:" << std::endl;
   }
 
   /// define integration variables
   intNumDimensions_ = 3;  
-  intIntBounds_lower_ = new double[intNumDimensions_];
-  intIntBounds_upper_ = new double[intNumDimensions_];
+  intBounds_lower_ = new double[intNumDimensions_];
+  intBounds_upper_ = new double[intNumDimensions_];
   intVarNames_.clear();
   intVarNames_.push_back("NuTheta"); 
-  intIntBounds_lower_[0] = 0.;
-  intIntBounds_upper_[0] = TMath::Pi();
+  intBounds_lower_[0] = 0.;
+  intBounds_upper_[0] = TMath::Pi();
   intVarNames_.push_back("NuPhi"); 
-  intIntBounds_lower_[1] = -TMath::Pi();
-  intIntBounds_upper_[1] = +TMath::Pi();
+  intBounds_lower_[1] = -TMath::Pi();
+  intBounds_upper_[1] = +TMath::Pi();
   intVarNames_.push_back("HadWJet1En"); 
-  intIntBounds_lower_[2] = -1.; // to be set as function of measured jet energy and expected jet energy resolution
-  intIntBounds_upper_[2] = -1.;
+  intBounds_lower_[2] = -1.; // to be set as function of measured jet energy and expected jet energy resolution
+  intBounds_upper_[2] = -1.;
 
   // initialize MadGraph
-  if ( madgraphFileName != "" ) {
+  if ( madgraphFileName != "" ) 
+  {
     std::cout << "initializing MadGraph ME for ttbar background using " << madgraphFileName << " file." << std::endl;
     me_madgraph_chargedLeptonPlus_.initProc(madgraphFileName);
     me_madgraph_chargedLeptonMinus_.initProc(madgraphFileName);
     madgraphIsInitialized_ = true;
-  } else {
+  } 
+  else 
+  {
     std::cerr << "Error in <MEMbbwwIntegrandSingleLepton_background>: No param.dat file for MadGraph given !!" << std::endl;
     assert(0);
   }
@@ -88,12 +92,13 @@ MEMbbwwIntegrandSingleLepton_background::~MEMbbwwIntegrandSingleLepton_backgroun
 {}
 
 void 
-MEMbbwwIntegrandSingleLepton_background::setInputs(const MeasuredParticle& measuredChargedLepton, 
-						   const MeasuredParticle& measuredHadWJet1, const MeasuredParticle& measuredHadWJet2,
-						   const MeasuredParticle& measuredBJet1, const MeasuredParticle& measuredBJet2,
+MEMbbwwIntegrandSingleLepton_background::setInputs(const MeasuredParticle* measuredChargedLepton, 
+						   const MeasuredParticle* measuredHadWJet1, const MeasuredParticle* measuredHadWJet2,
+						   const MeasuredParticle* measuredBJet1, const MeasuredParticle* measuredBJet2,
 						   double measuredMEtPx, double measuredMEtPy, const TMatrixD& measuredMEtCov)
 {
-  if ( verbosity_ ) {
+  if ( verbosity_ ) 
+  {
     std::cout << "<MEMbbwwIntegrandSingleLepton_background::setInputs>:" << std::endl;
   }
 
@@ -106,10 +111,10 @@ MEMbbwwIntegrandSingleLepton_background::setInputs(const MeasuredParticle& measu
   // set integration boundary for energy of first jet from W->jj decay
   // to measured jet energy +/- 3 times expected energy resolution (rough estimate),
   // in order to increase efficiency of numeric integration
-  double measuredHadWJet1En = measuredHadWJet1.energy();
-  double measuredHadWJet1EnRes = 0.50*TMath::Sqrt(measuredHadWJet1.energy());
-  intIntBounds_lower_[2] = TMath::Max(10., measuredHadWJet1En - 3.*measuredHadWJet1EnRes);
-  intIntBounds_upper_[2] = measuredHadWJet1En + 3.*measuredHadWJet1EnRes;
+  double measuredHadWJet1En = measuredHadWJet1_->energy();
+  double measuredHadWJet1EnRes = 0.50*TMath::Sqrt(measuredHadWJet1_->energy());
+  intBounds_lower_[2] = TMath::Max(10., measuredHadWJet1En - 3.*measuredHadWJet1EnRes);
+  intBounds_upper_[2] = measuredHadWJet1En + 3.*measuredHadWJet1EnRes;
 
   // Cross section for Standard Model (SM) ttbar production @ 13 TeV center-of-mass energy
   // time branching fraction for the decay ttbar->bbWW->bblnulnu (excluding electrons and muons from tau decays)
@@ -124,11 +129,11 @@ MEMbbwwIntegrandSingleLepton_background::setInputs(const MeasuredParticle& measu
   double numerator = square(topQuarkMass*topQuarkWidth)*square(wBosonMass*wBosonWidth);
   double denominator = 1.;
   denominator *= (TMath::Power(2., 26)*TMath::Power(TMath::Pi(), 17));
-  denominator *= measuredChargedLepton.energy();
-  denominator *= (measuredHadWJet1.p()*measuredHadWJet1.energy());
-  denominator *= (measuredHadWJet2.p()*measuredHadWJet2.energy());
-  denominator *= (measuredBJet1.p()*measuredBJet1.energy());
-  denominator *= (measuredBJet2.p()*measuredBJet2.energy());
+  denominator *= measuredChargedLepton_->energy();
+  denominator *= (measuredHadWJet1_->p()*measuredHadWJet1_->energy());
+  denominator *= (measuredHadWJet2_->p()*measuredHadWJet2_->energy());
+  denominator *= (measuredBJet1_->p()*measuredBJet1_->energy());
+  denominator *= (measuredBJet2_->p()*measuredBJet2_->energy());
   denominator *= (crossSection_background*square(sqrtS_));
   assert(denominator > 0.);
   normFactor_ = numerator/denominator;
@@ -141,7 +146,7 @@ double MEMbbwwIntegrandSingleLepton_background::Eval(const double* x) const
     std::cout << "<MEMbbwwIntegrandSingleLepton_background::Eval>:" << std::endl;
   }
 
-  const LorentzVector& trueChargedLeptonP4 = measuredChargedLepton_.p4();
+  const LorentzVector& trueChargedLeptonP4 = measuredChargedLepton_->p4();
 
   double trueNuTheta = x[0];
   double trueNuPhi = x[1];
@@ -149,47 +154,21 @@ double MEMbbwwIntegrandSingleLepton_background::Eval(const double* x) const
   if ( !(trueNuEn > 0.) ) return 0.;
   LorentzVector trueNuP4 = buildLorentzVector(trueNuEn, trueNuTheta, trueNuPhi);
 
-  std::vector<double> trueBJet1En_solutions = compBJetEn_top(trueChargedLeptonP4 + trueNuP4, measuredBJet1_.p4());
-  LorentzVector trueBJet1P4;
+  std::vector<double> trueBJet1En_solutions = compBJetEn_top(trueChargedLeptonP4 + trueNuP4, measuredBJet1_->theta(), measuredBJet1_->phi());
   bool trueBJet1En_foundSolution = false;
-  double min_trueBJet1_deltaMass = 1.e+3;
-  for ( std::vector<double>::const_iterator trueBJet1En_solution = trueBJet1En_solutions.begin();
-	trueBJet1En_solution != trueBJet1En_solutions.end(); ++trueBJet1En_solution ) {
-    if ( (*trueBJet1En_solution) > measuredBJet1_.mass() ) {
-      LorentzVector trueBJet1P4_solution = buildLorentzVector(*trueBJet1En_solution, measuredBJet1_.theta(), measuredBJet1_.phi(), measuredBJet1_.mass());
-      double trueBJet1_deltaMass = TMath::Abs((trueBJet1P4_solution + trueChargedLeptonP4 + trueNuP4).mass() - topQuarkMass);
-      if ( trueBJet1_deltaMass < min_trueBJet1_deltaMass ) {
-	trueBJet1P4 = trueBJet1P4_solution;
-	trueBJet1En_foundSolution = true;
-	min_trueBJet1_deltaMass = trueBJet1_deltaMass;
-      }
-    }
-  }
+  LorentzVector trueBJet1P4 = findBJetEn_solution_top(trueBJet1En_solutions, measuredBJet1_->theta(), measuredBJet1_->phi(), trueChargedLeptonP4 + trueNuP4, trueBJet1En_foundSolution);
   if ( !trueBJet1En_foundSolution ) return 0.;
 
   double trueHadWJet1En = x[2];
-  LorentzVector trueHadWJet1P4 = buildLorentzVector(trueHadWJet1En, measuredHadWJet1_.theta(), measuredHadWJet1_.phi());
+  LorentzVector trueHadWJet1P4 = buildLorentzVector(trueHadWJet1En, measuredHadWJet1_->theta(), measuredHadWJet1_->phi());
 
-  double trueHadWJet2En = compHadWJet2En_Wjj(trueHadWJet1P4, measuredHadWJet2_.p4());
+  double trueHadWJet2En = compHadWJet2En_Wjj(trueHadWJet1P4, measuredHadWJet2_->theta(), measuredHadWJet2_->phi());
   if ( !(trueHadWJet2En > 0.) ) return 0.;
-  LorentzVector trueHadWJet2P4 = buildLorentzVector(trueHadWJet2En, measuredHadWJet2_.theta(), measuredHadWJet2_.phi());
+  LorentzVector trueHadWJet2P4 = buildLorentzVector(trueHadWJet2En, measuredHadWJet2_->theta(), measuredHadWJet2_->phi());
 
-  std::vector<double> trueBJet2En_solutions = compBJetEn_top(trueHadWJet1P4 + trueHadWJet2P4, measuredBJet2_.p4());
-  LorentzVector trueBJet2P4;
+  std::vector<double> trueBJet2En_solutions = compBJetEn_top(trueHadWJet1P4 + trueHadWJet2P4, measuredBJet2_->theta(), measuredBJet2_->phi());
   bool trueBJet2En_foundSolution = false;
-  double min_trueBJet2_deltaMass = 1.e+3;
-  for ( std::vector<double>::const_iterator trueBJet2En_solution = trueBJet2En_solutions.begin();
-	trueBJet2En_solution != trueBJet2En_solutions.end(); ++trueBJet2En_solution ) {
-    if ( (*trueBJet2En_solution) > measuredBJet2_.mass() ) {
-      LorentzVector trueBJet2P4_solution = buildLorentzVector(*trueBJet2En_solution, measuredBJet2_.theta(), measuredBJet2_.phi(), measuredBJet2_.mass());
-      double trueBJet2_deltaMass = TMath::Abs((trueBJet2P4_solution + trueHadWJet1P4 + trueHadWJet2P4).mass() - topQuarkMass);
-      if ( trueBJet2_deltaMass < min_trueBJet2_deltaMass ) {
-	trueBJet2P4 = trueBJet2P4_solution;
-	trueBJet2En_foundSolution = true;
-	min_trueBJet2_deltaMass = trueBJet2_deltaMass;
-      }
-    }
-  }
+  LorentzVector trueBJet2P4 = findBJetEn_solution_top(trueBJet2En_solutions, measuredBJet2_->theta(), measuredBJet2_->phi(), trueHadWJet1P4 + trueHadWJet2P4, trueBJet2En_foundSolution);
   if ( !trueBJet2En_foundSolution ) return 0.;
 
   LorentzVector trueSumP4 = trueBJet1P4 + trueChargedLeptonP4 + trueNuP4 + trueBJet2P4 + trueHadWJet1P4 + trueHadWJet2P4;
@@ -212,23 +191,26 @@ double MEMbbwwIntegrandSingleLepton_background::Eval(const double* x) const
     std::string chargedLepton_longLabel;
     std::string bjet1_label;
     std::string bjet2_label;
-    if ( measuredChargedLepton_.charge() > 0 ) {
+    if ( measuredChargedLepton_->charge() > 0 ) 
+    {
       chargedLepton_shortLabel = "lep+";
       chargedLepton_longLabel = "lepton+";
       bjet1_label = "b";
       bjet2_label = "bbar";
-    } else if ( measuredChargedLepton_.charge() < 0 ) {
+    } 
+    else if ( measuredChargedLepton_->charge() < 0 ) 
+    {
       chargedLepton_shortLabel = "lep-";
       chargedLepton_longLabel = "lepton-";
       bjet1_label = "bbar";
       bjet2_label = "b";
     } else assert(0);
-    printLorentzVector(Form("%s", chargedLepton_longLabel.data()), trueChargedLeptonP4, measuredChargedLepton_.p4());
+    printLorentzVector(Form("%s", chargedLepton_longLabel.data()), trueChargedLeptonP4, measuredChargedLepton_->p4());
     printLorentzVector("neutrino", trueNuP4);
-    printLorentzVector(Form("%s", bjet1_label.data()), trueBJet1P4, measuredBJet1_.p4());
-    printLorentzVector("jet1 from W->jj", trueHadWJet1P4, measuredHadWJet1_.p4());
-    printLorentzVector("jet2 from W->jj", trueHadWJet2P4, measuredHadWJet2_.p4());
-    printLorentzVector(Form("%s", bjet2_label.data()), trueBJet2P4, measuredBJet2_.p4());
+    printLorentzVector(Form("%s", bjet1_label.data()), trueBJet1P4, measuredBJet1_->p4());
+    printLorentzVector("jet1 from W->jj", trueHadWJet1P4, measuredHadWJet1_->p4());
+    printLorentzVector("jet2 from W->jj", trueHadWJet2P4, measuredHadWJet2_->p4());
+    printLorentzVector(Form("%s", bjet2_label.data()), trueBJet2P4, measuredBJet2_->p4());
     std::cout << Form("m(%s nu) = ", chargedLepton_shortLabel.data()) << (trueChargedLeptonP4 + trueNuP4).mass() << std::endl;
     std::cout << "m(W->jj) = " << (trueHadWJet1P4 + trueHadWJet2P4).mass() << std::endl;
     std::cout << Form("m(%s %s nu) = ", bjet1_label.data(), chargedLepton_shortLabel.data()) << (trueBJet1P4 + trueChargedLeptonP4 + trueNuP4).mass() << std::endl;
@@ -297,8 +279,10 @@ double MEMbbwwIntegrandSingleLepton_background::Eval(const double* x) const
   madgraphBJet2P4_[2] = trueBJet2P4_ztm.py();
   madgraphBJet2P4_[3] = trueBJet2P4_ztm.pz();
   double prob_ME = -1.;
-  if ( madgraphIsInitialized_ ) {    
-    if ( measuredChargedLepton_.charge() > 0 ) {
+  if ( madgraphIsInitialized_ ) 
+  {    
+    if ( measuredChargedLepton_->charge() > 0 ) 
+    {
       if ( verbosity_ >= 2 )
       {
 	printMadGraphMomenta(madgraphMomenta_chargedLeptonPlus_);
@@ -306,7 +290,9 @@ double MEMbbwwIntegrandSingleLepton_background::Eval(const double* x) const
       me_madgraph_chargedLeptonPlus_.setMomenta(madgraphMomenta_chargedLeptonPlus_);
       me_madgraph_chargedLeptonPlus_.sigmaKin();
       prob_ME = me_madgraph_chargedLeptonPlus_.getMatrixElements()[0];
-    } else if ( measuredChargedLepton_.charge() < 0 ) {
+    } 
+    else if ( measuredChargedLepton_->charge() < 0 ) 
+    {
       if ( verbosity_ >= 2 )
       {
 	printMadGraphMomenta(madgraphMomenta_chargedLeptonMinus_);
@@ -322,15 +308,19 @@ double MEMbbwwIntegrandSingleLepton_background::Eval(const double* x) const
       std::string chargedLepton_label;
       std::string bjet1_label;
       std::string bjet2_label;
-      if ( measuredChargedLepton_.charge() > 0 ) {
+      if ( measuredChargedLepton_->charge() > 0 ) 
+      {
 	chargedLepton_label = "lepton+";
 	bjet1_label = "b";
 	bjet2_label = "bbar";
-      } else if ( measuredChargedLepton_.charge() < 0 ) {
+      } 
+      else if ( measuredChargedLepton_->charge() < 0 ) 
+      {
 	chargedLepton_label = "lepton-";
 	bjet1_label = "bbar";
 	bjet2_label = "b";
-      } else assert(0);
+      } 
+      else assert(0);
       printLorentzVector(Form("%s", chargedLepton_label.data()), trueChargedLeptonP4_ztm);
       printLorentzVector("neutrino", trueNuP4_ztm);
       printLorentzVector(Form("%s", bjet1_label.data()), trueBJet1P4_ztm);

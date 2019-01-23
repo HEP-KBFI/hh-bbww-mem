@@ -5,7 +5,11 @@
 using namespace mem;
 
 MEMbbwwIntegrandBase::MEMbbwwIntegrandBase(double sqrtS, const std::string& madgraphFileName, int verbosity)
-  : bjet1TF_(nullptr)
+  : intBounds_lower_(nullptr)
+  , intBounds_upper_(nullptr)
+  , measuredBJet1_(nullptr)
+  , measuredBJet2_(nullptr)
+  , bjet1TF_(nullptr)
   , bjet2TF_(nullptr)
   , hadRecoilTF_(nullptr)
   , sqrtS_(sqrtS)
@@ -41,8 +45,8 @@ MEMbbwwIntegrandBase::~MEMbbwwIntegrandBase()
   //  std::cout << "<MEMbbwwIntegrandBase::~MEMbbwwIntegrandBase>:" << std::endl;
   //}
   
-  delete [] intIntBounds_lower_;
-  delete [] intIntBounds_upper_;
+  delete [] intBounds_lower_;
+  delete [] intBounds_upper_;
 
   delete bjet1TF_;
   delete bjet2TF_;

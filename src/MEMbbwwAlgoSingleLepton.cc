@@ -100,7 +100,8 @@ MEMbbwwAlgoSingleLepton::setMeasuredParticles(const std::vector<mem::MeasuredPar
 {
   std::vector<MeasuredParticle> measuredParticles_rounded;
   for ( std::vector<MeasuredParticle>::const_iterator measuredParticle = measuredParticles.begin();
-	measuredParticle != measuredParticles.end(); ++measuredParticle ) {
+	measuredParticle != measuredParticles.end(); ++measuredParticle ) 
+  {
     MeasuredParticle measuredParticle_rounded(
       measuredParticle->type(), 
       roundToNdigits(measuredParticle->pt()), 
@@ -116,49 +117,67 @@ MEMbbwwAlgoSingleLepton::setMeasuredParticles(const std::vector<mem::MeasuredPar
   measuredHadWJets_.clear(); 
   measuredLeadingBJet_ = nullptr; 
   measuredSubleadingBJet_ = nullptr;
-  for ( size_t idx = 0; idx < measuredParticles_.size(); ++idx ) {
+  for ( size_t idx = 0; idx < measuredParticles_.size(); ++idx ) 
+  {
     const MeasuredParticle& measuredParticle = measuredParticles_[idx];
-    if ( verbosity_ >= 1 ) {
+    if ( verbosity_ >= 1 ) 
+    {
       std::cout << "measuredParticles #" << idx << " (type = " << measuredParticle.type() << "): Pt = " << measuredParticle.pt() << "," 
 		<< " eta = " << measuredParticle.eta() << " (theta = " << measuredParticle.p3().theta() << ")" << ", phi = " << measuredParticle.phi() << "," 
 		<< " mass = " << measuredParticle.mass() << ", charge = " << measuredParticle.charge() << std::endl;
     }
-    if ( measuredParticle.type() == MeasuredParticle::kElectron || measuredParticle.type() == MeasuredParticle::kMuon ) {
+    if ( measuredParticle.type() == MeasuredParticle::kElectron || measuredParticle.type() == MeasuredParticle::kMuon ) 
+    {
       measuredChargedLepton_ = &measuredParticle;
     }
-    if ( measuredParticle.type() == MeasuredParticle::kBJet ) {
+    if ( measuredParticle.type() == MeasuredParticle::kBJet ) 
+    {
       if      ( !measuredLeadingBJet_    ) measuredLeadingBJet_    = &measuredParticle;
       else if ( !measuredSubleadingBJet_ ) measuredSubleadingBJet_ = &measuredParticle;
     }
-    if ( measuredParticle.type() == MeasuredParticle::kHadWJet ) {
+    if ( measuredParticle.type() == MeasuredParticle::kHadWJet ) 
+    {
       measuredHadWJets_.push_back(&measuredParticle);
     }
   }
-  if ( !(measuredChargedLepton_ && measuredLeadingBJet_ && measuredSubleadingBJet_) ) {
+  if ( !(measuredChargedLepton_ && measuredLeadingBJet_ && measuredSubleadingBJet_) ) 
+  {
     std::cerr << "<MEMbbwwAlgoSingleLepton::integrate>: Given measuredParticles are not of the expected type --> ABORTING !!\n";
     assert(0);
   }
   for ( std::vector<const mem::MeasuredParticle*>::const_iterator measuredHadWJet1 = measuredHadWJets_.begin();
-	measuredHadWJet1 != measuredHadWJets_.end(); ++measuredHadWJet1 ) {
+	measuredHadWJet1 != measuredHadWJets_.end(); ++measuredHadWJet1 ) 
+  {
     for ( std::vector<const mem::MeasuredParticle*>::const_iterator measuredHadWJet2 = measuredHadWJets_.begin();
-	measuredHadWJet2 != measuredHadWJets_.end(); ++measuredHadWJet2 ) {
+	measuredHadWJet2 != measuredHadWJets_.end(); ++measuredHadWJet2 ) 
+    {
       // CV: add both permutations of measuredHadWJet1 and measuredHadWJet2
       measuredHadWJetPairs_.push_back(MeasuredHadWJetPair(**measuredHadWJet1, **measuredHadWJet2));
     }
   }
-  if ( sortHadJetPairOption_ == kSortHadWJetPairsByMass ) {
+  if ( sortHadJetPairOption_ == kSortHadWJetPairsByMass ) 
+  {
     std::sort(measuredHadWJetPairs_.begin(), measuredHadWJetPairs_.end(), sortMeasuredHadWJetPairsByMass());
-  } else if ( sortHadJetPairOption_ == kSortHadWJetPairsByDeltaR ) {
+  } 
+  else if ( sortHadJetPairOption_ == kSortHadWJetPairsByDeltaR ) 
+  {
     std::sort(measuredHadWJetPairs_.begin(), measuredHadWJetPairs_.end(), sortMeasuredHadWJetPairsByDeltaR());
-  } else if ( sortHadJetPairOption_ == kSortHadWJetPairsByPt ) {
+  } 
+  else if ( sortHadJetPairOption_ == kSortHadWJetPairsByPt ) 
+  {
     std::sort(measuredHadWJetPairs_.begin(), measuredHadWJetPairs_.end(), sortMeasuredHadWJetPairsByPt());
-  } else if ( sortHadJetPairOption_ == kSortHadWJetPairsByScalarPt ) {
+  } 
+  else if ( sortHadJetPairOption_ == kSortHadWJetPairsByScalarPt ) 
+  {
     std::sort(measuredHadWJetPairs_.begin(), measuredHadWJetPairs_.end(), sortMeasuredHadWJetPairsByScalarPt());
-  } else {
+  } 
+  else 
+  {
     std::cerr << "<MEMbbwwAlgoSingleLepton::integrate>: Invalid configuration parameter 'sortHadJetPairOption' = " << sortHadJetPairOption_ << " --> ABORTING !!\n";
     assert(0);
   }
-  if ( !(measuredHadWJetPairs_.size() >= 1) ) {
+  if ( !(measuredHadWJetPairs_.size() >= 1) ) 
+  {
     std::cerr << "<MEMbbwwAlgoSingleLepton::integrate>: Given measuredParticles do not contain at least two of type 'HadWJet' --> ABORTING !!\n";
     assert(0);
   }
@@ -167,7 +186,8 @@ MEMbbwwAlgoSingleLepton::setMeasuredParticles(const std::vector<mem::MeasuredPar
 void
 MEMbbwwAlgoSingleLepton::integrate(const std::vector<MeasuredParticle>& measuredParticles, double measuredMEtPx, double measuredMEtPy, const TMatrixD& measuredMEtCov)
 {
-  if ( verbosity_ >= 1 ) {
+  if ( verbosity_ >= 1 ) 
+  {
     std::cout << "<MEMbbwwAlgoSingleLepton::integrate>:" << std::endl;
   }
 
@@ -189,27 +209,36 @@ MEMbbwwAlgoSingleLepton::integrate(const std::vector<MeasuredParticle>& measured
   result_.permutations_signal_.clear();
   integrand_signal_->resetNumMatrixElementEvaluations();
   unsigned numPermutations_signal = 0;
-  for ( size_t idxHadWJetPair = 0; idxHadWJetPair < numHadWJetPairs; ++idxHadWJetPair ) {
+  for ( size_t idxHadWJetPair = 0; idxHadWJetPair < numHadWJetPairs; ++idxHadWJetPair ) 
+  {
     const MeasuredParticle* measuredHadWJet1 = measuredHadWJetPairs_[idxHadWJetPair].jet1();
     const MeasuredParticle* measuredHadWJet2 = measuredHadWJetPairs_[idxHadWJetPair].jet2();
-    for ( unsigned idxPermutation = 0; idxPermutation < 4; ++idxPermutation ) {
+    for ( unsigned idxPermutation = 0; idxPermutation < 4; ++idxPermutation ) 
+    {
       const MeasuredParticle* measuredBJet1 = nullptr;
       const MeasuredParticle* measuredBJet2 = nullptr;
-      if ( idxPermutation == 0 || idxPermutation == 2 ) {
+      if ( idxPermutation == 0 || idxPermutation == 2 ) 
+      {
 	measuredBJet1 = measuredLeadingBJet_;
 	measuredBJet2 = measuredSubleadingBJet_;
-      } else {
+      } 
+      else 
+      {
 	measuredBJet1 = measuredSubleadingBJet_;
 	measuredBJet2 = measuredLeadingBJet_;
       }
       integrand_signal_->setInputs(
-        *measuredChargedLepton_, *measuredBJet1, *measuredBJet2, 
-	*measuredHadWJet1, *measuredHadWJet2,
+        measuredChargedLepton_, 
+	measuredBJet1, measuredBJet2, 
+	measuredHadWJet1, measuredHadWJet2,
         measuredMEtPx_, measuredMEtPy_, measuredMEtCov_);
       int chargedLeptonPermutation = kPermutationUndefined1L;
-      if ( idxPermutation == 0 || idxPermutation == 1 ) {
+      if ( idxPermutation == 0 || idxPermutation == 1 ) 
+      {
 	chargedLeptonPermutation = kOnshellChargedLepton;
-      } else {
+      } 
+      else 
+      {
 	chargedLeptonPermutation = kOffshellChargedLepton;
       }
       integrand_signal_->setOnshellChargedLepton(chargedLeptonPermutation);
@@ -221,7 +250,7 @@ MEMbbwwAlgoSingleLepton::integrate(const std::vector<MeasuredParticle>& measured
       result_.probErr_signal_ += probErr_permutation;
       result_.permutations_signal_.push_back(MEMbbwwPermutationSingleLepton(
         prob_permutation, probErr_permutation, 
-        *measuredChargedLepton_, *measuredBJet1, *measuredBJet2, *measuredHadWJet1, *measuredHadWJet2,
+        measuredChargedLepton_, measuredBJet1, measuredBJet2, measuredHadWJet1, measuredHadWJet2,
 	chargedLeptonPermutation));
       ++numPermutations_signal;
       delete intAlgo_;
@@ -243,22 +272,28 @@ MEMbbwwAlgoSingleLepton::integrate(const std::vector<MeasuredParticle>& measured
   result_.permutations_background_.clear();
   integrand_background_->resetNumMatrixElementEvaluations();
   unsigned numPermutations_background = 0;
-  for ( size_t idxHadWJetPair = 0; idxHadWJetPair < numHadWJetPairs; ++idxHadWJetPair ) {
+  for ( size_t idxHadWJetPair = 0; idxHadWJetPair < numHadWJetPairs; ++idxHadWJetPair ) 
+  {
     const MeasuredParticle* measuredHadWJet1 = measuredHadWJetPairs_[idxHadWJetPair].jet1();
     const MeasuredParticle* measuredHadWJet2 = measuredHadWJetPairs_[idxHadWJetPair].jet2();
-    for ( unsigned idxPermutation = 0; idxPermutation < 2; ++idxPermutation ) {
+    for ( unsigned idxPermutation = 0; idxPermutation < 2; ++idxPermutation ) 
+    {
       const MeasuredParticle* measuredBJetFromTop = nullptr;
       const MeasuredParticle* measuredBJetFromAntiTop = nullptr;
-      if ( idxPermutation == 0 ) {
+      if ( idxPermutation == 0 ) 
+      {
 	measuredBJetFromTop = measuredLeadingBJet_;
 	measuredBJetFromAntiTop  = measuredSubleadingBJet_;
-      } else {
+      }
+      else 
+      {
 	measuredBJetFromTop = measuredSubleadingBJet_;
 	measuredBJetFromAntiTop  = measuredLeadingBJet_;
       }
       integrand_background_->setInputs(
-        *measuredChargedLepton_, *measuredBJetFromTop, *measuredBJetFromAntiTop, 
-	*measuredHadWJet1, *measuredHadWJet2,
+        measuredChargedLepton_, 
+	measuredBJetFromTop, measuredBJetFromAntiTop, 
+	measuredHadWJet1, measuredHadWJet2,
         measuredMEtPx_, measuredMEtPy_, measuredMEtCov_);
       MEMbbwwAlgoSingleLepton::gMEMIntegrand = integrand_background_;
       initializeIntAlgo(maxObjFunctionCalls_background_);
@@ -268,7 +303,7 @@ MEMbbwwAlgoSingleLepton::integrate(const std::vector<MeasuredParticle>& measured
       result_.probErr_background_ += probErr_permutation;
       result_.permutations_background_.push_back(MEMbbwwPermutationSingleLepton(
 	prob_permutation, probErr_permutation, 
-        *measuredChargedLepton_, *measuredBJetFromTop, *measuredBJetFromAntiTop, *measuredHadWJet1, *measuredHadWJet2));
+        measuredChargedLepton_, measuredBJetFromTop, measuredBJetFromAntiTop, measuredHadWJet1, measuredHadWJet2));
       ++numPermutations_background;								
       delete intAlgo_;
       intAlgo_ = nullptr;
@@ -283,7 +318,8 @@ MEMbbwwAlgoSingleLepton::integrate(const std::vector<MeasuredParticle>& measured
   //}
 
   clock_->Stop(label_total.data());
-  if ( verbosity_ >= 0 ) {
+  if ( verbosity_ >= 0 ) 
+  {
     clock_->Show(label_total.data());
   }
   numSeconds_cpu_ = clock_->GetCpuTime(label_total.data());

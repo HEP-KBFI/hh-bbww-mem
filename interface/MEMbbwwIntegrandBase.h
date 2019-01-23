@@ -45,8 +45,8 @@ class MEMbbwwIntegrandBase
   const std::vector<std::string>& getIntVarNames() const { return intVarNames_; }
 
   /// get lower and upper bounds on integration region
-  const double* getIntBounds_lower() const { return intIntBounds_lower_; }
-  const double* getIntBounds_upper() const { return intIntBounds_upper_; }
+  const double* getIntBounds_lower() const { return intBounds_lower_; }
+  const double* getIntBounds_upper() const { return intBounds_upper_; }
 
   /// reset counter for number of times the MadGraph matrix element was evaluated 
   void resetNumMatrixElementEvaluations() { numMatrixElementEvaluations_ = 0; }
@@ -71,12 +71,12 @@ class MEMbbwwIntegrandBase
   /// integration variables
   unsigned intNumDimensions_;
   std::vector<std::string> intVarNames_; 
-  double* intIntBounds_lower_;
-  double* intIntBounds_upper_;
+  double* intBounds_lower_;
+  double* intBounds_upper_;
 
   /// measured momenta of charged leptons and b-jets
-  MeasuredParticle measuredBJet1_; 
-  MeasuredParticle measuredBJet2_;
+  const MeasuredParticle* measuredBJet1_; 
+  const MeasuredParticle* measuredBJet2_;
 
   /// measured missing transverse momentum (MET)
   /// and MET uncertainty matrix
