@@ -397,6 +397,8 @@ double MEMbbwwIntegrandDilepton_background::Eval(const double* x) const
 
   const double conversionFactor = 1.e+10*square(hbar_c); // conversion factor from GeV^-2 to picobarn = 10^-40m
   double integrandValue = conversionFactor*normFactor_;
+  const double fudgeFactor = 1.e+20;
+  integrandValue *= fudgeFactor;
   integrandValue *= (trueNuP4.pt()*trueAntiNuP4.pt());
   integrandValue *= prob_PDF;
   integrandValue *= prob_flux;

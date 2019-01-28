@@ -137,7 +137,6 @@ void
 MEMbbwwIntegrandDilepton_signal::applyOnshellWmassConstraint(bool flag) 
 { 
   applyOnshellWmassConstraint_ = flag; 
-  initializeIntVars();
 }
 
 void 
@@ -218,6 +217,7 @@ double MEMbbwwIntegrandDilepton_signal::Eval(const double* x) const
   if ( verbosity_ >= 2 ) 
   {
     std::cout << "<MEMbbwwIntegrandDilepton_signal::Eval>:" << std::endl;
+    printVDouble(" x", x, intNumDimensions_);
   }
 
   assert(chargedLeptonPermutation_ == kOnshellChargedLeptonPlus || chargedLeptonPermutation_ == kOnshellChargedLeptonMinus);
@@ -520,6 +520,8 @@ double MEMbbwwIntegrandDilepton_signal::Eval(const double* x) const
 
   const double conversionFactor = 1.e+10*square(hbar_c); // conversion factor from GeV^-2 to picobarn = 10^-40m
   double integrandValue = conversionFactor*normFactor_;
+  const double fudgeFactor = 1.e+25;
+  integrandValue *= fudgeFactor;
   integrandValue *= (trueNuP4.pt()*trueAntiNuP4.pt());
   integrandValue *= prob_PDF;
   integrandValue *= prob_flux;
