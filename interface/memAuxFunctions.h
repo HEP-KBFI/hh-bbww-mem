@@ -103,6 +103,7 @@ namespace mem
   void printLorentzVector(const std::string&, const LorentzVector&);
   void printLorentzVector(const std::string&, const LorentzVector&, const LorentzVector&);
   void printLorentzVector_NA(const std::string&, const LorentzVector&);
+  void printVDouble(const std::string&, const double*, unsigned); 
 
   std::vector<double> compBJetEn_Hbb(const LorentzVector&, double, double);
   double compNuEn_Wlnu(const LorentzVector&, double, double, double = wBosonMass2);

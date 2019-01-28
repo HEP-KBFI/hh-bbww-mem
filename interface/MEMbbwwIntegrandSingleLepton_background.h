@@ -24,11 +24,20 @@ class MEMbbwwIntegrandSingleLepton_background : public MEMbbwwIntegrandSingleLep
   double Eval(const double* x) const;
 
  protected:  
+  /// initialize integration variables (grid)
+  void initializeIntVars();
+
   /// leading order (LO) matrix element obtained from MadGraph
   ///
   /// Note: separate matrix elements are used for events with leptons of positive and events with leptons of negative charge
   mutable mg5_sm_ttbar2WbWb_Wp2lv_Wn2jj me_madgraph_chargedLeptonPlus_;
   mutable mg5_sm_ttbar2WbWb_Wp2jj_Wn2vl me_madgraph_chargedLeptonMinus_;
+
+  /// index of integration variables for theta and phi of either b-jet1 or b-jet2 in case one b-jet is "missing", i.e. not reconstructed
+  int offsetBJet1Theta_;
+  int offsetBJet1Phi_;
+  int offsetBJet2Theta_;
+  int offsetBJet2Phi_;
 };
 
 }

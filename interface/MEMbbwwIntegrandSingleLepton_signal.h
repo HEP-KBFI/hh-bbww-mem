@@ -44,6 +44,12 @@ class MEMbbwwIntegrandSingleLepton_signal : public MEMbbwwIntegrandSingleLepton
   /// or allow the mass to vary during the integration (applyOnshellWmassConstraint=false)
   bool applyOnshellWmassConstraint_;
 
+  /// index of integration variables for theta and phi of either b-jet1 or b-jet2 in case one b-jet is "missing", i.e. not reconstructed
+  int offsetBJet1Theta_;
+  int offsetBJet1Phi_;
+  int offsetBJet2Theta_;
+  int offsetBJet2Phi_;
+
   /// flag to switch between associations of charged lepton and (light quark) jet pair to on-shell and off-shell W bosons
   int chargedLeptonPermutation_;
 };

@@ -171,8 +171,7 @@ class MEMResult
 
   double getLikelihoodRatio() const
   {
-    const double coeff = 1.e-5;
-    double prob_SplusB = prob_signal_ + coeff*prob_background_;    
+    double prob_SplusB = prob_signal_ + prob_background_;    
     if ( prob_SplusB > 0. ) {
       return prob_signal_/prob_SplusB;
     } else {
@@ -181,11 +180,10 @@ class MEMResult
   }
   double getLikelihoodRatioErr() const
   {
-    const double coeff = 1.e-5;
-    double prob_SplusB = prob_signal_ + coeff*prob_background_;    
+    double prob_SplusB = prob_signal_ + prob_background_;    
     if ( prob_SplusB > 0. ) {
       double prob2_SplusB = mem::square(prob_SplusB);
-      return TMath::Sqrt(mem::square((coeff*prob_background_/prob2_SplusB)*probErr_signal_) + mem::square((prob_signal_/prob2_SplusB)*coeff*probErr_background_));
+      return TMath::Sqrt(mem::square((prob_background_/prob2_SplusB)*probErr_signal_) + mem::square((prob_signal_/prob2_SplusB)*probErr_background_));
     } else {
       return 0.;
     }

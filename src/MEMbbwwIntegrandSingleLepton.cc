@@ -57,12 +57,28 @@ MEMbbwwIntegrandSingleLepton::setInputs(const MeasuredParticle* measuredChargedL
   measuredMEtPy_ = measuredMEtPy;
   measuredMEtCov_.ResizeTo(2,2);
   measuredMEtCov_ = measuredMEtCov;
-  measuredHadRecoilPx_ = -(measuredChargedLepton_->px() + measuredHadWJet1_->px() + measuredHadWJet2_->px() + measuredBJet1_->px() + measuredBJet2_->px() + measuredMEtPx_);
-  measuredHadRecoilPy_ = -(measuredChargedLepton_->py() + measuredHadWJet1_->py() + measuredHadWJet2_->px() + measuredBJet1_->py() + measuredBJet2_->py() + measuredMEtPy_);
+  measuredHadRecoilPx_ = -(measuredChargedLepton_->px() + measuredHadWJet1_->px() + measuredHadWJet2_->px() + measuredMEtPx_);
+  measuredHadRecoilPy_ = -(measuredChargedLepton_->py() + measuredHadWJet1_->py() + measuredHadWJet2_->px() + measuredMEtPy_);
+  if ( measuredBJet1_ ) 
+  {
+    measuredHadRecoilPx_ -= measuredBJet1_->px();
+    measuredHadRecoilPy_ -= measuredBJet1_->py();    
+  }
+  if ( measuredBJet2_ ) 
+  {
+    measuredHadRecoilPx_ -= measuredBJet2_->px();
+    measuredHadRecoilPy_ -= measuredBJet2_->py();
+  }
   // set measured momenta of b-jets, of jets from W->jj decay, and of missing transverse momentum
   // in transfer function (TF) objects
-  bjet1TF_->setInputs(measuredBJet1_->p4());
-  bjet2TF_->setInputs(measuredBJet2_->p4());
+  if ( measuredBJet1_ ) 
+  {
+    bjet1TF_->setInputs(measuredBJet1_->p4());
+  }
+  if ( measuredBJet2_ ) 
+  {
+    bjet2TF_->setInputs(measuredBJet2_->p4());
+  }
   hadWJet1TF_->setInputs(measuredHadWJet1_->p4());
   hadWJet2TF_->setInputs(measuredHadWJet2_->p4());
   hadRecoilTF_->setInputs(measuredHadRecoilPx_, measuredHadRecoilPy_, measuredMEtCov_);
