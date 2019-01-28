@@ -213,27 +213,24 @@ MEMbbwwAlgoSingleLepton::integrate(const std::vector<MeasuredParticle>& measured
   {
     const MeasuredParticle* measuredHadWJet1 = measuredHadWJetPairs_[idxHadWJetPair].jet1();
     const MeasuredParticle* measuredHadWJet2 = measuredHadWJetPairs_[idxHadWJetPair].jet2();
-    for ( unsigned idxPermutation = 0; idxPermutation < 4; ++idxPermutation ) 
-    {
-      const MeasuredParticle* measuredBJet1 = nullptr;
-      const MeasuredParticle* measuredBJet2 = nullptr;
-      if ( idxPermutation == 0 || idxPermutation == 2 ) 
-      {
-	measuredBJet1 = measuredLeadingBJet_;
-	measuredBJet2 = measuredSubleadingBJet_;
-      } 
-      else 
-      {
-	measuredBJet1 = measuredSubleadingBJet_;
-	measuredBJet2 = measuredLeadingBJet_;
-      }
+    for ( unsigned idxPermutation = 0; idxPermutation < 2; ++idxPermutation ) 
+    {      
+      //---------------------------------------------------------------------------
+      // CV: MadGraph matrix element for HH->bbWW signal is symmetric under exchange b-jet1 vs b-jet2,
+      //     so one association of 
+      //       measuredBJet1 & measuredBJet1 to measuredLeadingBJet & measuredSubleadingBJet
+      //     is sufficient
+      //    (reduce number of permutations as much as possible, to save computing time !!)
+      const MeasuredParticle* measuredBJet1 = measuredLeadingBJet_;
+      const MeasuredParticle* measuredBJet2 = measuredSubleadingBJet_;
+      //---------------------------------------------------------------------------
       integrand_signal_->setInputs(
         measuredChargedLepton_, 
 	measuredBJet1, measuredBJet2, 
 	measuredHadWJet1, measuredHadWJet2,
         measuredMEtPx_, measuredMEtPy_, measuredMEtCov_);
       int chargedLeptonPermutation = kPermutationUndefined1L;
-      if ( idxPermutation == 0 || idxPermutation == 1 ) 
+      if ( idxPermutation == 0 ) 
       {
 	chargedLeptonPermutation = kOnshellChargedLepton;
       } 
@@ -261,7 +258,8 @@ MEMbbwwAlgoSingleLepton::integrate(const std::vector<MeasuredParticle>& measured
   result_.probErr_signal_ /= numPermutations_signal;
   numMatrixElementEvaluations_signal_ = integrand_signal_->getNumMatrixElementEvaluations();
   //clock_->Stop(label_signal.data().data());
-  //if ( verbosity_ >= 0 ) {
+  //if ( verbosity_ >= 0 ) 
+  //{
   //  clock_->Show(label_signal.data().data());
   //}
  
@@ -313,7 +311,8 @@ MEMbbwwAlgoSingleLepton::integrate(const std::vector<MeasuredParticle>& measured
   result_.probErr_background_ /= numPermutations_background;
   numMatrixElementEvaluations_background_ = integrand_background_->getNumMatrixElementEvaluations();
   //clock_->Stop(label_background.data());
-  //if ( verbosity_ >= 0 ) {
+  //if ( verbosity_ >= 0 ) 
+  //{
   //  clock_->Show(label_background.data());
   //}
 
