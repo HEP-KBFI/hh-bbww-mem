@@ -44,6 +44,18 @@ printLorentzVector_NA(const std::string& label, const LorentzVector& trueParticl
   std::cout << " rec. N/A" << std::endl;
 }
 
+void printVDouble(const std::string& label, const double* x, unsigned numDimensions)
+{
+  std::cout << label << " = { ";
+  for ( unsigned idxDimension = 0; idxDimension < numDimensions; ++idxDimension ) {
+    std::cout << x[idxDimension];
+    if ( idxDimension < (numDimensions - 1) ) {
+      std::cout << ", ";
+    }
+  }
+  std::cout << " } " << std::endl;
+} 
+
 double 
 compCosAngle(double particle1Theta, double particle1Phi, double particle2Theta, double particle2Phi)
 {
