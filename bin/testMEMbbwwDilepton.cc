@@ -180,11 +180,11 @@ main(int argc __attribute__((unused)), char ** argv __attribute__((unused)))
 	    << " background = " << memAlgo.getNumMatrixElementEvaluations_background() << std::endl;
   const MEMbbwwResultDilepton& result_sig = memAlgo.getResult();
   std::cout << " probability for signal hypothesis = " << result_sig.getProb_signal() << " +/- " << result_sig.getProbErr_signal() << " "
-	    << "(expected = 1.33371e-33 +/- 3.82434e-34)" << std::endl;
+	    << "(expected = 2.40089e-07 +/- 4.67305e-08)" << std::endl;
   std::cout << " probability for background hypothesis = " << result_sig.getProb_background() << " +/- " << result_sig.getProbErr_background() << " " 
-	    << "(expected = 3.43543e-43 +/- 3.72864e-44)" << std::endl;
+	    << "(expected = 4.11375e-23 +/- 7.06224e-25)" << std::endl;
   std::cout << "--> likelihood ratio = " << result_sig.getLikelihoodRatio() << " +/- " << result_sig.getLikelihoodRatioErr() << " " 
-	    << "(expected = 1 +/- 7.89753e-11)" << std::endl;
+	    << "(expected = 1 +/- 3.34794e-17)" << std::endl;
 
   std::cout << "processing background event:\n";
   std::cout << " m(bb) = " << (measuredParticles_background[2].p4() + measuredParticles_background[3].p4()).mass() << std::endl;
@@ -201,11 +201,11 @@ main(int argc __attribute__((unused)), char ** argv __attribute__((unused)))
 	    << " background = " << memAlgo.getNumMatrixElementEvaluations_background() << std::endl;
   const MEMbbwwResultDilepton& result_bkg = memAlgo.getResult();
   std::cout << " probability for signal hypothesis = " << result_bkg.getProb_signal() << " +/- " << result_bkg.getProbErr_signal() << " "
-	    << "(expected = 1.27234e-54 +/- 1.17403e-55)" << std::endl;
+	    << "(expected = 2.68588e-29 +/- 8.05027e-31)" << std::endl;
   std::cout << " probability for background hypothesis = " << result_bkg.getProb_background() << " +/- " << result_bkg.getProbErr_background() << " " 
-	    << "(expected = 4.64276e-25 +/- 2.39062e-26)" << std::endl;
+	    << "(expected = 4.11196e-05 +/- 1.92548e-07)" << std::endl;
   std::cout << "--> likelihood ratio = " << result_bkg.getLikelihoodRatio() << " +/- " << result_bkg.getLikelihoodRatioErr() << " " 
-	    << "(expected = 2.74048e-30 +/- 2.8958e-31)" << std::endl;
+	    << "(expected = 6.53187e-25 +/- 1.98152e-26)" << std::endl;
 
   return EXIT_SUCCESS;
 }
