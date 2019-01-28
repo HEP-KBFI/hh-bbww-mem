@@ -180,7 +180,8 @@ MEMbbwwAlgoDilepton::integrate(const std::vector<MeasuredParticle>& measuredPart
   result_.probErr_signal_ /= 2.;
   numMatrixElementEvaluations_signal_ = integrand_signal_->getNumMatrixElementEvaluations();
   //clock_->Stop(label_signal.data().data());
-  //if ( verbosity_ >= 0 ) {
+  //if ( verbosity_ >= 0 ) 
+  //{
   //  clock_->Show(label_signal.data().data());
   //}
 
@@ -224,7 +225,8 @@ MEMbbwwAlgoDilepton::integrate(const std::vector<MeasuredParticle>& measuredPart
   result_.probErr_background_ /= 2.;
   numMatrixElementEvaluations_background_ = integrand_background_->getNumMatrixElementEvaluations();
   //clock_->Stop(label_background.data());
-  //if ( verbosity_ >= 0 ) {
+  //if ( verbosity_ >= 0 ) 
+  //{
   //  clock_->Show(label_background.data());
   //}
 
