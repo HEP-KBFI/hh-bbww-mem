@@ -35,10 +35,10 @@ MEMbbwwIntegrandDilepton::setInputs(const MeasuredParticle* measuredChargedLepto
 				    const MeasuredParticle* measuredBJet1, const MeasuredParticle* measuredBJet2,
 				    double measuredMEtPx, double measuredMEtPy, const TMatrixD& measuredMEtCov)
 {
-  if ( verbosity_ >= 1 ) 
-  {
-    std::cout << "<MEMbbwwIntegrandDilepton::setInputs>:" << std::endl;
-  }
+  //if ( verbosity_ >= 1 ) 
+  //{
+  //  std::cout << "<MEMbbwwIntegrandDilepton::setInputs>:" << std::endl;
+  //}
   // reset 'MatrixInversion' error code
   errorCode_ &= (errorCode_ ^ MatrixInversion);
   measuredChargedLeptonPlus_ = measuredChargedLeptonPlus;

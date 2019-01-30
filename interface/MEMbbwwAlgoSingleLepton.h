@@ -48,7 +48,7 @@ class MEMbbwwAlgoSingleLepton : public MEMbbwwAlgoBase
   void integrate(const std::vector<mem::MeasuredParticle>&, double, double, const TMatrixD&);
 
   /// return probabilities for signal and background hypotheses
-  const MEMbbwwResultSingleLepton& getResult() const { return result_; }
+  MEMbbwwResultSingleLepton getResult() const { return result_; }
 
   class MeasuredHadWJetPair
   {

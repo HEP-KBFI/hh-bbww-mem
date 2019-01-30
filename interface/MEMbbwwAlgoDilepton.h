@@ -30,7 +30,7 @@ class MEMbbwwAlgoDilepton : public MEMbbwwAlgoBase
   void integrate(const std::vector<mem::MeasuredParticle>&, double, double, const TMatrixD&);
 
   /// return probabilities for signal and background hypotheses
-  const MEMbbwwResultDilepton& getResult() const { return result_; }
+  MEMbbwwResultDilepton getResult() const { return result_; }
 
  protected:
   /// set measured momenta of charged leptons, b-jets, and (light quark) jets originating from hadronic decay of W boson
