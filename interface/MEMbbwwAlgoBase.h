@@ -5,6 +5,8 @@
 #include "hhAnalysis/bbwwMEM/interface/MEMIntegratorBase.h"
 #include "hhAnalysis/bbwwMEM/interface/MEMbbwwIntegrandBase.h"
 #include "hhAnalysis/bbwwMEM/interface/MEMResult.h"
+#include "hhAnalysis/bbwwMEM/interface/BJetTF.h" // BJetTF
+#include "hhAnalysis/bbwwMEM/interface/HadRecoilTF.h" // HadRecoilTF
 
 #include <TBenchmark.h>
 #include <TMatrixD.h>
@@ -34,6 +36,11 @@ class MEMbbwwAlgoBase
   {
     intMode_ = intMode;
   }
+
+  /// set transfer functions for b-jets and MET
+  virtual void setBJet1TF(mem::BJetTF*) = 0;
+  virtual void setBJet2TF(mem::BJetTF*) = 0;
+  virtual void setHadRecoilTF(mem::HadRecoilTF*) = 0;
   
   /// run integration 
   virtual void integrate(const std::vector<mem::MeasuredParticle>&, double, double, const TMatrixD&) = 0;

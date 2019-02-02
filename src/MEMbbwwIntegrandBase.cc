@@ -10,8 +10,11 @@ MEMbbwwIntegrandBase::MEMbbwwIntegrandBase(double sqrtS, const std::string& madg
   , measuredBJet1_(nullptr)
   , measuredBJet2_(nullptr)
   , bjet1TF_(nullptr)
+  , bjet1TF_isOwned_(false)
   , bjet2TF_(nullptr)
+  , bjet2TF_isOwned_(false)
   , hadRecoilTF_(nullptr)
+  , hadRecoilTF_isOwned_(false)
   , sqrtS_(sqrtS)
   , normFactor_(-1.)
   , madgraphFileName_(madgraphFileName)
@@ -25,8 +28,11 @@ MEMbbwwIntegrandBase::MEMbbwwIntegrandBase(double sqrtS, const std::string& madg
   , verbosity_(verbosity)
 {
   bjet1TF_ = new BJetTF(verbosity_);
+  bjet1TF_isOwned_ = true;
   bjet2TF_ = new BJetTF(verbosity_);
+  bjet2TF_isOwned_ = true;
   hadRecoilTF_ = new HadRecoilTF(verbosity_);
+  hadRecoilTF_isOwned_ = true; 
 
   madgraphGluon1P4_ = new double[4];
   madgraphGluon1P4_[1] = 0.;
@@ -48,9 +54,9 @@ MEMbbwwIntegrandBase::~MEMbbwwIntegrandBase()
   delete [] intBounds_lower_;
   delete [] intBounds_upper_;
 
-  delete bjet1TF_;
-  delete bjet2TF_;
-  delete hadRecoilTF_;
+  if ( bjet1TF_isOwned_     ) delete bjet1TF_;
+  if ( bjet2TF_isOwned_     ) delete bjet2TF_;
+  if ( hadRecoilTF_isOwned_ ) delete hadRecoilTF_;
 
   delete [] madgraphGluon1P4_;
   delete [] madgraphGluon2P4_;
@@ -59,9 +65,33 @@ MEMbbwwIntegrandBase::~MEMbbwwIntegrandBase()
 }
 
 void
-MEMbbwwIntegrandBase::setPDF(LHAPDF::PDF * pdf)
+MEMbbwwIntegrandBase::setPDF(LHAPDF::PDF* pdf)
 {
   pdf_ = pdf;
+}
+
+void 
+MEMbbwwIntegrandBase::setBJet1TF(BJetTF* bjetTF)
+{
+  if ( bjet1TF_isOwned_ ) delete bjet1TF_;
+  bjet1TF_ = bjetTF;
+  bjet1TF_isOwned_ = false;
+}
+ 
+void 
+MEMbbwwIntegrandBase::setBJet2TF(BJetTF* bjetTF)
+{
+  if ( bjet2TF_isOwned_ ) delete bjet2TF_;
+  bjet2TF_ = bjetTF;
+  bjet2TF_isOwned_ = false;
+}
+ 
+void 
+MEMbbwwIntegrandBase::setHadRecoilTF(HadRecoilTF* hadRecoilTF)
+{
+  if ( hadRecoilTF_isOwned_ ) delete hadRecoilTF_;
+  hadRecoilTF_ = hadRecoilTF;
+  hadRecoilTF_isOwned_ = false;
 }
 
 void 

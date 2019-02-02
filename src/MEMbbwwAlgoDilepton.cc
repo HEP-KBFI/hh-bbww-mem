@@ -3,6 +3,8 @@
 
 #include "hhAnalysis/bbwwMEM/interface/MEMIntegratorVEGAS.h"
 #include "hhAnalysis/bbwwMEM/interface/MEMIntegratorVAMP.h"
+#include "hhAnalysis/bbwwMEM/interface/BJetTF.h" // BJetTF
+#include "hhAnalysis/bbwwMEM/interface/HadRecoilTF.h" // HadRecoilTF
 
 #include <TMatrixD.h>
 #include <TMatrixDSym.h>
@@ -36,6 +38,27 @@ MEMbbwwAlgoDilepton::~MEMbbwwAlgoDilepton()
 {
   delete integrand_signal_;
   delete integrand_background_;
+}
+
+void 
+MEMbbwwAlgoDilepton::setBJet1TF(mem::BJetTF* bjetTF)
+{
+  integrand_signal_->setBJet1TF(bjetTF);
+  integrand_background_->setBJet1TF(bjetTF);
+}
+ 
+void 
+MEMbbwwAlgoDilepton::setBJet2TF(mem::BJetTF* bjetTF)
+{
+  integrand_signal_->setBJet2TF(bjetTF);
+  integrand_background_->setBJet2TF(bjetTF);
+}
+ 
+void 
+MEMbbwwAlgoDilepton::setHadRecoilTF(mem::HadRecoilTF* hadRecoilTF)
+{
+  integrand_signal_->setHadRecoilTF(hadRecoilTF);
+  integrand_background_->setHadRecoilTF(hadRecoilTF);
 }
 
 void 

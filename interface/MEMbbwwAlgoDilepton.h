@@ -20,11 +20,16 @@ class MEMbbwwAlgoDilepton : public MEMbbwwAlgoBase
   MEMbbwwAlgoDilepton(double, const std::string&, const std::string&, const std::string&, int = 0);
   ~MEMbbwwAlgoDilepton();
 
+  /// set transfer functions for b-jets and MET
+  void setBJet1TF(mem::BJetTF*);
+  void setBJet2TF(mem::BJetTF*);
+  void setHadRecoilTF(mem::HadRecoilTF*);
+
   /// fix (flag=true) mass of charged lepton plus neutrino originating from the decay of the "on-shell" W boson to mW,
   /// or allow the mass to vary during the integration (flag=false)
   ///
   /// Note: flag has an effect on the likelihood of the HH->bbWW signal hypothesis only (not on the likelihood of the ttbar background hypothesis)
-  void applyOnshellWmassConstraint_signal(bool flag);
+  void applyOnshellWmassConstraint_signal(bool);
   
   /// run integration 
   void integrate(const std::vector<mem::MeasuredParticle>&, double, double, const TMatrixD&);
