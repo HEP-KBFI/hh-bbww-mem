@@ -1,6 +1,6 @@
 #include "hhAnalysis/bbwwMEM/interface/BJetTF.h"
 
-#include "tthAnalysis/tthMEM/interface/JetTransferFunction.h" // bJetParams
+#include "tthAnalysis/tthMEM/interface/JetTransferFunction.h" // bJetParams, gaussianPDF
 
 using namespace mem;
 

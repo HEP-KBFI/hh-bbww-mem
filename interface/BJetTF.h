@@ -12,8 +12,7 @@ class BJetTF
   BJetTF(int = 0);
   ~BJetTF();
   
-  /// set measured missing transverse momentum (MET)
-  /// and MET uncertainty matrix
+  /// set measured b-jet energy and pseudo-rapidity
   void setInputs(const mem::LorentzVector&);
 
   /// evaluate transfer function (TF)
