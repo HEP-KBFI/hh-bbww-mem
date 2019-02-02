@@ -38,6 +38,14 @@ class MEMbbwwIntegrandBase
   MEMbbwwIntegrandBase(double, const std::string&, int);
   virtual ~MEMbbwwIntegrandBase();
   
+  /// set parton distribution function (PDF)
+  void setPDF(LHAPDF::PDF* pdf);
+
+  /// set transfer functions for b-jets and MET
+  void setBJet1TF(BJetTF*);
+  void setBJet2TF(BJetTF*);
+  void setHadRecoilTF(HadRecoilTF*);
+
   /// get dimension of integration region
   unsigned getIntNumDimensions() const { return intNumDimensions_; }
 
@@ -57,9 +65,6 @@ class MEMbbwwIntegrandBase
 
   /// get number of times the MadGraph matrix element was evaluated 
   unsigned long getNumMatrixElementEvaluations() const { return numMatrixElementEvaluations_; }
-
-  /// set parton distribution function (PDF)
-  void setPDF(LHAPDF::PDF* pdf);
 
  protected:  
   /// pointer to parton-distribution-function (PDF)
@@ -90,8 +95,11 @@ class MEMbbwwIntegrandBase
 
   /// transfer functions for b-jets and MET
   BJetTF* bjet1TF_;
+  bool bjet1TF_isOwned_;
   BJetTF* bjet2TF_;
+  bool bjet2TF_isOwned_;
   HadRecoilTF* hadRecoilTF_;
+  bool hadRecoilTF_isOwned_;
 
   /// center-of-mass energy
   double sqrtS_;
