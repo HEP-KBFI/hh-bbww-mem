@@ -2,6 +2,9 @@
 *.creator
 *.files
 *.includes
+*.cflags
+*.creator.user*
+*.cxxflags
 *.pyc
 __init__.py*
 *~

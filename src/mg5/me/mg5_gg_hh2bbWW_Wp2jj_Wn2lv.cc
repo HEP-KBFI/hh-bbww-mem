@@ -89,7 +89,7 @@ void mg5_BSM_gg_hh2bbWW_Wp2jj_Wn2lv::sigmaKin()
 
   // Local variables and constants
   const int ncomb = 256; 
-  static bool goodhel[ncomb] = {ncomb * false}; 
+  static bool goodhel[ncomb] = {ncomb && false}; 
   static int ntry = 0, sum_hel = 0, ngood = 0; 
   static int igood[ncomb]; 
   static int jhel; 
