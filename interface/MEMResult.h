@@ -180,9 +180,8 @@ class MEMResult
   }
   double getLikelihoodRatioErr() const
   {
-    double prob_SplusB = prob_signal_ + prob_background_;    
-    if ( prob_SplusB > 0. ) {
-      double prob2_SplusB = mem::square(prob_SplusB);
+    double prob2_SplusB = mem::square(prob_signal_ + prob_background_);    
+    if ( prob2_SplusB > 0. ) {
       return TMath::Sqrt(mem::square((prob_background_/prob2_SplusB)*probErr_signal_) + mem::square((prob_signal_/prob2_SplusB)*probErr_background_));
     } else {
       return 0.;
