@@ -247,8 +247,8 @@ MEMbbwwAlgoSingleLepton::integrate(const std::vector<MeasuredParticle>& measured
       //---------------------------------------------------------------------------
       integrand_signal_->setInputs(
         measuredChargedLepton_, 
-	measuredBJet1, measuredBJet2, 
 	measuredHadWJet1, measuredHadWJet2,
+	measuredBJet1, measuredBJet2, 
         measuredMEtPx_, measuredMEtPy_, measuredMEtCov_);
       int chargedLeptonPermutation = kPermutationUndefined1L;
       if ( idxPermutation == 0 ) 
@@ -268,7 +268,7 @@ MEMbbwwAlgoSingleLepton::integrate(const std::vector<MeasuredParticle>& measured
       result_.probErr_signal_ += probErr_permutation;
       result_.permutations_signal_.push_back(MEMbbwwPermutationSingleLepton(
         prob_permutation, probErr_permutation, 
-        measuredChargedLepton_, measuredBJet1, measuredBJet2, measuredHadWJet1, measuredHadWJet2,
+        measuredChargedLepton_, measuredHadWJet1, measuredHadWJet2, measuredBJet1, measuredBJet2, 
 	chargedLeptonPermutation));
       ++numPermutations_signal;
       delete intAlgo_;
@@ -311,8 +311,8 @@ MEMbbwwAlgoSingleLepton::integrate(const std::vector<MeasuredParticle>& measured
       }
       integrand_background_->setInputs(
         measuredChargedLepton_, 
-	measuredBJetFromTop, measuredBJetFromAntiTop, 
 	measuredHadWJet1, measuredHadWJet2,
+	measuredBJetFromTop, measuredBJetFromAntiTop, 
         measuredMEtPx_, measuredMEtPy_, measuredMEtCov_);
       MEMbbwwAlgoSingleLepton::gMEMIntegrand = integrand_background_;
       initializeIntAlgo(maxObjFunctionCalls_background_);
@@ -322,7 +322,7 @@ MEMbbwwAlgoSingleLepton::integrate(const std::vector<MeasuredParticle>& measured
       result_.probErr_background_ += probErr_permutation;
       result_.permutations_background_.push_back(MEMbbwwPermutationSingleLepton(
 	prob_permutation, probErr_permutation, 
-        measuredChargedLepton_, measuredBJetFromTop, measuredBJetFromAntiTop, measuredHadWJet1, measuredHadWJet2));
+        measuredChargedLepton_, measuredHadWJet1, measuredHadWJet2, measuredBJetFromTop, measuredBJetFromAntiTop));
       ++numPermutations_background;								
       delete intAlgo_;
       intAlgo_ = nullptr;
