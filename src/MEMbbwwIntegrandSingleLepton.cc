@@ -58,7 +58,7 @@ MEMbbwwIntegrandSingleLepton::setInputs(const MeasuredParticle* measuredChargedL
   measuredMEtCov_.ResizeTo(2,2);
   measuredMEtCov_ = measuredMEtCov;
   measuredHadRecoilPx_ = -(measuredChargedLepton_->px() + measuredHadWJet1_->px() + measuredHadWJet2_->px() + measuredMEtPx_);
-  measuredHadRecoilPy_ = -(measuredChargedLepton_->py() + measuredHadWJet1_->py() + measuredHadWJet2_->px() + measuredMEtPy_);
+  measuredHadRecoilPy_ = -(measuredChargedLepton_->py() + measuredHadWJet1_->py() + measuredHadWJet2_->py() + measuredMEtPy_);
   if ( measuredBJet1_ ) 
   {
     measuredHadRecoilPx_ -= measuredBJet1_->px();
