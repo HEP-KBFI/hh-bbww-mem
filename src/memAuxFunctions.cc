@@ -158,6 +158,12 @@ compBJetEn_top(const LorentzVector& trueEllNuP4, double trueBJetTheta, double tr
 }
 
 double 
+compHadWJet1En_Wjj(const LorentzVector& trueHadWJet2P4, double trueHadWJet1Theta, double trueHadWJet1Phi, double q2W)
+{
+  return compHadWJet2En_Wjj(trueHadWJet2P4, trueHadWJet1Theta, trueHadWJet1Phi, q2W);
+}
+
+double 
 compHadWJet2En_Wjj(const LorentzVector& trueHadWJet1P4, double trueHadWJet2Theta, double trueHadWJet2Phi, double q2W)
 {
   double denominator = 2.*trueHadWJet1P4.energy()*(1. - compCosAngle(
@@ -171,6 +177,12 @@ compHadWJet2En_Wjj(const LorentzVector& trueHadWJet1P4, double trueHadWJet2Theta
   {
     return 0.;
   }
+}
+
+double 
+compHadWJet1En_Hww(const LorentzVector& trueEllNuHadWJet2P4, double trueHadWJet1Theta, double trueHadWJet1Phi)
+{
+  return compHadWJet2En_Hww(trueEllNuHadWJet2P4, trueHadWJet1Theta, trueHadWJet1Phi);
 }
 
 double 

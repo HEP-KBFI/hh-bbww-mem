@@ -109,7 +109,9 @@ namespace mem
   double compNuEn_Wlnu(const LorentzVector&, double, double, double = wBosonMass2);
   double compNuStarEn_Hww(const LorentzVector&, double, double);
   std::vector<double> compBJetEn_top(const LorentzVector&, double, double);
+  double compHadWJet1En_Wjj(const LorentzVector&, double, double, double = wBosonMass2);
   double compHadWJet2En_Wjj(const LorentzVector&, double, double, double = wBosonMass2);
+  double compHadWJet1En_Hww(const LorentzVector&, double, double);
   double compHadWJet2En_Hww(const LorentzVector&, double, double);
 
   LorentzVector findBJetEn_solution_Hbb(const std::vector<double>&, double, double, const LorentzVector&, bool&);
