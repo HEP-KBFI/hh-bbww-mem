@@ -57,8 +57,18 @@ MEMbbwwIntegrandSingleLepton::setInputs(const MeasuredParticle* measuredChargedL
   measuredMEtPy_ = measuredMEtPy;
   measuredMEtCov_.ResizeTo(2,2);
   measuredMEtCov_ = measuredMEtCov;
-  measuredHadRecoilPx_ = -(measuredChargedLepton_->px() + measuredHadWJet1_->px() + measuredHadWJet2_->px() + measuredMEtPx_);
-  measuredHadRecoilPy_ = -(measuredChargedLepton_->py() + measuredHadWJet1_->py() + measuredHadWJet2_->py() + measuredMEtPy_);
+  measuredHadRecoilPx_ = -(measuredChargedLepton_->px() + measuredMEtPx_);
+  measuredHadRecoilPy_ = -(measuredChargedLepton_->py() + measuredMEtPy_);
+  if ( measuredHadWJet1_ ) 
+  {
+    measuredHadRecoilPx_ -= measuredHadWJet1_->px();
+    measuredHadRecoilPy_ -= measuredHadWJet1_->py();    
+  }
+  if ( measuredHadWJet2_ ) 
+  {
+    measuredHadRecoilPx_ -= measuredHadWJet2_->px();
+    measuredHadRecoilPy_ -= measuredHadWJet2_->py();
+  }
   if ( measuredBJet1_ ) 
   {
     measuredHadRecoilPx_ -= measuredBJet1_->px();
@@ -69,8 +79,16 @@ MEMbbwwIntegrandSingleLepton::setInputs(const MeasuredParticle* measuredChargedL
     measuredHadRecoilPx_ -= measuredBJet2_->px();
     measuredHadRecoilPy_ -= measuredBJet2_->py();
   }
-  // set measured momenta of b-jets, of jets from W->jj decay, and of missing transverse momentum
+  // set measured momenta of jets from W->jj decay, of b-jets, and of missing transverse momentum
   // in transfer function (TF) objects
+  if ( measuredHadWJet1_ ) 
+  {
+    hadWJet1TF_->setInputs(measuredHadWJet1_->p4());
+  }
+  if ( measuredHadWJet2_ )
+  {
+    hadWJet2TF_->setInputs(measuredHadWJet2_->p4());
+  }
   if ( measuredBJet1_ ) 
   {
     bjet1TF_->setInputs(measuredBJet1_->p4());
@@ -79,8 +97,6 @@ MEMbbwwIntegrandSingleLepton::setInputs(const MeasuredParticle* measuredChargedL
   {
     bjet2TF_->setInputs(measuredBJet2_->p4());
   }
-  hadWJet1TF_->setInputs(measuredHadWJet1_->p4());
-  hadWJet2TF_->setInputs(measuredHadWJet2_->p4());
   hadRecoilTF_->setInputs(measuredHadRecoilPx_, measuredHadRecoilPy_, measuredMEtCov_);
   if ( hadRecoilTF_->getErrorCode() ) 
   {
