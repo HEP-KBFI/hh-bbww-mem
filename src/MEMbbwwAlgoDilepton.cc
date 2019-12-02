@@ -195,7 +195,7 @@ MEMbbwwAlgoDilepton::integrate(const std::vector<MeasuredParticle>& measuredPart
     }
     result_.permutations_signal_.push_back(MEMbbwwPermutationDilepton(
       prob_permutation, probErr_permutation, 
-      measuredBJet1, measuredBJet2, measuredChargedLeptonFromOnshellW, measuredChargedLeptonFromOffshellW,
+      measuredChargedLeptonFromOnshellW, measuredChargedLeptonFromOffshellW, measuredBJet1, measuredBJet2, 
       chargedLeptonPermutation));
     delete intAlgo_;
     intAlgo_ = nullptr;
@@ -241,7 +241,7 @@ MEMbbwwAlgoDilepton::integrate(const std::vector<MeasuredParticle>& measuredPart
     result_.probErr_background_ += probErr_permutation;
     result_.permutations_background_.push_back(MEMbbwwPermutationDilepton(
       prob_permutation, probErr_permutation, 
-      measuredBJetFromTop, measuredBJetFromAntiTop, measuredChargedLeptonPlus_, measuredChargedLeptonMinus_));
+      measuredChargedLeptonPlus_, measuredChargedLeptonMinus_, measuredBJetFromTop, measuredBJetFromAntiTop));
     delete intAlgo_;
     intAlgo_ = nullptr;
   }
