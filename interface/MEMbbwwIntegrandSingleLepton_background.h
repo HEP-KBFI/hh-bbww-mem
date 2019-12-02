@@ -33,6 +33,12 @@ class MEMbbwwIntegrandSingleLepton_background : public MEMbbwwIntegrandSingleLep
   mutable mg5_sm_ttbar2WbWb_Wp2lv_Wn2jj me_madgraph_chargedLeptonPlus_;
   mutable mg5_sm_ttbar2WbWb_Wp2jj_Wn2vl me_madgraph_chargedLeptonMinus_;
 
+  /// index of integration variables for theta and phi of either jet1 or jet2 from W->jj decay in case one jet from W->jj decay is "missing", i.e. not reconstructed
+  int offsetHadWJet1Theta_;
+  int offsetHadWJet1Phi_;
+  int offsetHadWJet2Theta_;
+  int offsetHadWJet2Phi_;	
+
   /// index of integration variables for theta and phi of either b-jet1 or b-jet2 in case one b-jet is "missing", i.e. not reconstructed
   int offsetBJet1Theta_;
   int offsetBJet1Phi_;
