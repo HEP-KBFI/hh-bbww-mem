@@ -31,32 +31,20 @@ class MEMPermutationBase
 class MEMbbwwPermutationDilepton : public MEMPermutationBase
 {
  public:
-  MEMbbwwPermutationDilepton(double prob, double probErr,
-			     const MeasuredParticle* measuredBJet1, const MeasuredParticle* measuredBJet2,
+  MEMbbwwPermutationDilepton(double prob, double probErr,	
 			     const MeasuredParticle* measuredChargedLepton1, const MeasuredParticle* measuredChargedLepton2,
+			     const MeasuredParticle* measuredBJet1, const MeasuredParticle* measuredBJet2,
 			     int chargedLeptonPermutation = kPermutationUndefined2L)
     : MEMPermutationBase(prob, probErr)
-    , measuredBJet1_(measuredBJet1)
-    , measuredBJet2_(measuredBJet2)
     , measuredChargedLepton1_(measuredChargedLepton1)
     , measuredChargedLepton2_(measuredChargedLepton2)
+    , measuredBJet1_(measuredBJet1)
+    , measuredBJet2_(measuredBJet2)
     , chargedLeptonPermutation_(chargedLeptonPermutation)
   {}
   ~MEMbbwwPermutationDilepton()
   {}
 
-  const MeasuredParticle* getMeasuredBJet1() const
-  {
-    // in signal     hypothesis: "first" bottom quark (no special meaning)
-    // in background hypothesis: bottom quark, originating from decay of top quark
-    return measuredBJet1_;
-  }
-  const MeasuredParticle* getMeasuredBJet2() const 
-  {
-    // in signal     hypothesis: "second" bottom quark (no special meaning)
-    // in background hypothesis: anti-bottom quark, originating decay of from anti-top quark
-    return measuredBJet2_;
-  }
   const MeasuredParticle* getMeasuredChargedLepton1() const
   {
     // in signal     hypothesis: lepton originating from decay of "on-shell" W boson
@@ -69,12 +57,24 @@ class MEMbbwwPermutationDilepton : public MEMPermutationBase
     // in background hypothesis: lepton of negative charge, originating decay of from anti-top quark
     return measuredChargedLepton2_;
   }
-
+  const MeasuredParticle* getMeasuredBJet1() const
+  {
+    // in signal     hypothesis: "first" bottom quark (no special meaning)
+    // in background hypothesis: bottom quark, originating from decay of top quark
+    return measuredBJet1_;
+  }
+  const MeasuredParticle* getMeasuredBJet2() const 
+  {
+    // in signal     hypothesis: "second" bottom quark (no special meaning)
+    // in background hypothesis: anti-bottom quark, originating decay of from anti-top quark
+    return measuredBJet2_;
+  }
+ 
  protected:
-  const MeasuredParticle* measuredBJet1_;
-  const MeasuredParticle* measuredBJet2_;
   const MeasuredParticle* measuredChargedLepton1_;
   const MeasuredParticle* measuredChargedLepton2_;
+  const MeasuredParticle* measuredBJet1_;
+  const MeasuredParticle* measuredBJet2_;
   /// flag specific to signal hypothesis, 
   /// used to switch between associations of lepton+ and lepton- to on-shell and off-shell W bosons
   bool chargedLeptonPermutation_;
@@ -84,32 +84,20 @@ class MEMbbwwPermutationSingleLepton : public MEMPermutationBase
 {
  public:
   MEMbbwwPermutationSingleLepton(double prob, double probErr,
-				 const MeasuredParticle* measuredBJet1, const MeasuredParticle* measuredBJet2,
 				 const MeasuredParticle* measuredChargedLepton, const MeasuredParticle* measuredHadWJet1, const MeasuredParticle* measuredHadWJet2,
+				 const MeasuredParticle* measuredBJet1, const MeasuredParticle* measuredBJet2,			       
 				 int chargedLeptonPermutation = kPermutationUndefined1L)
     : MEMPermutationBase(prob, probErr)
-    , measuredBJet1_(measuredBJet1)
-    , measuredBJet2_(measuredBJet2)
     , measuredChargedLepton_(measuredChargedLepton)
     , measuredHadWJet1_(measuredHadWJet1)
     , measuredHadWJet2_(measuredHadWJet2)
+    , measuredBJet1_(measuredBJet1)
+    , measuredBJet2_(measuredBJet2)
     , chargedLeptonPermutation_(chargedLeptonPermutation)
   {}
   ~MEMbbwwPermutationSingleLepton()
   {}
 
-  const MeasuredParticle* getMeasuredBJet1() const
-  {
-    // in signal     hypothesis: "first" bottom quark (no special meaning)
-    // in background hypothesis: bottom quark, originating from decay of top quark
-    return measuredBJet1_;
-  }
-  const MeasuredParticle* getMeasuredBJet2() const 
-  {
-    // in signal     hypothesis: lepton originating from decay of "on-shell" W boson
-    // in background hypothesis: lepton of positive charge, originating from decay of top quark
-    return measuredBJet2_;
-  }
   const MeasuredParticle* getMeasuredChargedLepton() const
   {
     // in signal and background hypothesis: charged lepton (no special meaning)
@@ -125,13 +113,25 @@ class MEMbbwwPermutationSingleLepton : public MEMPermutationBase
     // in signal and background hypothesis: "second" jet originating from decay of W boson (no special meaning)
     return measuredHadWJet2_;
   }
+  const MeasuredParticle* getMeasuredBJet1() const
+  {
+    // in signal     hypothesis: "first" bottom quark (no special meaning)
+    // in background hypothesis: bottom quark, originating from decay of top quark
+    return measuredBJet1_;
+  }
+  const MeasuredParticle* getMeasuredBJet2() const 
+  {
+    // in signal     hypothesis: lepton originating from decay of "on-shell" W boson
+    // in background hypothesis: lepton of positive charge, originating from decay of top quark
+    return measuredBJet2_;
+  }
 
  protected:
-  const MeasuredParticle* measuredBJet1_;
-  const MeasuredParticle* measuredBJet2_;
   const MeasuredParticle* measuredChargedLepton_;
   const MeasuredParticle* measuredHadWJet1_;
   const MeasuredParticle* measuredHadWJet2_;
+  const MeasuredParticle* measuredBJet1_;
+  const MeasuredParticle* measuredBJet2_;
   /// flag specific to signal hypothesis, 
   /// used to switch between associations of charged lepton to on-shell and off-shell W bosons
   int chargedLeptonPermutation_;
