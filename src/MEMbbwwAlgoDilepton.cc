@@ -120,12 +120,16 @@ MEMbbwwAlgoDilepton::setMeasuredParticles(const std::vector<MeasuredParticle>& m
       else if ( !measuredSubleadingBJet_ ) measuredSubleadingBJet_ = &measuredParticle;
     }
   }
-  if ( !(measuredChargedLeptonPlus_ && measuredChargedLeptonMinus_ && measuredLeadingBJet_) ) // CV: allow for one "missing" (non-reconstructed) b-jet 
+  if ( !(measuredChargedLeptonPlus_ && measuredChargedLeptonMinus_) ) 
   {
-    std::cerr << "<MEMbbwwAlgoDilepton::integrate>: Given measuredParticles are not of the expected type --> ABORTING !!\n";
+    std::cerr << "<MEMbbwwAlgoSingleLepton::integrate>: Given measuredParticles do not contain a pair of type 'Electron' or 'Muon' and of opposite charge --> ABORTING !!\n";
     assert(0);
   }
- 
+  if ( !(measuredLeadingBJet_ || measuredSubleadingBJet_) ) // CV: allow for one "missing" (non-reconstructed) b-jet 
+  {
+    std::cerr << "<MEMbbwwAlgoSingleLepton::integrate>: Given measuredParticles do not contain at least one of type 'BJet' --> ABORTING !!\n";
+    assert(0);
+  }	
 }
 
 void
