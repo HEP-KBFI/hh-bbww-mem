@@ -161,9 +161,14 @@ MEMbbwwAlgoSingleLepton::setMeasuredParticles(const std::vector<mem::MeasuredPar
       measuredHadWJets_.push_back(&measuredParticle);
     }
   }
-  if ( !(measuredChargedLepton_ && measuredLeadingBJet_ && measuredSubleadingBJet_) ) 
+  if ( !measuredChargedLepton_ ) 
   {
-    std::cerr << "<MEMbbwwAlgoSingleLepton::integrate>: Given measuredParticles are not of the expected type --> ABORTING !!\n";
+    std::cerr << "<MEMbbwwAlgoSingleLepton::integrate>: Given measuredParticles do not contain at least one of type 'Electron' or 'Muon' --> ABORTING !!\n";
+    assert(0);
+  }
+  if ( !(measuredLeadingBJet_ || measuredSubleadingBJet_) ) // CV: allow for one "missing" (non-reconstructed) b-jet 
+  {
+    std::cerr << "<MEMbbwwAlgoSingleLepton::integrate>: Given measuredParticles do not contain at least one of type 'BJet' --> ABORTING !!\n";
     assert(0);
   }
   for ( std::vector<const mem::MeasuredParticle*>::const_iterator measuredHadWJet1 = measuredHadWJets_.begin();
@@ -199,7 +204,7 @@ MEMbbwwAlgoSingleLepton::setMeasuredParticles(const std::vector<mem::MeasuredPar
   }
   if ( !(measuredHadWJetPairs_.size() >= 1) ) 
   {
-    std::cerr << "<MEMbbwwAlgoSingleLepton::integrate>: Given measuredParticles do not contain at least two of type 'HadWJet' --> ABORTING !!\n";
+    std::cerr << "<MEMbbwwAlgoSingleLepton::integrate>: Given measuredParticles do not contain at least one of type 'HadWJet' --> ABORTING !!\n";
     assert(0);
   }
 }
