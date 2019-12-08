@@ -87,6 +87,7 @@ MEMbbwwIntegrandSingleLepton_background::~MEMbbwwIntegrandSingleLepton_backgroun
 void 
 MEMbbwwIntegrandSingleLepton_background::initializeIntVars()
 {
+std::cout << "<MEMbbwwIntegrandSingleLepton_background::initializeIntVars>:" << std::endl;
   intNumDimensions_ = 3;  
   if ( !measuredHadWJet1_ ) 
   {
@@ -212,8 +213,8 @@ MEMbbwwIntegrandSingleLepton_background::setInputs(const MeasuredParticle* measu
     measuredHadWJetEn = measuredHadWJet1_->energy();
     measuredHadWJetEnRes = 0.50*TMath::Sqrt(measuredHadWJet1_->energy());
   }	
-  intBounds_lower_[3] = TMath::Max(10., measuredHadWJetEn - 3.*measuredHadWJetEnRes);
-  intBounds_upper_[3] = measuredHadWJetEn + 3.*measuredHadWJetEnRes;
+  intBounds_lower_[2] = TMath::Max(10., measuredHadWJetEn - 3.*measuredHadWJetEnRes);
+  intBounds_upper_[2] = measuredHadWJetEn + 3.*measuredHadWJetEnRes;
 
   // Cross section for Standard Model (SM) ttbar production @ 13 TeV center-of-mass energy
   // time branching fraction for the decay ttbar->bbWW->bblnulnu (excluding electrons and muons from tau decays)
