@@ -6,6 +6,8 @@ using namespace mem;
 
 MEMbbwwIntegrandDilepton::MEMbbwwIntegrandDilepton(double sqrtS, const std::string& madgraphFileName, int verbosity)
   : MEMbbwwIntegrandBase(sqrtS, madgraphFileName, verbosity)
+  , measuredChargedLeptonPlus_(nullptr)
+  , measuredChargedLeptonMinus_(nullptr) 
   , madgraphChargedLeptonPlusP4_(nullptr)
   , madgraphNeutrinoP4_(nullptr)
   , madgraphChargedLeptonMinusP4_(nullptr)
