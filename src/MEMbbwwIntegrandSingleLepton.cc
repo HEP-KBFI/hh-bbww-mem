@@ -6,6 +6,11 @@ using namespace mem;
 
 MEMbbwwIntegrandSingleLepton::MEMbbwwIntegrandSingleLepton(double sqrtS, const std::string& madgraphFileName, int verbosity)
   : MEMbbwwIntegrandBase(sqrtS, madgraphFileName, verbosity)
+  , measuredChargedLepton_(nullptr)
+  , measuredHadWJet1_(nullptr)
+  , measuredHadWJet2_(nullptr)
+  , hadWJet1TF_(nullptr)
+  , hadWJet2TF_(nullptr)
   , madgraphChargedLeptonP4_(nullptr)
   , madgraphNeutrinoP4_(nullptr)
   , madgraphHadWJet1P4_(nullptr)
@@ -57,8 +62,13 @@ MEMbbwwIntegrandSingleLepton::setInputs(const MeasuredParticle* measuredChargedL
   measuredMEtPy_ = measuredMEtPy;
   measuredMEtCov_.ResizeTo(2,2);
   measuredMEtCov_ = measuredMEtCov;
-  measuredHadRecoilPx_ = -(measuredChargedLepton_->px() + measuredMEtPx_);
-  measuredHadRecoilPy_ = -(measuredChargedLepton_->py() + measuredMEtPy_);
+  measuredHadRecoilPx_ = -measuredMEtPx_;
+  measuredHadRecoilPy_ = -measuredMEtPy_;
+  if ( measuredChargedLepton_ ) 
+  {
+    measuredHadRecoilPx_ -= measuredChargedLepton_->px();
+    measuredHadRecoilPy_ -= measuredChargedLepton_->py();    
+  }
   if ( measuredHadWJet1_ ) 
   {
     measuredHadRecoilPx_ -= measuredHadWJet1_->px();
