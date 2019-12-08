@@ -35,6 +35,7 @@ class MEMbbwwIntegrandBase
     MatrixInversion = 0x00000001
   };
 
+  MEMbbwwIntegrandBase() = delete; // CV: disable automatic generation of default constructor by C++ compiler
   MEMbbwwIntegrandBase(double, const std::string&, int);
   virtual ~MEMbbwwIntegrandBase();
   
