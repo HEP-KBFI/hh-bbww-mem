@@ -18,7 +18,7 @@ MEMbbwwAlgoSingleLepton::MEMbbwwAlgoSingleLepton(double sqrtS,
 						 const std::string& pdfName, 
 						 const std::string& madgraphFileName_signal, const std::string& madgraphFileName_background, 
 						 int verbosity) 
-  : MEMbbwwAlgoBase(sqrtS, pdfName, madgraphFileName_signal, madgraphFileName_background, verbosity)   
+  : MEMbbwwAlgoBase(sqrtS, pdfName, madgraphFileName_signal, madgraphFileName_background, verbosity)
   , integrand_signal_(nullptr)
   , integrand_background_(nullptr)
   , maxNumHadWJetPairs_(8)
@@ -171,41 +171,46 @@ MEMbbwwAlgoSingleLepton::setMeasuredParticles(const std::vector<mem::MeasuredPar
     std::cerr << "<MEMbbwwAlgoSingleLepton::integrate>: Given measuredParticles do not contain at least one of type 'BJet' --> ABORTING !!\n";
     assert(0);
   }
-  for ( std::vector<const mem::MeasuredParticle*>::const_iterator measuredHadWJet1 = measuredHadWJets_.begin();
-	measuredHadWJet1 != measuredHadWJets_.end(); ++measuredHadWJet1 ) 
-  {
-    for ( std::vector<const mem::MeasuredParticle*>::const_iterator measuredHadWJet2 = measuredHadWJets_.begin();
-	measuredHadWJet2 != measuredHadWJets_.end(); ++measuredHadWJet2 ) 
-    {
-      // CV: add both permutations of measuredHadWJet1 and measuredHadWJet2
-      measuredHadWJetPairs_.push_back(MeasuredHadWJetPair(**measuredHadWJet1, **measuredHadWJet2));
-    }
-  }
-  if ( sortHadJetPairOption_ == kSortHadWJetPairsByMass ) 
-  {
-    std::sort(measuredHadWJetPairs_.begin(), measuredHadWJetPairs_.end(), sortMeasuredHadWJetPairsByMass());
-  } 
-  else if ( sortHadJetPairOption_ == kSortHadWJetPairsByDeltaR ) 
-  {
-    std::sort(measuredHadWJetPairs_.begin(), measuredHadWJetPairs_.end(), sortMeasuredHadWJetPairsByDeltaR());
-  } 
-  else if ( sortHadJetPairOption_ == kSortHadWJetPairsByPt ) 
-  {
-    std::sort(measuredHadWJetPairs_.begin(), measuredHadWJetPairs_.end(), sortMeasuredHadWJetPairsByPt());
-  } 
-  else if ( sortHadJetPairOption_ == kSortHadWJetPairsByScalarPt ) 
-  {
-    std::sort(measuredHadWJetPairs_.begin(), measuredHadWJetPairs_.end(), sortMeasuredHadWJetPairsByScalarPt());
-  } 
-  else 
-  {
-    std::cerr << "<MEMbbwwAlgoSingleLepton::integrate>: Invalid configuration parameter 'sortHadJetPairOption' = " << sortHadJetPairOption_ << " --> ABORTING !!\n";
-    assert(0);
-  }
-  if ( !(measuredHadWJetPairs_.size() >= 1) ) 
+  if ( !(measuredHadWJets_.size() >= 1) ) // CV: allow for one "missing" (non-reconstructed) jet from W->jj 
   {
     std::cerr << "<MEMbbwwAlgoSingleLepton::integrate>: Given measuredParticles do not contain at least one of type 'HadWJet' --> ABORTING !!\n";
     assert(0);
+  }	
+  if ( measuredHadWJets_.size() >= 2 ) 
+  {
+    for ( std::vector<const mem::MeasuredParticle*>::const_iterator measuredHadWJet1 = measuredHadWJets_.begin();
+	  measuredHadWJet1 != measuredHadWJets_.end(); ++measuredHadWJet1 ) 
+    {
+      for ( std::vector<const mem::MeasuredParticle*>::const_iterator measuredHadWJet2 = measuredHadWJet1 + 1;
+	    measuredHadWJet2 != measuredHadWJets_.end(); ++measuredHadWJet2 ) 
+      {
+        measuredHadWJetPairs_.push_back(MeasuredHadWJetPair(*measuredHadWJet1, *measuredHadWJet2));
+      }
+    }
+    if ( sortHadJetPairOption_ == kSortHadWJetPairsByMass ) 
+    {
+      std::sort(measuredHadWJetPairs_.begin(), measuredHadWJetPairs_.end(), sortMeasuredHadWJetPairsByMass());
+    }  
+    else if ( sortHadJetPairOption_ == kSortHadWJetPairsByDeltaR ) 
+    {
+      std::sort(measuredHadWJetPairs_.begin(), measuredHadWJetPairs_.end(), sortMeasuredHadWJetPairsByDeltaR());
+    } 
+    else if ( sortHadJetPairOption_ == kSortHadWJetPairsByPt ) 
+    {
+      std::sort(measuredHadWJetPairs_.begin(), measuredHadWJetPairs_.end(), sortMeasuredHadWJetPairsByPt());
+    } 
+    else if ( sortHadJetPairOption_ == kSortHadWJetPairsByScalarPt ) 
+    {
+      std::sort(measuredHadWJetPairs_.begin(), measuredHadWJetPairs_.end(), sortMeasuredHadWJetPairsByScalarPt());
+    } 
+    else 
+    {
+      std::cerr << "<MEMbbwwAlgoSingleLepton::integrate>: Invalid configuration parameter 'sortHadJetPairOption' = " << sortHadJetPairOption_ << " --> ABORTING !!\n";
+      assert(0);
+    }
+    assert(measuredHadWJetPairs_.size() >= 1);
+  } else {
+    measuredHadWJetPairs_.push_back(MeasuredHadWJetPair(measuredHadWJets_[0], nullptr));
   }
 }
 
