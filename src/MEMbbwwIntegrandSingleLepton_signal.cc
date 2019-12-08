@@ -25,9 +25,6 @@ MEMbbwwIntegrandSingleLepton_signal::MEMbbwwIntegrandSingleLepton_signal(double 
     std::cout << "<MEMbbwwIntegrandSingleLepton_signal::MEMbbwwIntegrandSingleLepton_signal>:" << std::endl;
   }
 
-  /// define integration variables
-  initializeIntVars();
-
   // initialize MadGraph
   if ( madgraphFileName != "" ) 
   {
