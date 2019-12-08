@@ -58,12 +58,20 @@ class MEMbbwwAlgoSingleLepton : public MEMbbwwAlgoBase
   class MeasuredHadWJetPair
   {
    public:
-    MeasuredHadWJetPair(const mem::MeasuredParticle& measuredHadWJet1, const mem::MeasuredParticle& measuredHadWJet2)
-      : jet1_(&measuredHadWJet1)
-      , jet2_(&measuredHadWJet2)
+    MeasuredHadWJetPair(const mem::MeasuredParticle* measuredHadWJet1, const mem::MeasuredParticle* measuredHadWJet2)
+      : jet1_(measuredHadWJet1)
+      , jet2_(measuredHadWJet2)
     {
-      assert(jet1_->type() == mem::MeasuredParticle::kHadWJet && jet2_->type() == mem::MeasuredParticle::kHadWJet);
-      p4_ = jet1_->p4() + jet2_->p4();
+      if ( jet1_ )
+      {
+        assert(jet1_->type() == mem::MeasuredParticle::kHadWJet);
+        p4_ += jet1_->p4();
+      }
+      if ( jet2_ )
+      {
+        assert(jet2_->type() == mem::MeasuredParticle::kHadWJet);
+        p4_ += jet2_->p4();
+      }
     }
     ~MeasuredHadWJetPair() {}
     const mem::MeasuredParticle* jet1() const { return jet1_; }
