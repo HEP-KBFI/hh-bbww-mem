@@ -20,12 +20,14 @@ MEMbbwwAlgoSingleLepton::MEMbbwwAlgoSingleLepton(double sqrtS,
 						 int verbosity) 
   : MEMbbwwAlgoBase(sqrtS, pdfName, madgraphFileName_signal, madgraphFileName_background, verbosity)
   , integrand_signal_(nullptr)
+  , integrand_signal_applyOnshellWmassConstraint_(false)
   , integrand_background_(nullptr)
   , maxNumHadWJetPairs_(8)
   , sortHadJetPairOption_(kSortHadWJetPairsByMass)
 { 
   integrand_signal_ = new MEMbbwwIntegrandSingleLepton_signal(sqrtS_, madgraphFileName_signal_, verbosity_);
   integrand_signal_->setPDF(pdf_);
+  integrand_signal_->applyOnshellWmassConstraint(integrand_signal_applyOnshellWmassConstraint_);
   integrand_background_ = new MEMbbwwIntegrandSingleLepton_background(sqrtS_, madgraphFileName_background_, verbosity_);
   integrand_background_->setPDF(pdf_);
   
@@ -65,7 +67,8 @@ MEMbbwwAlgoSingleLepton::setHadRecoilTF(mem::HadRecoilTF* hadRecoilTF)
 void 
 MEMbbwwAlgoSingleLepton::applyOnshellWmassConstraint_signal(bool flag) 
 { 
-  integrand_signal_->applyOnshellWmassConstraint(flag);
+  integrand_signal_applyOnshellWmassConstraint_ = flag;	
+  integrand_signal_->applyOnshellWmassConstraint(integrand_signal_applyOnshellWmassConstraint_);
 }
 
 namespace
@@ -244,8 +247,10 @@ MEMbbwwAlgoSingleLepton::integrate(const std::vector<MeasuredParticle>& measured
   {
     const MeasuredParticle* measuredHadWJet1 = measuredHadWJetPairs_[idxHadWJetPair].jet1();
     const MeasuredParticle* measuredHadWJet2 = measuredHadWJetPairs_[idxHadWJetPair].jet2();
-    for ( unsigned idxPermutation = 0; idxPermutation < 2; ++idxPermutation ) 
+    unsigned maxPermutations = ( integrand_signal_applyOnshellWmassConstraint_ ) ? 2 : 1;
+    for ( unsigned idxPermutation = 0; idxPermutation < maxPermutations; ++idxPermutation ) 
     {      
+std::cout << "evaluating signal hypothesis for idxHadWJetPair = " << idxHadWJetPair << ", idxPermutation = " << idxPermutation << std::endl;
       //---------------------------------------------------------------------------
       // CV: MadGraph matrix element for HH->bbWW signal is symmetric under exchange b-jet1 vs b-jet2,
       //     so one association of 
@@ -263,11 +268,11 @@ MEMbbwwAlgoSingleLepton::integrate(const std::vector<MeasuredParticle>& measured
       int chargedLeptonPermutation = kPermutationUndefined1L;
       if ( idxPermutation == 0 ) 
       {
-	chargedLeptonPermutation = kOnshellChargedLepton;
+	chargedLeptonPermutation = kOffshellChargedLepton;
       } 
       else 
       {
-	chargedLeptonPermutation = kOffshellChargedLepton;
+	chargedLeptonPermutation = kOnshellChargedLepton;
       }
       integrand_signal_->setOnshellChargedLepton(chargedLeptonPermutation);
       MEMbbwwAlgoSingleLepton::gMEMIntegrand = integrand_signal_;
@@ -307,6 +312,7 @@ MEMbbwwAlgoSingleLepton::integrate(const std::vector<MeasuredParticle>& measured
     const MeasuredParticle* measuredHadWJet2 = measuredHadWJetPairs_[idxHadWJetPair].jet2();
     for ( unsigned idxPermutation = 0; idxPermutation < 2; ++idxPermutation ) 
     {
+std::cout << "evaluating background hypothesis for idxHadWJetPair = " << idxHadWJetPair << ", idxPermutation = " << idxPermutation << std::endl;
       const MeasuredParticle* measuredBJetFromTop = nullptr;
       const MeasuredParticle* measuredBJetFromAntiTop = nullptr;
       if ( idxPermutation == 0 ) 

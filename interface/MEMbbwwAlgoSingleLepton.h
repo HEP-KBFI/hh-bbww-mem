@@ -89,6 +89,7 @@ class MEMbbwwAlgoSingleLepton : public MEMbbwwAlgoBase
 
   /// pointers to integration classes for signal and background hypotheses
   mem::MEMbbwwIntegrandSingleLepton_signal* integrand_signal_;
+  bool integrand_signal_applyOnshellWmassConstraint_;	
   mem::MEMbbwwIntegrandSingleLepton_background* integrand_background_;
 
   /// measured momenta of charged leptons, b-jets, and (light quark) jets originating from hadronic decay of W boson

@@ -9,7 +9,7 @@ using namespace mem;
 
 MEMbbwwIntegrandDilepton_signal::MEMbbwwIntegrandDilepton_signal(double sqrtS, const std::string& madgraphFileName, int verbosity)
   : MEMbbwwIntegrandDilepton(sqrtS, madgraphFileName, verbosity)
-  , applyOnshellWmassConstraint_(true)
+  , applyOnshellWmassConstraint_(false)
   , offsetBJet1Theta_(-1)
   , offsetBJet1Phi_(-1)  
   , offsetBJet2Theta_(-1)

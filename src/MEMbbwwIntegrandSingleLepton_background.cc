@@ -104,11 +104,15 @@ std::cout << "<MEMbbwwIntegrandSingleLepton_background::initializeIntVars>:" << 
   if ( !measuredBJet2_ ) 
   {
     intNumDimensions_ += 2; 
-  } 	
+  }
+std::cout << "intNumDimensions = " << intNumDimensions_ << std::endl;	
   delete [] intBounds_lower_;
   intBounds_lower_ = new double[intNumDimensions_];
   delete [] intBounds_upper_;
   intBounds_upper_ = new double[intNumDimensions_];
+std::cout << " intBounds_lower = " << intBounds_lower_ << std::endl;
+std::cout << " intBounds_upper = " << intBounds_upper_ << std::endl;
+std::cout << "break-point 1 reached" << std::endl;
   intVarNames_.clear();
   intVarNames_.push_back("NuTheta"); 
   intBounds_lower_[0] = 0.;
@@ -145,7 +149,7 @@ std::cout << "<MEMbbwwIntegrandSingleLepton_background::initializeIntVars>:" << 
     intVarNames_.push_back("HadWJet2Theta"); 
     intBounds_lower_[offsetHadWJet2Theta_] = 0.;
     intBounds_upper_[offsetHadWJet2Theta_] = TMath::Pi();
-    offsetBJet2Phi_ = offset + 1; 
+    offsetHadWJet2Phi_ = offset + 1; 
     intVarNames_.push_back("HadWJet2Phi"); 
     intBounds_lower_[offsetHadWJet2Phi_] = -TMath::Pi();
     intBounds_upper_[offsetHadWJet2Phi_] = +TMath::Pi();
@@ -175,6 +179,7 @@ std::cout << "<MEMbbwwIntegrandSingleLepton_background::initializeIntVars>:" << 
     intBounds_upper_[offsetBJet2Phi_] = +TMath::Pi();
     offset += 2; 
   }
+  std::cout << "offset - 1 = " << offset - 1 << std::endl; 
 }
 
 void 
