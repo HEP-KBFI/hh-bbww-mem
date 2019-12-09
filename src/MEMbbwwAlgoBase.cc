@@ -104,23 +104,17 @@ void MEMbbwwAlgoBase::setMeasuredMEt_and_Cov(double measuredMEtPx, double measur
 
 void MEMbbwwAlgoBase::initializeIntAlgo(unsigned maxObjFunctionCalls)
 {
-std::cout << "<MEMbbwwAlgoBase::initializeIntAlgo:" << std::endl;
-std::cout << " maxObjFunctionCalls = " << maxObjFunctionCalls << std::endl;
   if ( intMode_ == kVEGAS ) {
     unsigned numCallsGridOpt = TMath::Nint(0.20*maxObjFunctionCalls);
     unsigned numCallsIntEval = TMath::Nint(0.80*maxObjFunctionCalls);
-std::cout << "break-point A.1 reached" << std::endl;
     intAlgo_ = new MEMIntegratorVEGAS(
       numCallsGridOpt, numCallsIntEval, 
       2., 1);
-std::cout << "break-point A.2 reached" << std::endl;
   } else if ( intMode_ == kVAMP ) {
     unsigned numCallsGridOpt = TMath::Nint(0.20*maxObjFunctionCalls);
     unsigned numCallsIntEval = TMath::Nint(0.80*maxObjFunctionCalls);
-std::cout << "break-point A.3 reached" << std::endl;
     intAlgo_ = new MEMIntegratorVAMP(
       numCallsGridOpt, numCallsIntEval);
-std::cout << "break-point A.4 reached" << std::endl;
   } else {
     std::cerr << "<MEMbbwwAlgoBase::initializeIntAlgo>: Invalid configuration parameter 'intMode' = " << intMode_ << " --> ABORTING !!\n";
     assert(0);
@@ -131,34 +125,23 @@ void MEMbbwwAlgoBase::runIntAlgo(mem::MEMbbwwIntegrandBase* integrand, double& p
 {
   unsigned numDimensions = integrand->getIntNumDimensions();
   assert(numDimensions >= 1);
-std::cout << "<MEMbbwwAlgoBase::runIntAlgo>:" << std::endl;
-std::cout << " numDimensions = " << numDimensions << std::endl;
   const double* xl = integrand->getIntBounds_lower();
   const double* xu = integrand->getIntBounds_upper();  
-std::cout << " xl = " << xl << std::endl;
-std::cout << " xu = " << xu << std::endl;
-verbosity_ = 1;
   if ( verbosity_ >= 1 ) { 
     const std::vector<std::string>& intVarNames = integrand->getIntVarNames();
     assert(intVarNames.size() == numDimensions);
-    if ( verbosity_ >= 0 ) {
-      for ( unsigned idxDimension = 0; idxDimension < numDimensions; ++idxDimension ) {
-	std::cout << " intVariable #" << idxDimension << " (" << intVarNames[idxDimension] << "): xl = " << xl[idxDimension] << ", xu = " << xu[idxDimension];
-	std::cout << std::endl;
-      }
+    for ( unsigned idxDimension = 0; idxDimension < numDimensions; ++idxDimension ) {
+      std::cout << " intVariable #" << idxDimension << " (" << intVarNames[idxDimension] << "): xl = " << xl[idxDimension] << ", xu = " << xu[idxDimension];
+      std::cout << std::endl;
     }
   }
-std::cout << "intAlgo = " << intAlgo_ << std::endl;
+
   prob = 0.; 
   probErr = 0.;  
   if ( intMode_ == kVEGAS ) { 
-std::cout << "break-point A.1 reached" << std::endl;
     intAlgo_->integrate(&g_C, xl, xu, numDimensions, prob, probErr);
-std::cout << "break-point A.2 reached" << std::endl;
   } else if ( intMode_ == kVAMP ) {
-std::cout << "break-point A.3 reached" << std::endl;
     intAlgo_->integrate(&g_Fortran, xl, xu, numDimensions, prob, probErr);
-std::cout << "break-point A.4 reached" << std::endl;
   } else assert(0); 
 }
 
