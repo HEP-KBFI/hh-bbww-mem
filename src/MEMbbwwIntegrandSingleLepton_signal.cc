@@ -88,7 +88,6 @@ MEMbbwwIntegrandSingleLepton_signal::~MEMbbwwIntegrandSingleLepton_signal()
 void 
 MEMbbwwIntegrandSingleLepton_signal::initializeIntVars()
 {
-std::cout << "<MEMbbwwIntegrandSingleLepton_signal::initializeIntVars>:" << std::endl;
   intNumDimensions_ = 4;
   if ( !applyOnshellWmassConstraint_ ) 
   {
@@ -109,14 +108,10 @@ std::cout << "<MEMbbwwIntegrandSingleLepton_signal::initializeIntVars>:" << std:
   if ( !measuredBJet2_ ) {
     intNumDimensions_ += 2; 
   }
-std::cout << "intNumDimensions = " << intNumDimensions_ << std::endl;
   delete [] intBounds_lower_;
   intBounds_lower_ = new double[intNumDimensions_];
   delete [] intBounds_upper_;
   intBounds_upper_ = new double[intNumDimensions_];
-std::cout << " intBounds_lower = " << intBounds_lower_ << std::endl;
-std::cout << " intBounds_upper = " << intBounds_upper_ << std::endl;
-std::cout << "break-point 1 reached" << std::endl;
   intVarNames_.clear();
   if ( measuredBJet2_ && !measuredBJet1_ ) 
   {
@@ -199,7 +194,6 @@ std::cout << "break-point 1 reached" << std::endl;
     intBounds_upper_[offsetBJet2Phi_] = +TMath::Pi();
     offset += 2; 
   }
-  std::cout << "offset - 1 = " << offset - 1 << std::endl; 
 }
 
 void 
