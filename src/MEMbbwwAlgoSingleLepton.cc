@@ -179,6 +179,7 @@ MEMbbwwAlgoSingleLepton::setMeasuredParticles(const std::vector<mem::MeasuredPar
     std::cerr << "<MEMbbwwAlgoSingleLepton::integrate>: Given measuredParticles do not contain at least one of type 'HadWJet' --> ABORTING !!\n";
     assert(0);
   }	
+  measuredHadWJetPairs_.clear();
   if ( measuredHadWJets_.size() >= 2 ) 
   {
     for ( std::vector<const mem::MeasuredParticle*>::const_iterator measuredHadWJet1 = measuredHadWJets_.begin();
@@ -250,7 +251,7 @@ MEMbbwwAlgoSingleLepton::integrate(const std::vector<MeasuredParticle>& measured
     unsigned maxPermutations = ( integrand_signal_applyOnshellWmassConstraint_ ) ? 2 : 1;
     for ( unsigned idxPermutation = 0; idxPermutation < maxPermutations; ++idxPermutation ) 
     {      
-std::cout << "evaluating signal hypothesis for idxHadWJetPair = " << idxHadWJetPair << ", idxPermutation = " << idxPermutation << std::endl;
+      //std::cout << "evaluating signal hypothesis for idxHadWJetPair = " << idxHadWJetPair << ", idxPermutation = " << idxPermutation << std::endl;
       //---------------------------------------------------------------------------
       // CV: MadGraph matrix element for HH->bbWW signal is symmetric under exchange b-jet1 vs b-jet2,
       //     so one association of 
@@ -312,7 +313,7 @@ std::cout << "evaluating signal hypothesis for idxHadWJetPair = " << idxHadWJetP
     const MeasuredParticle* measuredHadWJet2 = measuredHadWJetPairs_[idxHadWJetPair].jet2();
     for ( unsigned idxPermutation = 0; idxPermutation < 2; ++idxPermutation ) 
     {
-std::cout << "evaluating background hypothesis for idxHadWJetPair = " << idxHadWJetPair << ", idxPermutation = " << idxPermutation << std::endl;
+      //std::cout << "evaluating background hypothesis for idxHadWJetPair = " << idxHadWJetPair << ", idxPermutation = " << idxPermutation << std::endl;
       const MeasuredParticle* measuredBJetFromTop = nullptr;
       const MeasuredParticle* measuredBJetFromAntiTop = nullptr;
       if ( idxPermutation == 0 ) 
