@@ -76,7 +76,6 @@ void Parameters_BSM_gg_hh2bbWW_WW2lvlv::setIndependentParameters(SLHAReader& slh
 void Parameters_BSM_gg_hh2bbWW_WW2lvlv::setIndependentCouplings()
 {
   GC_13 = (mdl_ee * mdl_complexi)/(mdl_sw * mdl_sqrt__2);
-  GC_28 = -6. * mdl_complexi * mdl_lam * mdl_vev * mdl_ctr;
   GC_29 = (mdl_ee__exp__2 * mdl_complexi * mdl_vev)/(2. * mdl_sw__exp__2);
   GC_31 = -((mdl_complexi * mdl_yb)/mdl_sqrt__2);
 }
@@ -96,6 +95,7 @@ void Parameters_BSM_gg_hh2bbWW_WW2lvlv::setDependentParameters(SLHAReader& slha,
 }
 void Parameters_BSM_gg_hh2bbWW_WW2lvlv::setDependentCouplings()
 {
+  GC_28 = -6. * mdl_complexi * mdl_lam * mdl_vev * mdl_ctr;
   GC_38 = -(aS * mdl_complexi)/(3. * M_PI * mdl_vev__exp__2) * mdl_a2;
   GC_22 = -(aS * mdl_complexi)/(3. * M_PI * mdl_vev__exp__2) * (-3./2.) *
       mdl_cy__exp__2;
