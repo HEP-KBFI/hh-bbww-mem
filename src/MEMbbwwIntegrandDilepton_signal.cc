@@ -11,24 +11,24 @@ MEMbbwwIntegrandDilepton_signal::MEMbbwwIntegrandDilepton_signal(double sqrtS, c
   : MEMbbwwIntegrandDilepton(sqrtS, madgraphFileName, verbosity)
   , applyOnshellWmassConstraint_(false)
   , offsetBJet1Theta_(-1)
-  , offsetBJet1Phi_(-1)  
+  , offsetBJet1Phi_(-1)
   , offsetBJet2Theta_(-1)
   , offsetBJet2Phi_(-1)
   , chargedLeptonPermutation_(kPermutationUndefined2L)
 {
-  if ( verbosity_ ) 
+  if ( verbosity_ )
   {
     std::cout << "<MEMbbwwIntegrandDilepton_signal::MEMbbwwIntegrandDilepton_signal>:" << std::endl;
   }
 
   // initialize MadGraph
-  if ( madgraphFileName != "" ) 
+  if ( madgraphFileName != "" )
   {
     std::cout << "initializing MadGraph ME for HH signal using " << madgraphFileName << " file." << std::endl;
     me_madgraph_.initProc(madgraphFileName);
     madgraphIsInitialized_ = true;
-  } 
-  else 
+  }
+  else
   {
     std::cerr << "Error in <MEMbbwwIntegrandDilepton_signal>: No param.dat file for MadGraph given !!" << std::endl;
     assert(0);
@@ -58,88 +58,88 @@ MEMbbwwIntegrandDilepton_signal::MEMbbwwIntegrandDilepton_signal(double sqrtS, c
 MEMbbwwIntegrandDilepton_signal::~MEMbbwwIntegrandDilepton_signal()
 {}
 
-void 
+void
 MEMbbwwIntegrandDilepton_signal::initializeIntVars()
 {
-  intNumDimensions_ = 5; 
+  intNumDimensions_ = 5;
   if ( !applyOnshellWmassConstraint_ ) {
     intNumDimensions_ += 1;
   }
-  if ( !measuredBJet1_ ) 
+  if ( !measuredBJet1_ )
   {
-    intNumDimensions_ += 2; 
+    intNumDimensions_ += 2;
   }
   if ( !measuredBJet2_ ) {
-    intNumDimensions_ += 2; 
+    intNumDimensions_ += 2;
   }
   delete [] intBounds_lower_;
   intBounds_lower_ = new double[intNumDimensions_];
   delete [] intBounds_upper_;
   intBounds_upper_ = new double[intNumDimensions_];
   intVarNames_.clear();
-  if ( measuredBJet2_ && !measuredBJet1_ ) 
+  if ( measuredBJet2_ && !measuredBJet1_ )
   {
-    intVarNames_.push_back("BJet2En"); 
+    intVarNames_.push_back("BJet2En");
   }
-  else 
+  else
   {
-    intVarNames_.push_back("BJet1En"); 
+    intVarNames_.push_back("BJet1En");
   }
   intBounds_lower_[0] = -1.; // to be set as function of measured b-jet energy and expected b-jet energy resolution
   intBounds_upper_[0] = -1.;
-  intVarNames_.push_back("Nu1Theta"); 
+  intVarNames_.push_back("Nu1Theta");
   intBounds_lower_[1] = 0.;
   intBounds_upper_[1] = TMath::Pi();
-  intVarNames_.push_back("Nu1Phi"); 
+  intVarNames_.push_back("Nu1Phi");
   intBounds_lower_[2] = -TMath::Pi();
   intBounds_upper_[2] = +TMath::Pi();
-  intVarNames_.push_back("Nu2Theta"); 
+  intVarNames_.push_back("Nu2Theta");
   intBounds_lower_[3] = 0.;
   intBounds_upper_[3] = TMath::Pi();
-  intVarNames_.push_back("Nu2Phi"); 
+  intVarNames_.push_back("Nu2Phi");
   intBounds_lower_[4] = -TMath::Pi();
-  intBounds_upper_[4] = +TMath::Pi();  
-  int offset = 5;     
-  if ( !applyOnshellWmassConstraint_ ) 
+  intBounds_upper_[4] = +TMath::Pi();
+  int offset = 5;
+  if ( !applyOnshellWmassConstraint_ )
   {
-    intVarNames_.push_back("q2W"); 
+    intVarNames_.push_back("q2W");
     intBounds_lower_[5] = 0.;
     intBounds_upper_[5] = square(wBosonMass + 3.*wBosonWidth);
     offset += 1;
-  }  
-  if ( !measuredBJet1_ ) 
+  }
+  if ( !measuredBJet1_ )
   {
-    offsetBJet1Theta_ = offset; 
-    intVarNames_.push_back("BJet1Theta"); 
+    offsetBJet1Theta_ = offset;
+    intVarNames_.push_back("BJet1Theta");
     intBounds_lower_[offsetBJet1Theta_] = 0.;
     intBounds_upper_[offsetBJet1Theta_] = TMath::Pi();
-    offsetBJet1Phi_ = offset + 1; 
-    intVarNames_.push_back("BJet1Phi"); 
+    offsetBJet1Phi_ = offset + 1;
+    intVarNames_.push_back("BJet1Phi");
     intBounds_lower_[offsetBJet1Phi_] = -TMath::Pi();
     intBounds_upper_[offsetBJet1Phi_] = +TMath::Pi();
-    offset += 2; 
+    offset += 2;
   }
-  if ( !measuredBJet2_ ) 
+  if ( !measuredBJet2_ )
   {
-    offsetBJet2Theta_ = offset; 
-    intVarNames_.push_back("BJet2Theta"); 
+    offsetBJet2Theta_ = offset;
+    intVarNames_.push_back("BJet2Theta");
     intBounds_lower_[offsetBJet2Theta_] = 0.;
     intBounds_upper_[offsetBJet2Theta_] = TMath::Pi();
-    offsetBJet2Phi_ = offset + 1; 
-    intVarNames_.push_back("BJet2Phi"); 
+    offsetBJet2Phi_ = offset + 1;
+    intVarNames_.push_back("BJet2Phi");
     intBounds_lower_[offsetBJet2Phi_] = -TMath::Pi();
     intBounds_upper_[offsetBJet2Phi_] = +TMath::Pi();
-    offset += 2; 
+    offset += 2;
   }
 }
 
-void 
-MEMbbwwIntegrandDilepton_signal::applyOnshellWmassConstraint(bool flag) 
-{ 
-  applyOnshellWmassConstraint_ = flag; 
+void
+MEMbbwwIntegrandDilepton_signal::applyOnshellWmassConstraint(bool flag)
+{
+  applyOnshellWmassConstraint_ = flag;
 }
 
-void 
+void
 MEMbbwwIntegrandDilepton_signal::setInputs(const MeasuredParticle* measuredChargedLeptonPlus, const MeasuredParticle* measuredChargedLeptonMinus,
 					   const MeasuredParticle* measuredBJet1, const MeasuredParticle* measuredBJet2,
 					   double measuredMEtPx, double measuredMEtPy, const TMatrixD& measuredMEtCov)
@@ -152,7 +152,7 @@ MEMbbwwIntegrandDilepton_signal::setInputs(const MeasuredParticle* measuredCharg
     measuredChargedLeptonPlus, measuredChargedLeptonMinus,
     measuredBJet1, measuredBJet2,
     measuredMEtPx, measuredMEtPy, measuredMEtCov);
-  
+
   /// define integration variables
   initializeIntVars();
 
@@ -160,13 +160,13 @@ MEMbbwwIntegrandDilepton_signal::setInputs(const MeasuredParticle* measuredCharg
   // to measured jet energy +/- 3 times expected energy resolution (rough estimate),
   // in order to increase efficiency of numeric integration
   double measuredBJetEn, measuredBJetEnRes;
-  if ( measuredBJet2_ && !measuredBJet1_ ) 
+  if ( measuredBJet2_ && !measuredBJet1_ )
   {
     assert(measuredBJet2_);
     measuredBJetEn = measuredBJet2_->energy();
     measuredBJetEnRes = 0.50*TMath::Sqrt(measuredBJet2_->energy());
   }
-  else 
+  else
   {
     assert(measuredBJet1_);
     measuredBJetEn = measuredBJet1_->energy();
@@ -178,8 +178,8 @@ MEMbbwwIntegrandDilepton_signal::setInputs(const MeasuredParticle* measuredCharg
   // Standard Model (SM) cross section for (non-resonant) HH production @ 13 TeV center-of-mass energy
   // time branching fraction for the decay HH->bbWW->bblnulnu (excluding electrons and muons from tau decays)
   //
-  // Note: SM cross section is taken from next-to-next-to-leading order (NNLO) computation, 
-  //       while MadGraph matrix element is leading order (LO). 
+  // Note: SM cross section is taken from next-to-next-to-leading order (NNLO) computation,
+  //       while MadGraph matrix element is leading order (LO).
   //       We expect this inconsistency to have little practical effect.
   const double crossSection_signal = 33.53e-3*2.*0.577*0.215*square(0.216); // [pb]
 
@@ -193,11 +193,11 @@ MEMbbwwIntegrandDilepton_signal::setInputs(const MeasuredParticle* measuredCharg
   denominator *= (TMath::Power(2., 22)*TMath::Power(TMath::Pi(), 15));
   denominator *= measuredChargedLeptonPlus_->energy();
   denominator *= measuredChargedLeptonMinus_->energy();
-  if ( measuredBJet1_ ) 
+  if ( measuredBJet1_ )
   {
     denominator *= (measuredBJet1_->p()*measuredBJet1_->energy());
   }
-  if ( measuredBJet2_ ) 
+  if ( measuredBJet2_ )
   {
     denominator *= (measuredBJet2_->p()*measuredBJet2_->energy());
   }
@@ -206,15 +206,16 @@ MEMbbwwIntegrandDilepton_signal::setInputs(const MeasuredParticle* measuredCharg
   normFactor_ = numerator/denominator;
 }
 
-void 
+void
 MEMbbwwIntegrandDilepton_signal::setOnshellChargedLepton(int chargedLeptonPermutation)
 {
   chargedLeptonPermutation_ = chargedLeptonPermutation;
 }
 
-double MEMbbwwIntegrandDilepton_signal::Eval(const double* x) const
+double MEMbbwwIntegrandDilepton_signal::Eval(const double* x, int & countEval) const
 {
-  if ( verbosity_ >= 2 ) 
+  if ( !(countEval > 0) ) countEval = 0;
+  if ( verbosity_ >= 2 )
   {
     std::cout << "<MEMbbwwIntegrandDilepton_signal::Eval>:" << std::endl;
     printVDouble(" x", x, intNumDimensions_);
@@ -223,29 +224,29 @@ double MEMbbwwIntegrandDilepton_signal::Eval(const double* x) const
   assert(chargedLeptonPermutation_ == kOnshellChargedLeptonPlus || chargedLeptonPermutation_ == kOnshellChargedLeptonMinus);
 
   double trueBJet1Theta, trueBJet1Phi;
-  if ( measuredBJet1_ ) 
+  if ( measuredBJet1_ )
   {
     trueBJet1Theta = measuredBJet1_->theta();
     trueBJet1Phi = measuredBJet1_->phi();
-  } 
-  else 
+  }
+  else
   {
     trueBJet1Theta = x[offsetBJet1Theta_];
     trueBJet1Phi = x[offsetBJet1Phi_];
-  }  
+  }
   double trueBJet2Theta, trueBJet2Phi;
-  if ( measuredBJet2_ ) 
+  if ( measuredBJet2_ )
   {
     trueBJet2Theta = measuredBJet2_->theta();
     trueBJet2Phi = measuredBJet2_->phi();
-  } 
-  else 
+  }
+  else
   {
     trueBJet2Theta = x[offsetBJet2Theta_];
     trueBJet2Phi = x[offsetBJet2Phi_];
-  }  
+  }
   LorentzVector trueBJet1P4, trueBJet2P4;
-  if ( measuredBJet2_ && !measuredBJet1_ ) 
+  if ( measuredBJet2_ && !measuredBJet1_ )
   {
     double trueBJet2En = x[0];
     trueBJet2P4 = buildLorentzVector(trueBJet2En, trueBJet2Theta, trueBJet2Phi, bottomQuarkMass);
@@ -254,7 +255,7 @@ double MEMbbwwIntegrandDilepton_signal::Eval(const double* x) const
     trueBJet1P4 = findBJetEn_solution_Hbb(trueBJet1En_solutions, trueBJet1Theta, trueBJet1Phi, trueBJet2P4, trueBJet1En_foundSolution);
     if ( !trueBJet1En_foundSolution ) return 0.;
   }
-  else 
+  else
   {
     double trueBJet1En = x[0];
     trueBJet1P4 = buildLorentzVector(trueBJet1En, trueBJet1Theta, trueBJet1Phi, bottomQuarkMass);
@@ -273,18 +274,18 @@ double MEMbbwwIntegrandDilepton_signal::Eval(const double* x) const
   double trueAntiNuTheta = x[3];
   double trueAntiNuPhi = x[4];
   LorentzVector trueAntiNuP4;
-  if ( chargedLeptonPermutation_ == kOnshellChargedLeptonPlus ) 
-  { 
+  if ( chargedLeptonPermutation_ == kOnshellChargedLeptonPlus )
+  {
     // lepton of positive charge (and hence neutrino) originates from on-shell W boson,
     // while lepton of negative charge (and hence anti-neutrino) originates from off-shell W boson
     //
     // Note: the energy (and four-vector) of the neutrino originating from the on-shell W boson has to be computed first!
     double trueNuEn;
-    if ( applyOnshellWmassConstraint_ ) 
+    if ( applyOnshellWmassConstraint_ )
     {
       trueNuEn = compNuEn_Wlnu(trueChargedLeptonPlusP4, trueNuTheta, trueNuPhi);
-    } 
-    else 
+    }
+    else
     {
       double q2W = x[5];
       trueNuEn = compNuEn_Wlnu(trueChargedLeptonPlusP4, trueNuTheta, trueNuPhi, q2W);
@@ -296,19 +297,19 @@ double MEMbbwwIntegrandDilepton_signal::Eval(const double* x) const
     double trueAntiNuEn = compNuStarEn_Hww(trueChargedLeptonPlus_Nu_ChargedLeptonMinusP4, trueAntiNuTheta, trueAntiNuPhi);
     if ( !(trueAntiNuEn > 0.) ) return 0.;
     trueAntiNuP4 = buildLorentzVector(trueAntiNuEn, trueAntiNuTheta, trueAntiNuPhi);
-  } 
-  else 
+  }
+  else
   {
     // lepton of negative charge (and hence anti-neutrino) originates from on-shell W boson,
     // while lepton of positive charge (and hence neutrino) originates from off-shell W boson
     //
     // Note: the energy (and four-vector) of the anti-neutrino originating from the on-shell W boson has to be computed first!
     double trueAntiNuEn;
-    if ( applyOnshellWmassConstraint_ ) 
+    if ( applyOnshellWmassConstraint_ )
     {
       trueAntiNuEn = compNuEn_Wlnu(trueChargedLeptonMinusP4, trueAntiNuTheta, trueAntiNuPhi);
-    } 
-    else 
+    }
+    else
     {
       double q2W = x[5];
       trueAntiNuEn = compNuEn_Wlnu(trueChargedLeptonMinusP4, trueAntiNuTheta, trueAntiNuPhi, q2W);
@@ -324,33 +325,33 @@ double MEMbbwwIntegrandDilepton_signal::Eval(const double* x) const
 
   LorentzVector trueSumP4 = trueBJet1P4 + trueBJet2P4 + trueChargedLeptonPlusP4 + trueNuP4 + trueChargedLeptonMinusP4 + trueAntiNuP4;
 
-  // perform boost into zero-transverse-momentum (ZTM) frame 
+  // perform boost into zero-transverse-momentum (ZTM) frame
   double ztmFramePx = trueSumP4.px();
   double ztmFramePy = trueSumP4.py();
   double ztmFrameEn = trueSumP4.energy();
   Vector boost(-ztmFramePx/ztmFrameEn, -ztmFramePy/ztmFrameEn, 0.);
-  LorentzVector trueBJet1P4_ztm = ROOT::Math::VectorUtil::boost(trueBJet1P4, boost); 
-  LorentzVector trueBJet2P4_ztm = ROOT::Math::VectorUtil::boost(trueBJet2P4, boost); 
+  LorentzVector trueBJet1P4_ztm = ROOT::Math::VectorUtil::boost(trueBJet1P4, boost);
+  LorentzVector trueBJet2P4_ztm = ROOT::Math::VectorUtil::boost(trueBJet2P4, boost);
   LorentzVector trueChargedLeptonPlusP4_ztm = ROOT::Math::VectorUtil::boost(trueChargedLeptonPlusP4, boost);
   LorentzVector trueNuP4_ztm = ROOT::Math::VectorUtil::boost(trueNuP4, boost);
   LorentzVector trueChargedLeptonMinusP4_ztm = ROOT::Math::VectorUtil::boost(trueChargedLeptonMinusP4, boost);
   LorentzVector trueAntiNuP4_ztm = ROOT::Math::VectorUtil::boost(trueAntiNuP4, boost);
-  if ( verbosity_ >= 2 ) 
+  if ( verbosity_ >= 2 )
   {
     std::cout << "laboratory frame:" << std::endl;
-    if ( measuredBJet1_ ) 
+    if ( measuredBJet1_ )
     {
       printLorentzVector("b-jet1", trueBJet1P4, measuredBJet1_->p4());
-    } 
-    else 
+    }
+    else
     {
       printLorentzVector_NA("b-jet1", trueBJet1P4);
     }
-    if ( measuredBJet2_ ) 
+    if ( measuredBJet2_ )
     {
       printLorentzVector("b-jet2", trueBJet2P4, measuredBJet2_->p4());
-    } 
-    else 
+    }
+    else
     {
       printLorentzVector_NA("b-jet2", trueBJet2P4);
     }
@@ -391,13 +392,13 @@ double MEMbbwwIntegrandDilepton_signal::Eval(const double* x) const
   double fb = pdf_->xfxQ(21, xb, Q)/xb;
   double prob_PDF = (fa*fb);
 
-  // evaluate flux factor 
+  // evaluate flux factor
   //
   // Note: the factor 1/s is aready included in the "normFactor" data-member
-  double prob_flux = (1./(xa*xb)); 
+  double prob_flux = (1./(xa*xb));
 
   // evaluate LO matrix element, generated using MadGraph
-  madgraphGluon1P4_[0] =  0.5*xa*sqrtS_; 
+  madgraphGluon1P4_[0] =  0.5*xa*sqrtS_;
   madgraphGluon1P4_[3] = +0.5*xa*sqrtS_;
   madgraphGluon2P4_[0] =  0.5*xb*sqrtS_;
   madgraphGluon2P4_[3] = -0.5*xb*sqrtS_;
@@ -431,12 +432,13 @@ double MEMbbwwIntegrandDilepton_signal::Eval(const double* x) const
   }
   double prob_ME = -1.;
   if ( madgraphIsInitialized_ ) {
+    bool isDebug = (verbosity_ >= 2 || 1 > 0) && countEval == 0 && prob_ME == -1.;
     me_madgraph_.setHiggsWidth(2.); // CV: enlarge Higgs boson width to make ME evaluation robust against rounding errors
     me_madgraph_.setMomenta(madgraphMomenta_);
-    me_madgraph_.sigmaKin();
+    me_madgraph_.sigmaKin(isDebug);
     prob_ME = me_madgraph_.getMatrixElements()[0];
     ++numMatrixElementEvaluations_;
-    if ( TMath::IsNaN(prob_ME) ) 
+    if ( TMath::IsNaN(prob_ME) )
     {
       std::cerr << "Warning: MadGraph returned NaN --> skipping event !!" << std::endl;
       printLorentzVector("b-jet1", trueBJet1P4_ztm);
@@ -449,7 +451,7 @@ double MEMbbwwIntegrandDilepton_signal::Eval(const double* x) const
     }
   }
   assert(prob_ME >= 0.);
-  if ( verbosity_ >= 2 ) 
+  if ( verbosity_ >= 2 )
   {
     std::cout << "prob_ME = " << prob_ME << std::endl;
   }
@@ -458,12 +460,12 @@ double MEMbbwwIntegrandDilepton_signal::Eval(const double* x) const
   //    (for consistency with computation of measuredHadRecoil in MEMbbwwIntegrandDilepton::setInputs function)
   double trueHadRecoilPx = -(trueChargedLeptonPlusP4.px() + trueChargedLeptonMinusP4.px() + trueNuP4.px() + trueAntiNuP4.px());
   double trueHadRecoilPy = -(trueChargedLeptonPlusP4.py() + trueChargedLeptonMinusP4.py() + trueNuP4.py() + trueAntiNuP4.py());
-  if ( measuredBJet1_ ) 
+  if ( measuredBJet1_ )
   {
     trueHadRecoilPx -= trueBJet1P4.px();
     trueHadRecoilPy -= trueBJet1P4.py();
   }
-  if ( measuredBJet2_ ) 
+  if ( measuredBJet2_ )
   {
     trueHadRecoilPx -= trueBJet2P4.px();
     trueHadRecoilPy -= trueBJet2P4.py();
@@ -473,7 +475,7 @@ double MEMbbwwIntegrandDilepton_signal::Eval(const double* x) const
     std::cout << "hadRecoil:" << std::endl;
     std::cout << " true Px = " << trueHadRecoilPx << ", Py = " << trueHadRecoilPy << std::endl;
     std::cout << " rec. Px = " << measuredHadRecoilPx_ << ", Py = " << measuredHadRecoilPy_ << std::endl;
-    if ( !measuredBJet1_ || !measuredBJet2_ ) 
+    if ( !measuredBJet1_ || !measuredBJet2_ )
     {
       std::cout << "Note:";
       if ( !measuredBJet1_ ) std::cout << " b-jet1 is 'missing', i.e. not reconstructed, and not included in hadRecoil.";
@@ -483,22 +485,22 @@ double MEMbbwwIntegrandDilepton_signal::Eval(const double* x) const
   }
 
   double prob_TF = 1.;
-  if ( measuredBJet1_ ) 
+  if ( measuredBJet1_ )
   {
     prob_TF *= bjet1TF_->Eval(trueBJet1P4.energy());
   }
-  if ( measuredBJet2_ ) 
+  if ( measuredBJet2_ )
   {
     prob_TF *= bjet2TF_->Eval(trueBJet2P4.energy());
   }
   prob_TF *= hadRecoilTF_->Eval(trueHadRecoilPx, trueHadRecoilPy);
-  if ( verbosity_ >= 2 ) 
+  if ( verbosity_ >= 2 )
   {
     std::cout << "prob_TF = " << prob_TF << std::endl;
   }
 
   double jacobiFactor = compJacobiFactor_Hbb(trueBJet1P4, trueBJet2P4);
-  if ( chargedLeptonPermutation_ == kOnshellChargedLeptonPlus ) { 
+  if ( chargedLeptonPermutation_ == kOnshellChargedLeptonPlus ) {
     //---------------------------------------------------------------------------
     // CV: Jacobi factor is the same for case that W mass constraint is applied to on-shell W boson and for the case that it is not applied
     jacobiFactor *= compJacobiFactor_Wlnu(trueChargedLeptonPlusP4, trueNuP4);
@@ -512,8 +514,8 @@ double MEMbbwwIntegrandDilepton_signal::Eval(const double* x) const
     //---------------------------------------------------------------------------
     LorentzVector trueChargedLeptonMinus_AntiNu_ChargedLeptonPlusP4 = trueChargedLeptonMinusP4 + trueAntiNuP4 + trueChargedLeptonPlusP4;
     jacobiFactor *= compJacobiFactor_Hww(trueChargedLeptonMinus_AntiNu_ChargedLeptonPlusP4, trueNuP4);
-  }  
-  if ( verbosity_ >= 2 ) 
+  }
+  if ( verbosity_ >= 2 )
   {
     std::cout << "jacobiFactor = " << jacobiFactor << std::endl;
   }
@@ -528,29 +530,29 @@ double MEMbbwwIntegrandDilepton_signal::Eval(const double* x) const
   integrandValue *= prob_PDF;
   integrandValue *= prob_flux;
   integrandValue *= prob_ME;
-  if ( measuredBJet1_ ) 
+  if ( measuredBJet1_ )
   {
     integrandValue *= trueBJet1P4.P();
   }
-  else 
+  else
   {
-    integrandValue *= (1./trueBJet1P4.energy());    
+    integrandValue *= (1./trueBJet1P4.energy());
   }
-  if ( measuredBJet2_ ) 
+  if ( measuredBJet2_ )
   {
     integrandValue *= trueBJet2P4.P();
   }
-  else 
+  else
   {
-    integrandValue *= (1./trueBJet2P4.energy());    
+    integrandValue *= (1./trueBJet2P4.energy());
   }
   integrandValue *= prob_TF;
   integrandValue *= jacobiFactor;
-  if ( verbosity_ >= 2 ) 
+  if ( verbosity_ >= 2 )
   {
     std::cout << "--> integrandValue = " << integrandValue << std::endl;
   }
+  countEval += 1;
 
   return integrandValue;
 }
-

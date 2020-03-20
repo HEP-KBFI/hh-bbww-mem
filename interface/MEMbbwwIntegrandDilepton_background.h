@@ -14,14 +14,14 @@ class MEMbbwwIntegrandDilepton_background : public MEMbbwwIntegrandDilepton
   ~MEMbbwwIntegrandDilepton_background();
 
   /// set measured momenta of charged leptons and b-jets and of missing transverse momentum
-  void setInputs(const mem::MeasuredParticle*, const mem::MeasuredParticle*, 
-		 const mem::MeasuredParticle*, const mem::MeasuredParticle*, 
+  void setInputs(const mem::MeasuredParticle*, const mem::MeasuredParticle*,
+		 const mem::MeasuredParticle*, const mem::MeasuredParticle*,
 		 double, double, const TMatrixD&);
 
   /// evaluate integrand for given value of integration variables x
-  double Eval(const double* x) const;
+  double Eval(const double* x, int & countEval) const;
 
- protected:  
+ protected:
   /// initialize integration variables (grid)
   void initializeIntVars();
 

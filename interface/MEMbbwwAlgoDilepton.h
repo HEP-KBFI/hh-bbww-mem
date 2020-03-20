@@ -12,7 +12,7 @@
 #include <TMatrixD.h>
 #include <TMath.h>
 
-#include <vector> 
+#include <vector>
 
 class MEMbbwwAlgoDilepton : public MEMbbwwAlgoBase
 {
@@ -30,8 +30,8 @@ class MEMbbwwAlgoDilepton : public MEMbbwwAlgoBase
   ///
   /// Note: flag has an effect on the likelihood of the HH->bbWW signal hypothesis only (not on the likelihood of the ttbar background hypothesis)
   void applyOnshellWmassConstraint_signal(bool);
-  
-  /// run integration 
+
+  /// run integration
   void integrate(const std::vector<mem::MeasuredParticle>&, double, double, const TMatrixD&);
 
   /// return probabilities for signal and background hypotheses
@@ -49,7 +49,7 @@ class MEMbbwwAlgoDilepton : public MEMbbwwAlgoBase
   std::vector<mem::MeasuredParticle> measuredParticles_;
   const mem::MeasuredParticle* measuredChargedLeptonPlus_;
   const mem::MeasuredParticle* measuredChargedLeptonMinus_;
-  const mem::MeasuredParticle* measuredLeadingBJet_; 
+  const mem::MeasuredParticle* measuredLeadingBJet_;
   const mem::MeasuredParticle* measuredSubleadingBJet_;
 
   /// result of integration (probabilities for signal and background hypotheses)

@@ -47,14 +47,16 @@ extern "C"
 // Initialize process.
 
 void mg5_BSM_gg_hh2bbWW_WW2lvlv::initProc(const string & param_card_name)
+
 {
+  param_card_name_ = param_card_name;
   // Instantiate the model class and set parameters that stay fixed during run
   pars = Parameters_BSM_gg_hh2bbWW_WW2lvlv::getInstance();
-  SLHAReader slha(param_card_name);
+  SLHAReader slha(param_card_name_);
   pars->setIndependentParameters(slha);
   pars->setIndependentCouplings();
-  pars->printIndependentParameters();
-  pars->printIndependentCouplings();
+  //pars->printIndependentParameters();
+  //pars->printIndependentCouplings();
   // Set external particle masses for this matrix element
   mME.push_back(pars->ZERO);
   mME.push_back(pars->ZERO);
@@ -70,16 +72,17 @@ void mg5_BSM_gg_hh2bbWW_WW2lvlv::initProc(const string & param_card_name)
 //--------------------------------------------------------------------------
 // Evaluate |M|^2, part independent of incoming flavour.
 
-void mg5_BSM_gg_hh2bbWW_WW2lvlv::sigmaKin()
+void mg5_BSM_gg_hh2bbWW_WW2lvlv::sigmaKin(bool & firsttime)
 {
+  SLHAReader slha(param_card_name_);
   // Set the parameters which change event by event
-  pars->setDependentParameters();
+  //static bool firsttime = true;
+  pars->setDependentParameters(slha, firsttime);
   pars->setDependentCouplings();
-  static bool firsttime = true;
   if (firsttime)
   {
-    pars->printDependentParameters();
-    pars->printDependentCouplings();
+    //pars->printDependentParameters();
+    //pars->printDependentCouplings();
     firsttime = false;
   }
 
@@ -362,6 +365,3 @@ double mg5_BSM_gg_hh2bbWW_WW2lvlv::matrix_1_gg_hh_h_bbx_h_wpwm_wp_epve_wm_emvex(
 
   return matrix;
 }
-
-
-

@@ -18,8 +18,8 @@ class MEMbbwwIntegrandDilepton_signal : public MEMbbwwIntegrandDilepton
   void applyOnshellWmassConstraint(bool flag);
 
   /// set measured momenta of charged leptons and b-jets and of missing transverse momentum
-  void setInputs(const mem::MeasuredParticle*, const mem::MeasuredParticle*, 
-		 const mem::MeasuredParticle*, const mem::MeasuredParticle*, 
+  void setInputs(const mem::MeasuredParticle*, const mem::MeasuredParticle*,
+		 const mem::MeasuredParticle*, const mem::MeasuredParticle*,
 		 double, double, const TMatrixD&);
 
   /// switch between associations of lepton+ and lepton- to on-shell and off-shell W bosons
@@ -27,9 +27,9 @@ class MEMbbwwIntegrandDilepton_signal : public MEMbbwwIntegrandDilepton
   void setOnshellChargedLepton(int chargedLeptonPermutation);
 
   /// evaluate integrand for given value of integration variables x
-  double Eval(const double* x) const;
+  double Eval(const double* x, int & countEval) const;
 
- protected:  
+ protected:
   /// initialize integration variables (grid)
   void initializeIntVars();
 
@@ -48,6 +48,7 @@ class MEMbbwwIntegrandDilepton_signal : public MEMbbwwIntegrandDilepton
 
   /// flag to switch between associations of lepton+ and lepton- to on-shell and off-shell W bosons
   int chargedLeptonPermutation_;
+  int countEval_local_;
 };
 
 }

@@ -14,19 +14,19 @@ MEMbbwwIntegrandDilepton_background::MEMbbwwIntegrandDilepton_background(double 
   , offsetBJet2Theta_(-1)
   , offsetBJet2Phi_(-1)
 {
-  if ( verbosity_ ) 
+  if ( verbosity_ )
   {
     std::cout << "<MEMbbwwIntegrandDilepton_background::MEMbbwwIntegrandDilepton_background>:" << std::endl;
   }
 
   // initialize MadGraph
-  if ( madgraphFileName != "" ) 
+  if ( madgraphFileName != "" )
   {
     std::cout << "initializing MadGraph ME for ttbar background using " << madgraphFileName << " file." << std::endl;
     me_madgraph_.initProc(madgraphFileName);
     madgraphIsInitialized_ = true;
-  } 
-  else 
+  }
+  else
   {
     std::cerr << "Error in <MEMbbwwIntegrandDilepton_background>: No param.dat file for MadGraph given !!" << std::endl;
     assert(0);
@@ -56,68 +56,68 @@ MEMbbwwIntegrandDilepton_background::MEMbbwwIntegrandDilepton_background(double 
 MEMbbwwIntegrandDilepton_background::~MEMbbwwIntegrandDilepton_background()
 {}
 
-void 
+void
 MEMbbwwIntegrandDilepton_background::initializeIntVars()
 {
-  intNumDimensions_ = 4; 
-  if ( !measuredBJet1_ ) 
+  intNumDimensions_ = 4;
+  if ( !measuredBJet1_ )
   {
-    intNumDimensions_ += 2; 
+    intNumDimensions_ += 2;
   }
-  if ( !measuredBJet2_ ) 
+  if ( !measuredBJet2_ )
   {
-    intNumDimensions_ += 2; 
+    intNumDimensions_ += 2;
   }
   delete [] intBounds_lower_;
   intBounds_lower_ = new double[intNumDimensions_];
   delete [] intBounds_upper_;
   intBounds_upper_ = new double[intNumDimensions_];
   intVarNames_.clear();
-  intVarNames_.push_back("Nu1Theta"); 
+  intVarNames_.push_back("Nu1Theta");
   intBounds_lower_[0] = 0.;
   intBounds_upper_[0] = TMath::Pi();
-  intVarNames_.push_back("Nu1Phi"); 
+  intVarNames_.push_back("Nu1Phi");
   intBounds_lower_[1] = -TMath::Pi();
   intBounds_upper_[1] = +TMath::Pi();
-  intVarNames_.push_back("Nu2Theta"); 
+  intVarNames_.push_back("Nu2Theta");
   intBounds_lower_[2] = 0.;
   intBounds_upper_[2] = TMath::Pi();
-  intVarNames_.push_back("Nu2Phi"); 
+  intVarNames_.push_back("Nu2Phi");
   intBounds_lower_[3] = -TMath::Pi();
   intBounds_upper_[3] = +TMath::Pi();
-  int offset = 4; 
-  if ( !measuredBJet1_ ) 
+  int offset = 4;
+  if ( !measuredBJet1_ )
   {
-    offsetBJet1Theta_ = offset; 
-    intVarNames_.push_back("BJet1Theta"); 
+    offsetBJet1Theta_ = offset;
+    intVarNames_.push_back("BJet1Theta");
     intBounds_lower_[offsetBJet1Theta_] = 0.;
     intBounds_upper_[offsetBJet1Theta_] = TMath::Pi();
-    offsetBJet1Phi_ = offset + 1; 
-    intVarNames_.push_back("BJet1Phi"); 
+    offsetBJet1Phi_ = offset + 1;
+    intVarNames_.push_back("BJet1Phi");
     intBounds_lower_[offsetBJet1Phi_] = -TMath::Pi();
     intBounds_upper_[offsetBJet1Phi_] = +TMath::Pi();
-    offset += 2; 
+    offset += 2;
   }
-  if ( !measuredBJet2_ ) 
+  if ( !measuredBJet2_ )
   {
-    offsetBJet2Theta_ = offset; 
-    intVarNames_.push_back("BJet2Theta"); 
+    offsetBJet2Theta_ = offset;
+    intVarNames_.push_back("BJet2Theta");
     intBounds_lower_[offsetBJet2Theta_] = 0.;
     intBounds_upper_[offsetBJet2Theta_] = TMath::Pi();
-    offsetBJet2Phi_ = offset + 1; 
-    intVarNames_.push_back("BJet2Phi"); 
+    offsetBJet2Phi_ = offset + 1;
+    intVarNames_.push_back("BJet2Phi");
     intBounds_lower_[offsetBJet2Phi_] = -TMath::Pi();
     intBounds_upper_[offsetBJet2Phi_] = +TMath::Pi();
-    offset += 2; 
+    offset += 2;
   }
 }
 
-void 
+void
 MEMbbwwIntegrandDilepton_background::setInputs(const MeasuredParticle* measuredChargedLeptonPlus, const MeasuredParticle* measuredChargedLeptonMinus,
 					       const MeasuredParticle* measuredBJet1, const MeasuredParticle* measuredBJet2,
 					       double measuredMEtPx, double measuredMEtPy, const TMatrixD& measuredMEtCov)
 {
-  if ( verbosity_ ) 
+  if ( verbosity_ )
   {
     std::cout << "<MEMbbwwIntegrandDilepton_background::setInputs>:" << std::endl;
   }
@@ -133,8 +133,8 @@ MEMbbwwIntegrandDilepton_background::setInputs(const MeasuredParticle* measuredC
   // Cross section for Standard Model (SM) ttbar production @ 13 TeV center-of-mass energy
   // time branching fraction for the decay ttbar->bbWW->bblnulnu (excluding electrons and muons from tau decays)
   //
-  // Note: SM cross section is taken from next-to-next-to-leading order (NNLO) computation, 
-  //       while MadGraph matrix element is leading order (LO). 
+  // Note: SM cross section is taken from next-to-next-to-leading order (NNLO) computation,
+  //       while MadGraph matrix element is leading order (LO).
   //       We expect this inconsistency to have little practical effect.
   const double crossSection_background = 831.76*square(0.216); // [pb]
 
@@ -145,11 +145,11 @@ MEMbbwwIntegrandDilepton_background::setInputs(const MeasuredParticle* measuredC
   denominator *= (TMath::Power(2., 23)*TMath::Power(TMath::Pi(), 14));
   denominator *= measuredChargedLeptonPlus_->energy();
   denominator *= measuredChargedLeptonMinus_->energy();
-  if ( measuredBJet1_ ) 
+  if ( measuredBJet1_ )
   {
     denominator *= (measuredBJet1_->p()*measuredBJet1_->energy());
   }
-  if ( measuredBJet2_ ) 
+  if ( measuredBJet2_ )
   {
     denominator *= (measuredBJet2_->p()*measuredBJet2_->energy());
   }
@@ -158,9 +158,9 @@ MEMbbwwIntegrandDilepton_background::setInputs(const MeasuredParticle* measuredC
   normFactor_ = numerator/denominator;
 }
 
-double MEMbbwwIntegrandDilepton_background::Eval(const double* x) const
+double MEMbbwwIntegrandDilepton_background::Eval(const double* x, int & countEval) const
 {
-  if ( verbosity_ >= 2 ) 
+  if ( verbosity_ >= 2 )
   {
     std::cout << "<MEMbbwwIntegrandDilepton_background::Eval>:" << std::endl;
   }
@@ -174,16 +174,16 @@ double MEMbbwwIntegrandDilepton_background::Eval(const double* x) const
   LorentzVector trueNuP4 = buildLorentzVector(trueNuEn, trueNuTheta, trueNuPhi);
 
   double trueBJet1Theta, trueBJet1Phi;
-  if ( measuredBJet1_ ) 
+  if ( measuredBJet1_ )
   {
     trueBJet1Theta = measuredBJet1_->theta();
     trueBJet1Phi = measuredBJet1_->phi();
-  } 
-  else 
+  }
+  else
   {
     trueBJet1Theta = x[offsetBJet1Theta_];
     trueBJet1Phi = x[offsetBJet1Phi_];
-  }  
+  }
   std::vector<double> trueBJet1En_solutions = compBJetEn_top(trueChargedLeptonPlusP4 + trueNuP4, trueBJet1Theta, trueBJet1Phi);
   bool trueBJet1En_foundSolution = false;
   LorentzVector trueBJet1P4 = findBJetEn_solution_top(trueBJet1En_solutions, trueBJet1Theta, trueBJet1Phi, trueChargedLeptonPlusP4 + trueNuP4, trueBJet1En_foundSolution);
@@ -198,16 +198,16 @@ double MEMbbwwIntegrandDilepton_background::Eval(const double* x) const
   LorentzVector trueAntiNuP4 = buildLorentzVector(trueAntiNuEn, trueAntiNuTheta, trueAntiNuPhi);
 
   double trueBJet2Theta, trueBJet2Phi;
-  if ( measuredBJet2_ ) 
+  if ( measuredBJet2_ )
   {
     trueBJet2Theta = measuredBJet2_->theta();
     trueBJet2Phi = measuredBJet2_->phi();
-  } 
-  else 
+  }
+  else
   {
     trueBJet2Theta = x[offsetBJet2Theta_];
     trueBJet2Phi = x[offsetBJet2Phi_];
-  }  
+  }
   std::vector<double> trueBJet2En_solutions = compBJetEn_top(trueChargedLeptonMinusP4 + trueAntiNuP4, trueBJet2Theta, trueBJet2Phi);
   bool trueBJet2En_foundSolution = false;
   LorentzVector trueBJet2P4 = findBJetEn_solution_top(trueBJet2En_solutions, trueBJet2Theta, trueBJet2Phi, trueChargedLeptonMinusP4 + trueAntiNuP4, trueBJet2En_foundSolution);
@@ -215,37 +215,37 @@ double MEMbbwwIntegrandDilepton_background::Eval(const double* x) const
 
   LorentzVector trueSumP4 = trueBJet1P4 + trueChargedLeptonPlusP4 + trueNuP4 + trueBJet2P4 + trueChargedLeptonMinusP4 + trueAntiNuP4;
 
-  // perform boost into zero-transverse-momentum (ZTM) frame 
+  // perform boost into zero-transverse-momentum (ZTM) frame
   double ztmFramePx = trueSumP4.px();
   double ztmFramePy = trueSumP4.py();
   double ztmFrameEn = trueSumP4.energy();
   Vector boost(-ztmFramePx/ztmFrameEn, -ztmFramePy/ztmFrameEn, 0.);
   LorentzVector trueChargedLeptonPlusP4_ztm = ROOT::Math::VectorUtil::boost(trueChargedLeptonPlusP4, boost);
   LorentzVector trueNuP4_ztm = ROOT::Math::VectorUtil::boost(trueNuP4, boost);
-  LorentzVector trueBJet1P4_ztm = ROOT::Math::VectorUtil::boost(trueBJet1P4, boost); 
+  LorentzVector trueBJet1P4_ztm = ROOT::Math::VectorUtil::boost(trueBJet1P4, boost);
   LorentzVector trueChargedLeptonMinusP4_ztm = ROOT::Math::VectorUtil::boost(trueChargedLeptonMinusP4, boost);
   LorentzVector trueAntiNuP4_ztm = ROOT::Math::VectorUtil::boost(trueAntiNuP4, boost);
-  LorentzVector trueBJet2P4_ztm = ROOT::Math::VectorUtil::boost(trueBJet2P4, boost); 
-  if ( verbosity_ >= 2 ) 
+  LorentzVector trueBJet2P4_ztm = ROOT::Math::VectorUtil::boost(trueBJet2P4, boost);
+  if ( verbosity_ >= 2 )
   {
     std::cout << "laboratory frame:" << std::endl;
     printLorentzVector("lepton+", trueChargedLeptonPlusP4, measuredChargedLeptonPlus_->p4());
     printLorentzVector("neutrino", trueNuP4);
-    if ( measuredBJet1_ ) 
+    if ( measuredBJet1_ )
     {
       printLorentzVector("b-jet1", trueBJet1P4, measuredBJet1_->p4());
-    } 
-    else 
+    }
+    else
     {
       printLorentzVector_NA("b-jet1", trueBJet1P4);
     }
     printLorentzVector("lepton-", trueChargedLeptonMinusP4, measuredChargedLeptonMinus_->p4());
     printLorentzVector("anti-neutrino", trueAntiNuP4);
-    if ( measuredBJet2_ ) 
+    if ( measuredBJet2_ )
     {
       printLorentzVector("b-jet2", trueBJet2P4, measuredBJet2_->p4());
-    } 
-    else 
+    }
+    else
     {
       printLorentzVector_NA("b-jet2", trueBJet2P4);
     }
@@ -282,13 +282,13 @@ double MEMbbwwIntegrandDilepton_background::Eval(const double* x) const
   double fb = pdf_->xfxQ(21, xb, Q)/xb;
   double prob_PDF = (fa*fb);
 
-  // evaluate flux factor 
+  // evaluate flux factor
   //
   // Note: the factor 1/s is aready included in the "normFactor" data-member
-  double prob_flux = (1./(xa*xb)); 
+  double prob_flux = (1./(xa*xb));
 
   // evaluate LO matrix element, generated using MadGraph
-  madgraphGluon1P4_[0] =  0.5*xa*sqrtS_; 
+  madgraphGluon1P4_[0] =  0.5*xa*sqrtS_;
   madgraphGluon1P4_[3] = +0.5*xa*sqrtS_;
   madgraphGluon2P4_[0] =  0.5*xb*sqrtS_;
   madgraphGluon2P4_[3] = -0.5*xb*sqrtS_;
@@ -321,12 +321,12 @@ double MEMbbwwIntegrandDilepton_background::Eval(const double* x) const
     printMadGraphMomenta(madgraphMomenta_);
   }
   double prob_ME = -1.;
-  if ( madgraphIsInitialized_ ) {    
+  if ( madgraphIsInitialized_ ) {
     me_madgraph_.setMomenta(madgraphMomenta_);
     me_madgraph_.sigmaKin();
     prob_ME = me_madgraph_.getMatrixElements()[0];
     ++numMatrixElementEvaluations_;
-    if ( TMath::IsNaN(prob_ME) ) 
+    if ( TMath::IsNaN(prob_ME) )
     {
       std::cerr << "Warning: MadGraph returned NaN --> skipping event !!" << std::endl;
       printLorentzVector("lepton+", trueChargedLeptonPlusP4_ztm);
@@ -339,7 +339,7 @@ double MEMbbwwIntegrandDilepton_background::Eval(const double* x) const
     }
   }
   assert(prob_ME >= 0.);
-  if ( verbosity_ >= 2 ) 
+  if ( verbosity_ >= 2 )
   {
     std::cout << "prob_ME = " << prob_ME << std::endl;
   }
@@ -348,12 +348,12 @@ double MEMbbwwIntegrandDilepton_background::Eval(const double* x) const
   //    (for consistency with computation of measuredHadRecoil in MEMbbwwIntegrandDilepton::setInputs function)
   double trueHadRecoilPx = -(trueChargedLeptonPlusP4.px() + trueChargedLeptonMinusP4.px() + trueNuP4.px() + trueAntiNuP4.px());
   double trueHadRecoilPy = -(trueChargedLeptonPlusP4.py() + trueChargedLeptonMinusP4.py() + trueNuP4.py() + trueAntiNuP4.py());
-  if ( measuredBJet1_ ) 
+  if ( measuredBJet1_ )
   {
     trueHadRecoilPx -= trueBJet1P4.px();
     trueHadRecoilPy -= trueBJet1P4.py();
   }
-  if ( measuredBJet2_ ) 
+  if ( measuredBJet2_ )
   {
     trueHadRecoilPx -= trueBJet2P4.px();
     trueHadRecoilPy -= trueBJet2P4.py();
@@ -363,7 +363,7 @@ double MEMbbwwIntegrandDilepton_background::Eval(const double* x) const
     std::cout << "hadRecoil:" << std::endl;
     std::cout << " true Px = " << trueHadRecoilPx << ", Py = " << trueHadRecoilPy << std::endl;
     std::cout << " rec. Px = " << measuredHadRecoilPx_ << ", Py = " << measuredHadRecoilPy_ << std::endl;
-    if ( !measuredBJet1_ || !measuredBJet2_ ) 
+    if ( !measuredBJet1_ || !measuredBJet2_ )
     {
       std::cout << "Note:";
       if ( !measuredBJet1_ ) std::cout << " b-jet1 is 'missing', i.e. not reconstructed, and not included in hadRecoil.";
@@ -373,16 +373,16 @@ double MEMbbwwIntegrandDilepton_background::Eval(const double* x) const
   }
 
   double prob_TF = 1.;
-  if ( measuredBJet1_ ) 
+  if ( measuredBJet1_ )
   {
     prob_TF *= bjet1TF_->Eval(trueBJet1P4.energy());
   }
-  if ( measuredBJet2_ ) 
+  if ( measuredBJet2_ )
   {
     prob_TF *= bjet2TF_->Eval(trueBJet2P4.energy());
   }
   prob_TF *= hadRecoilTF_->Eval(trueHadRecoilPx, trueHadRecoilPy);
-  if ( verbosity_ >= 2 ) 
+  if ( verbosity_ >= 2 )
   {
     std::cout << "prob_TF = " << prob_TF << std::endl;
   }
@@ -390,7 +390,7 @@ double MEMbbwwIntegrandDilepton_background::Eval(const double* x) const
   double jacobiFactor = 1.;
   jacobiFactor *= (compJacobiFactor_Wlnu(trueChargedLeptonPlusP4, trueNuP4)*compJacobiFactor_top(trueChargedLeptonPlusP4 + trueNuP4, trueBJet1P4));
   jacobiFactor *= (compJacobiFactor_Wlnu(trueChargedLeptonMinusP4, trueAntiNuP4)*compJacobiFactor_top(trueChargedLeptonMinusP4 + trueAntiNuP4, trueBJet2P4));
-  if ( verbosity_ >= 2 ) 
+  if ( verbosity_ >= 2 )
   {
     std::cout << "jacobiFactor = " << jacobiFactor << std::endl;
   }
@@ -405,29 +405,29 @@ double MEMbbwwIntegrandDilepton_background::Eval(const double* x) const
   integrandValue *= prob_PDF;
   integrandValue *= prob_flux;
   integrandValue *= prob_ME;
-  if ( measuredBJet1_ ) 
+  if ( measuredBJet1_ )
   {
     integrandValue *= trueBJet1P4.P();
   }
-  else 
+  else
   {
-    integrandValue *= (1./trueBJet1P4.energy());    
+    integrandValue *= (1./trueBJet1P4.energy());
   }
-  if ( measuredBJet2_ ) 
+  if ( measuredBJet2_ )
   {
     integrandValue *= trueBJet2P4.P();
   }
-  else 
+  else
   {
-    integrandValue *= (1./trueBJet2P4.energy());    
+    integrandValue *= (1./trueBJet2P4.energy());
   }
   integrandValue *= prob_TF;
   integrandValue *= jacobiFactor;
-  if ( verbosity_ >= 2 ) 
+  if ( verbosity_ >= 2 )
   {
     std::cout << "--> integrandValue = " << integrandValue << std::endl;
   }
+  countEval += 1;
 
   return integrandValue;
 }
-

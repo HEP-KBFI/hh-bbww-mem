@@ -25,7 +25,7 @@
 
 namespace mem
 {
-  
+
 class MEMbbwwIntegrandBase
 {
  public:
@@ -38,7 +38,7 @@ class MEMbbwwIntegrandBase
   MEMbbwwIntegrandBase() = delete; // CV: disable automatic generation of default constructor by C++ compiler
   MEMbbwwIntegrandBase(double, const std::string&, int);
   virtual ~MEMbbwwIntegrandBase();
-  
+
   /// set parton distribution function (PDF)
   void setPDF(LHAPDF::PDF* pdf);
 
@@ -57,31 +57,31 @@ class MEMbbwwIntegrandBase
   const double* getIntBounds_lower() const { return intBounds_lower_; }
   const double* getIntBounds_upper() const { return intBounds_upper_; }
 
-  /// reset counter for number of times the MadGraph matrix element was evaluated 
+  /// reset counter for number of times the MadGraph matrix element was evaluated
   void resetNumMatrixElementEvaluations() { numMatrixElementEvaluations_ = 0; }
 
   /// evaluate integrand for given value of integration variables x
   /// (pure virtual function, overwritten by derived classes for signal and background)
-  virtual double Eval(const double* x) const = 0;
+  virtual double Eval(const double* x, int & countEval) const = 0;
 
-  /// get number of times the MadGraph matrix element was evaluated 
+  /// get number of times the MadGraph matrix element was evaluated
   unsigned long getNumMatrixElementEvaluations() const { return numMatrixElementEvaluations_; }
 
- protected:  
+ protected:
   /// pointer to parton-distribution-function (PDF)
   LHAPDF::PDF* pdf_;
 
-  /// print four-vectors passed to MadGraph 
+  /// print four-vectors passed to MadGraph
   void printMadGraphMomenta(const std::vector<double*>& ) const;
-  
+
   /// integration variables
   unsigned intNumDimensions_;
-  std::vector<std::string> intVarNames_; 
+  std::vector<std::string> intVarNames_;
   double* intBounds_lower_;
   double* intBounds_upper_;
 
   /// measured momenta of charged leptons and b-jets
-  const MeasuredParticle* measuredBJet1_; 
+  const MeasuredParticle* measuredBJet1_;
   const MeasuredParticle* measuredBJet2_;
 
   /// measured missing transverse momentum (MET)

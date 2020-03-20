@@ -15,15 +15,15 @@ class MEMbbwwIntegrandSingleLepton_background : public MEMbbwwIntegrandSingleLep
   ~MEMbbwwIntegrandSingleLepton_background();
 
   /// set measured momenta of charged lepton, jets from W->jj decay, and b-jets and of missing transverse momentum
-  void setInputs(const mem::MeasuredParticle*, 
-		 const mem::MeasuredParticle*, const mem::MeasuredParticle*, 
-		 const mem::MeasuredParticle*, const mem::MeasuredParticle*, 
+  void setInputs(const mem::MeasuredParticle*,
+		 const mem::MeasuredParticle*, const mem::MeasuredParticle*,
+		 const mem::MeasuredParticle*, const mem::MeasuredParticle*,
 		 double, double, const TMatrixD&);
 
   /// evaluate integrand for given value of integration variables x
-  double Eval(const double* x) const;
+  double Eval(const double* x, int & countEval) const;
 
- protected:  
+ protected:
   /// initialize integration variables (grid)
   void initializeIntVars();
 
@@ -37,7 +37,8 @@ class MEMbbwwIntegrandSingleLepton_background : public MEMbbwwIntegrandSingleLep
   int offsetHadWJet1Theta_;
   int offsetHadWJet1Phi_;
   int offsetHadWJet2Theta_;
-  int offsetHadWJet2Phi_;	
+  int offsetHadWJet2Phi_;
+  std::string madgraphFileName_;
 
   /// index of integration variables for theta and phi of either b-jet1 or b-jet2 in case one b-jet is "missing", i.e. not reconstructed
   int offsetBJet1Theta_;
