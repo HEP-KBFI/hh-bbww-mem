@@ -159,6 +159,11 @@ class mg5_BSM_gg_hh2bbWW_WW2lvlv
     // Initial particle ids
     int id1, id2;
     std::string param_card_name_;
+    double kt;
+    double kl;
+    double c2g;
+    double cg;
+    double c2;
 };
 
 #endif  // MG5_Sigma_BSM_gg_hh2bbWW_WW2lvlv_H

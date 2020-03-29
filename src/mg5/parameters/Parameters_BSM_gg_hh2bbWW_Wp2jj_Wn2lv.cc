@@ -77,35 +77,45 @@ void Parameters_BSM_gg_hh2bbWW_Wp2jj_Wn2lv::setIndependentParameters(SLHAReader&
 void Parameters_BSM_gg_hh2bbWW_Wp2jj_Wn2lv::setIndependentCouplings()
 {
   GC_13 = (mdl_ee * mdl_complexi)/(mdl_sw * mdl_sqrt__2);
-  GC_28 = -6. * mdl_complexi * mdl_lam * mdl_vev * mdl_ctr;
+
   GC_29 = (mdl_ee__exp__2 * mdl_complexi * mdl_vev)/(2. * mdl_sw__exp__2);
   GC_31 = -((mdl_complexi * mdl_yb)/mdl_sqrt__2);
+
 }
-void Parameters_BSM_gg_hh2bbWW_Wp2jj_Wn2lv::setDependentParameters(SLHAReader& slha, bool firstTime)
+
+void Parameters_BSM_gg_hh2bbWW_Wp2jj_Wn2lv::setDependentParameters() // SLHAReader& slha, bool firstTime
 {
-  mdl_cy = slha.get_block_entry("bsm", 189, 1.000000e+00);
-  mdl_ctr = slha.get_block_entry("bsm", 188, 1.000000e+00);
-  mdl_a2 = slha.get_block_entry("bsm", 32, 1.000000e+00);
-  mdl_a1 = slha.get_block_entry("bsm", 31, 1.000000e+00);
-  mdl_c2 = slha.get_block_entry("bsm", 30, -1.000000e+00);
-  mdl_cy__exp__2 = pow(mdl_cy, 2.);
-  if (firstTime) std::cout << "BSM parameters: " << mdl_cy << " " << mdl_ctr << " " << mdl_a2 << " " << mdl_a1 << " " << mdl_c2 << "\n";
+  //mdl_cy = slha.get_block_entry("bsm", 189, 1.000000e+00);
+  //mdl_ctr = slha.get_block_entry("bsm", 188, 1.000000e+00);
+  //mdl_a2 = slha.get_block_entry("bsm", 32, 1.000000e+00);
+  //mdl_a1 = slha.get_block_entry("bsm", 31, 1.000000e+00);
+  //mdl_c2 = slha.get_block_entry("bsm", 30, -1.000000e+00);
+  //if (firstTime) std::cout << "BSM parameters: " << mdl_cy << " " << mdl_ctr << " " << mdl_a2 << " " << mdl_a1 << " " << mdl_c2 << "\n";
   ///
   mdl_sqrt__aS = sqrt(aS);
   G = 2. * mdl_sqrt__aS * sqrt(M_PI);
   mdl_G__exp__2 = pow(G, 2.);
 }
-void Parameters_BSM_gg_hh2bbWW_Wp2jj_Wn2lv::setDependentCouplings()
+void Parameters_BSM_gg_hh2bbWW_Wp2jj_Wn2lv::setDependentCouplings(
+    double & kl, // mdl_ctr
+    double & kt, // mdl_cy
+    double & c2, // mdl_c2
+    double & cg, // mdl_a1
+    double & c2g // mdl_a2
+  )
 {
-  GC_38 = -(aS * mdl_complexi)/(3. * M_PI * mdl_vev__exp__2) * mdl_a2;
-  GC_22 = -(aS * mdl_complexi)/(3. * M_PI * mdl_vev__exp__2) * (-3./2.) *
-      mdl_cy__exp__2;
-  GC_25 = (aS * mdl_complexi)/(3. * M_PI * mdl_vev) * (3./2.) * mdl_cy;
+  mdl_cy__exp__2 = pow(kt, 2.);
+  GC_38 = -(aS * mdl_complexi)/(3. * M_PI * mdl_vev__exp__2) * c2g;
   GC_34 = -(aS * mdl_complexi)/(3. * M_PI * mdl_vev__exp__2) * (-3./2.) *
       mdl_cy__exp__2;
-  GC_37 = (aS * mdl_complexi)/(3. * M_PI * mdl_vev) * mdl_a1;
-  GC_36 = -mdl_c2 * (aS * mdl_complexi)/(3. * M_PI * mdl_vev__exp__2) *
+  GC_37 = (aS * mdl_complexi)/(3. * M_PI * mdl_vev) * cg;
+  GC_36 = -c2 * (aS * mdl_complexi)/(3. * M_PI * mdl_vev__exp__2) *
       (-3./2.);
+  //
+  GC_22 = -(aS * mdl_complexi)/(3. * M_PI * mdl_vev__exp__2) * (-3./2.) *
+      mdl_cy__exp__2;
+  GC_25 = (aS * mdl_complexi)/(3. * M_PI * mdl_vev) * (3./2.) * kt;
+  GC_28 = -6. * mdl_complexi * mdl_lam * mdl_vev * kl;
 }
 
 // Routines for printing out parameters

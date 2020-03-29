@@ -7,7 +7,7 @@
 
 #include "hhAnalysis/bbwwMEM/interface/mg5/me/mg5_gg_hh2bbWW_Wp2lv_Wn2jj.h"
 #include "hhAnalysis/bbwwMEM/interface/mg5/helamps/HelAmps_BSM_gg_hh2bbWW_Wp2lv_Wn2jj.h"
-
+#include "hhAnalysis/bbwwMEM/interface/load_parameters.h"
 #include <iostream>
 
 using namespace MG5_BSM_gg_hh2bbWW_Wp2lv_Wn2jj;
@@ -54,6 +54,7 @@ void mg5_BSM_gg_hh2bbWW_Wp2lv_Wn2jj::initProc(const string & param_card_name)
   SLHAReader slha(param_card_name_);
   pars->setIndependentParameters(slha);
   pars->setIndependentCouplings();
+  read_BSM_couplings(slha, kl,  kt, c2, c2g, cg);
   //pars->printIndependentParameters();
   //pars->printIndependentCouplings();
   // Set external particle masses for this matrix element
@@ -76,10 +77,11 @@ void mg5_BSM_gg_hh2bbWW_Wp2lv_Wn2jj::sigmaKin(bool & firsttime)
   // Set the parameters which change event by event
   SLHAReader slha(param_card_name_);
   //static bool firsttime = true;
-  pars->setDependentParameters(slha, firsttime);
-  pars->setDependentCouplings();
+  pars->setDependentParameters();
+  pars->setDependentCouplings(kl, kt, c2, c2g, cg);
   if (firsttime)
   {
+      std::cout << "BSM parameters: kl = " << kl << "; kt = " << kt << "; c2 = " << c2 << "; cg = " << cg << "; c2g =" << c2g << "\n";
     //pars->printDependentParameters();
     //pars->printDependentCouplings();
     firsttime = false;

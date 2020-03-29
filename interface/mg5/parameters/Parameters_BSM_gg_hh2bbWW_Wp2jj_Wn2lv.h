@@ -53,9 +53,9 @@ class Parameters_BSM_gg_hh2bbWW_Wp2jj_Wn2lv
     // Set couplings that are unchanged during the run
     void setIndependentCouplings();
     // Set parameters that are changed event by event
-    void setDependentParameters(SLHAReader& slha, bool firstTime); 
+    void setDependentParameters(); // SLHAReader& slha, bool firstTime
     // Set couplings that are changed event by event
-    void setDependentCouplings();
+    void setDependentCouplings(double & kl, double & kt, double & c2, double & cg, double & c2g);
 
     // Print parameters that are unchanged during the run
     void printIndependentParameters();

@@ -39,6 +39,8 @@ using namespace std;
 // *     Decay: w- > mu- vm~ WEIGHTED=2
 //--------------------------------------------------------------------------
 
+void read_BSM_couplings(SLHAReader& slha, double & kl, double & kt, double & c2, double & cg, double & c2g);
+
 class mg5_BSM_gg_hh2bbWW_Wp2jj_Wn2lv
 {
   public:
@@ -159,6 +161,11 @@ class mg5_BSM_gg_hh2bbWW_Wp2jj_Wn2lv
     // Initial particle ids
     int id1, id2;
     std::string param_card_name_;
+    double kt;
+    double kl;
+    double c2g;
+    double cg;
+    double c2;
 
 };
 
