@@ -148,7 +148,7 @@ main(int argc __attribute__((unused)), char ** argv __attribute__((unused)))
   const double sqrtS = 13.e+3;
   const std::string pdfName = "MSTW2008lo68cl";
 
-  const std::string madgraphFileName_signal     = "hhAnalysis/bbwwMEM/data/param_hh_BM2.dat";
+  const std::string madgraphFileName_signal     = "hhAnalysis/bbwwMEM/data/param_hh_SM.dat";
   const std::string madgraphFileName_background = "hhAnalysis/bbwwMEM/data/param_ttbar.dat";
 
   /// fix (flag=true) mass of charged lepton plus neutrino originating from the decay of the "on-shell" W boson to mW,
