@@ -15,46 +15,48 @@
 
 using namespace mem;
 
-MEMbbwwAlgoDilepton::MEMbbwwAlgoDilepton(double sqrtS, 
-					 const std::string& pdfName, 
-					 const std::string& madgraphFileName_signal, const std::string& madgraphFileName_background, 
-					 int verbosity) 
-  : MEMbbwwAlgoBase(sqrtS, pdfName, madgraphFileName_signal, madgraphFileName_background, verbosity) 
+MEMbbwwAlgoDilepton::MEMbbwwAlgoDilepton(double sqrtS,
+					 const std::string& pdfName,
+					 const std::string& madgraphFileName_signal, const std::string& madgraphFileName_background,
+					 int verbosity)
+  : MEMbbwwAlgoBase(sqrtS, pdfName, madgraphFileName_signal, madgraphFileName_background, verbosity)
   , integrand_signal_(nullptr)
   , integrand_background_(nullptr)
-{ 
+{
+
+	std::cout << "<MEMbbwwAlgoDilepton> madgraphFileName_signal_ = " << madgraphFileName_signal_ << "\n";
   integrand_signal_ = new MEMbbwwIntegrandDilepton_signal(sqrtS_, madgraphFileName_signal_, verbosity_);
   integrand_signal_->setPDF(pdf_);
   integrand_background_ = new MEMbbwwIntegrandDilepton_background(sqrtS_, madgraphFileName_background_, verbosity_);
   integrand_background_->setPDF(pdf_);
-  
+
   result_.prob_signal_ = -1.;
   result_.probErr_signal_ = -1.;
   result_.prob_background_ = -1.;
   result_.probErr_background_ = -1.;
 }
 
-MEMbbwwAlgoDilepton::~MEMbbwwAlgoDilepton() 
+MEMbbwwAlgoDilepton::~MEMbbwwAlgoDilepton()
 {
   delete integrand_signal_;
   delete integrand_background_;
 }
 
-void 
+void
 MEMbbwwAlgoDilepton::setBJet1TF(mem::BJetTF* bjetTF)
 {
   integrand_signal_->setBJet1TF(bjetTF);
   integrand_background_->setBJet1TF(bjetTF);
 }
- 
-void 
+
+void
 MEMbbwwAlgoDilepton::setBJet2TF(mem::BJetTF* bjetTF)
 {
   integrand_signal_->setBJet2TF(bjetTF);
   integrand_background_->setBJet2TF(bjetTF);
 }
- 
-void 
+
+void
 MEMbbwwAlgoDilepton::setHadRecoilTF(mem::HadRecoilTF* hadRecoilTF)
 {
   integrand_signal_->setHadRecoilTF(hadRecoilTF);
@@ -70,7 +72,7 @@ MEMbbwwAlgoDilepton::applyOnshellWmassConstraint_signal(bool flag)
 
 namespace
 {
-  struct sortMeasuredParticles 
+  struct sortMeasuredParticles
   {
     bool operator() (const MeasuredParticle& measuredParticle1, const MeasuredParticle& measuredParticle2)
     {
@@ -84,14 +86,14 @@ MEMbbwwAlgoDilepton::setMeasuredParticles(const std::vector<MeasuredParticle>& m
 {
   std::vector<MeasuredParticle> measuredParticles_rounded;
   for ( std::vector<MeasuredParticle>::const_iterator measuredParticle = measuredParticles.begin();
-	measuredParticle != measuredParticles.end(); ++measuredParticle ) 
+	measuredParticle != measuredParticles.end(); ++measuredParticle )
   {
     MeasuredParticle measuredParticle_rounded(
-      measuredParticle->type(), 
-      roundToNdigits(measuredParticle->pt()), 
-      roundToNdigits(measuredParticle->eta()), 
-      roundToNdigits(measuredParticle->phi()), 
-      roundToNdigits(measuredParticle->mass()), 
+      measuredParticle->type(),
+      roundToNdigits(measuredParticle->pt()),
+      roundToNdigits(measuredParticle->eta()),
+      roundToNdigits(measuredParticle->phi()),
+      roundToNdigits(measuredParticle->mass()),
       measuredParticle->charge());
     measuredParticles_rounded.push_back(measuredParticle_rounded);
   }
@@ -99,50 +101,52 @@ MEMbbwwAlgoDilepton::setMeasuredParticles(const std::vector<MeasuredParticle>& m
   measuredParticles_ = measuredParticles_rounded;
   measuredChargedLeptonPlus_ = nullptr;
   measuredChargedLeptonMinus_ = nullptr;
-  measuredLeadingBJet_ = nullptr; 
+  measuredLeadingBJet_ = nullptr;
   measuredSubleadingBJet_ = nullptr;
-  for ( size_t idx = 0; idx < measuredParticles_.size(); ++idx ) 
+  for ( size_t idx = 0; idx < measuredParticles_.size(); ++idx )
   {
     const MeasuredParticle& measuredParticle = measuredParticles_[idx];
-    if ( verbosity_ >= 1 ) 
+    if ( verbosity_ >= 1 )
     {
-      std::cout << "measuredParticles #" << idx << " (type = " << measuredParticle.type() << "): Pt = " << measuredParticle.pt() << "," 
-		<< " eta = " << measuredParticle.eta() << " (theta = " << measuredParticle.p3().theta() << ")" << ", phi = " << measuredParticle.phi() << "," 
+      std::cout << "measuredParticles #" << idx << " (type = " << measuredParticle.type() << "): Pt = " << measuredParticle.pt() << ","
+		<< " eta = " << measuredParticle.eta() << " (theta = " << measuredParticle.p3().theta() << ")" << ", phi = " << measuredParticle.phi() << ","
 		<< " mass = " << measuredParticle.mass() << ", charge = " << measuredParticle.charge() << std::endl;
     }
-    if ( measuredParticle.type() == MeasuredParticle::kElectron || measuredParticle.type() == MeasuredParticle::kMuon ) 
+    if ( measuredParticle.type() == MeasuredParticle::kElectron || measuredParticle.type() == MeasuredParticle::kMuon )
     {
       if ( measuredParticle.charge() > 0 ) measuredChargedLeptonPlus_  = &measuredParticle;
       if ( measuredParticle.charge() < 0 ) measuredChargedLeptonMinus_ = &measuredParticle;
     }
-    if ( measuredParticle.type() == MeasuredParticle::kBJet ) 
+    if ( measuredParticle.type() == MeasuredParticle::kBJet )
     {
       if      ( !measuredLeadingBJet_    ) measuredLeadingBJet_    = &measuredParticle;
       else if ( !measuredSubleadingBJet_ ) measuredSubleadingBJet_ = &measuredParticle;
     }
   }
-  if ( !(measuredChargedLeptonPlus_ && measuredChargedLeptonMinus_) ) 
+  if ( !(measuredChargedLeptonPlus_ && measuredChargedLeptonMinus_) )
   {
     std::cerr << "<MEMbbwwAlgoSingleLepton::integrate>: Given measuredParticles do not contain a pair of type 'Electron' or 'Muon' and of opposite charge --> ABORTING !!\n";
     assert(0);
   }
-  if ( !(measuredLeadingBJet_ || measuredSubleadingBJet_) ) // CV: allow for one "missing" (non-reconstructed) b-jet 
+  if ( !(measuredLeadingBJet_ || measuredSubleadingBJet_) ) // CV: allow for one "missing" (non-reconstructed) b-jet
   {
     std::cerr << "<MEMbbwwAlgoSingleLepton::integrate>: Given measuredParticles do not contain at least one of type 'BJet' --> ABORTING !!\n";
     assert(0);
-  }	
+  }
 }
 
 void
 MEMbbwwAlgoDilepton::integrate(const std::vector<MeasuredParticle>& measuredParticles, double measuredMEtPx, double measuredMEtPy, const TMatrixD& measuredMEtCov)
 {
-  if ( verbosity_ >= 1 ) 
+  if ( verbosity_ >= 1 )
   {
     std::cout << "<MEMbbwwAlgoDilepton::integrate>:" << std::endl;
+		std::cout << "<MEMbbwwAlgoDilepton::integrate> madgraphFileName_signal_ = " << madgraphFileName_signal_ << "\n";
   }
 
+
   clock_->Reset();
-  //const std::string label_total = "<MEMbbwwAlgoDilepton::integrate (total)>";
+  //const std::string label_total = "<MEMbbwwAlgoDilepton::integrate (total)>" << madgraphFileName_signal_ << "\n";
   const std::string label_total = "<MEMbbwwAlgoDilepton::integrate>";
   clock_->Start(label_total.data());
 
@@ -160,7 +164,7 @@ MEMbbwwAlgoDilepton::integrate(const std::vector<MeasuredParticle>& measuredPart
   {
     //---------------------------------------------------------------------------
     // CV: MadGraph matrix element for HH->bbWW signal is symmetric under exchange b-jet1 vs b-jet2,
-    //     so one association of 
+    //     so one association of
     //       measuredBJet1 & measuredBJet1 to measuredLeadingBJet & measuredSubleadingBJet
     //     is sufficient
     //    (reduce number of permutations as much as possible, to save computing time !!)
@@ -168,15 +172,15 @@ MEMbbwwAlgoDilepton::integrate(const std::vector<MeasuredParticle>& measuredPart
     const MeasuredParticle* measuredBJet2 = measuredSubleadingBJet_;
     //---------------------------------------------------------------------------
     integrand_signal_->setInputs(
-      measuredChargedLeptonPlus_, measuredChargedLeptonMinus_, 
-      measuredBJet1, measuredBJet2, 
+      measuredChargedLeptonPlus_, measuredChargedLeptonMinus_,
+      measuredBJet1, measuredBJet2,
       measuredMEtPx_, measuredMEtPy_, measuredMEtCov_);
     int chargedLeptonPermutation = mem::kPermutationUndefined2L;
-    if ( idxPermutation == 0 ) 
+    if ( idxPermutation == 0 )
     {
       chargedLeptonPermutation = mem::kOnshellChargedLeptonPlus;
-    } 
-    else 
+    }
+    else
     {
       chargedLeptonPermutation = mem::kOnshellChargedLeptonMinus;
     }
@@ -189,19 +193,19 @@ MEMbbwwAlgoDilepton::integrate(const std::vector<MeasuredParticle>& measuredPart
     result_.probErr_signal_ += probErr_permutation;
     const MeasuredParticle* measuredChargedLeptonFromOnshellW = nullptr;
     const MeasuredParticle* measuredChargedLeptonFromOffshellW = nullptr;
-    if ( chargedLeptonPermutation == mem::kOnshellChargedLeptonPlus ) 
+    if ( chargedLeptonPermutation == mem::kOnshellChargedLeptonPlus )
     {
       measuredChargedLeptonFromOnshellW = measuredChargedLeptonPlus_;
       measuredChargedLeptonFromOffshellW = measuredChargedLeptonMinus_;
-    } 
-    else 
+    }
+    else
     {
       measuredChargedLeptonFromOnshellW = measuredChargedLeptonMinus_;
       measuredChargedLeptonFromOffshellW = measuredChargedLeptonPlus_;
     }
     result_.permutations_signal_.push_back(MEMbbwwPermutationDilepton(
-      prob_permutation, probErr_permutation, 
-      measuredChargedLeptonFromOnshellW, measuredChargedLeptonFromOffshellW, measuredBJet1, measuredBJet2, 
+      prob_permutation, probErr_permutation,
+      measuredChargedLeptonFromOnshellW, measuredChargedLeptonFromOffshellW, measuredBJet1, measuredBJet2,
       chargedLeptonPermutation));
     delete intAlgo_;
     intAlgo_ = nullptr;
@@ -210,7 +214,7 @@ MEMbbwwAlgoDilepton::integrate(const std::vector<MeasuredParticle>& measuredPart
   result_.probErr_signal_ /= 2.;
   numMatrixElementEvaluations_signal_ = integrand_signal_->getNumMatrixElementEvaluations();
   //clock_->Stop(label_signal.data().data());
-  //if ( verbosity_ >= 0 ) 
+  //if ( verbosity_ >= 0 )
   //{
   //  clock_->Show(label_signal.data().data());
   //}
@@ -221,23 +225,23 @@ MEMbbwwAlgoDilepton::integrate(const std::vector<MeasuredParticle>& measuredPart
   result_.probErr_background_ = 0.;
   result_.permutations_background_.clear();
   integrand_background_->resetNumMatrixElementEvaluations();
-  for ( unsigned idxPermutation = 0; idxPermutation < 2; ++idxPermutation ) 
+  for ( unsigned idxPermutation = 0; idxPermutation < 2; ++idxPermutation )
   {
     const MeasuredParticle* measuredBJetFromTop = nullptr;
     const MeasuredParticle* measuredBJetFromAntiTop = nullptr;
-    if ( idxPermutation == 0 ) 
+    if ( idxPermutation == 0 )
     {
       measuredBJetFromTop = measuredLeadingBJet_;
       measuredBJetFromAntiTop  = measuredSubleadingBJet_;
-    } 
-    else 
+    }
+    else
     {
       measuredBJetFromTop = measuredSubleadingBJet_;
       measuredBJetFromAntiTop  = measuredLeadingBJet_;
     }
     integrand_background_->setInputs(
-      measuredChargedLeptonPlus_, measuredChargedLeptonMinus_, 
-      measuredBJetFromTop, measuredBJetFromAntiTop, 
+      measuredChargedLeptonPlus_, measuredChargedLeptonMinus_,
+      measuredBJetFromTop, measuredBJetFromAntiTop,
       measuredMEtPx_, measuredMEtPy_, measuredMEtCov_);
     MEMbbwwAlgoDilepton::gMEMIntegrand = integrand_background_;
     initializeIntAlgo(maxObjFunctionCalls_background_);
@@ -246,7 +250,7 @@ MEMbbwwAlgoDilepton::integrate(const std::vector<MeasuredParticle>& measuredPart
     result_.prob_background_ += prob_permutation;
     result_.probErr_background_ += probErr_permutation;
     result_.permutations_background_.push_back(MEMbbwwPermutationDilepton(
-      prob_permutation, probErr_permutation, 
+      prob_permutation, probErr_permutation,
       measuredChargedLeptonPlus_, measuredChargedLeptonMinus_, measuredBJetFromTop, measuredBJetFromAntiTop));
     delete intAlgo_;
     intAlgo_ = nullptr;
@@ -255,16 +259,21 @@ MEMbbwwAlgoDilepton::integrate(const std::vector<MeasuredParticle>& measuredPart
   result_.probErr_background_ /= 2.;
   numMatrixElementEvaluations_background_ = integrand_background_->getNumMatrixElementEvaluations();
   //clock_->Stop(label_background.data());
-  //if ( verbosity_ >= 0 ) 
+  //if ( verbosity_ >= 0 )
   //{
   //  clock_->Show(label_background.data());
   //}
 
   clock_->Stop(label_total.data());
-  if ( verbosity_ >= 0 ) 
+  if ( verbosity_ >= 0 )
   {
     clock_->Show(label_total.data());
   }
+	if ( verbosity_ >= 1 )
+	{
+		std::cout << "<MEMbbwwAlgoDilepton::integrate> madgraphFileName_signal_ = " << madgraphFileName_signal_ << "\n";
+		std::cout << result_ << "\n";
+	}
   numSeconds_cpu_ = clock_->GetCpuTime(label_total.data());
   numSeconds_real_ = clock_->GetRealTime(label_total.data());
 }

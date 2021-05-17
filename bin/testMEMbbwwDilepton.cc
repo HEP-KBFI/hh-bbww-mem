@@ -81,7 +81,7 @@ main(int argc __attribute__((unused)), char ** argv __attribute__((unused)))
   measuredMEtCov_signal[1][0] =  -43.125;
   measuredMEtCov_signal[0][1] =  -43.125;
   measuredMEtCov_signal[1][1] = 1006.000;
- 
+
   /* This is a single ttbar->bW bW->blnu blnu background event for testing purposes */
 
   // define measured momenta of b-jets and charged leptons
@@ -136,7 +136,7 @@ main(int argc __attribute__((unused)), char ** argv __attribute__((unused)))
   //const double measuredMEtPhi_background = -2.952;
   //const double measuredMEtPx_background = measuredMEtPt_background * std::cos(measuredMEtPhi_background);
   //const double measuredMEtPy_background = measuredMEtPt_background * std::sin(measuredMEtPhi_background);
-  
+
   // define MET uncertainty matrix
   TMatrixD measuredMEtCov_background(2,2);
   measuredMEtCov_background[0][0] = 688.000;
@@ -148,7 +148,7 @@ main(int argc __attribute__((unused)), char ** argv __attribute__((unused)))
   const double sqrtS = 13.e+3;
   const std::string pdfName = "MSTW2008lo68cl";
 
-  const std::string madgraphFileName_signal     = "hhAnalysis/bbwwMEM/data/param_hh.dat";
+  const std::string madgraphFileName_signal     = "hhAnalysis/bbwwMEM/data/param_hh_BM2.dat";
   const std::string madgraphFileName_background = "hhAnalysis/bbwwMEM/data/param_ttbar.dat";
 
   /// fix (flag=true) mass of charged lepton plus neutrino originating from the decay of the "on-shell" W boson to mW,
@@ -168,43 +168,43 @@ main(int argc __attribute__((unused)), char ** argv __attribute__((unused)))
   std::cout << "processing signal event:\n";
   std::cout << " m(bb) = " << (measuredParticles_signal[2].p4() + measuredParticles_signal[3].p4()).mass() << std::endl;
   std::cout << " m(ll) = " << (measuredParticles_signal[0].p4() + measuredParticles_signal[1].p4()).mass() << std::endl;
-  std::cout << " m(bl+):" 
-	    << " 1st permutation = " << (measuredParticles_signal[0].p4() + measuredParticles_signal[2].p4()).mass() << "," 
+  std::cout << " m(bl+):"
+	    << " 1st permutation = " << (measuredParticles_signal[0].p4() + measuredParticles_signal[2].p4()).mass() << ","
 	    << " 2nd permutation = " << (measuredParticles_signal[0].p4() + measuredParticles_signal[3].p4()).mass() << std::endl;
-  std::cout << " m(bl-):" 
-	    << " 1st permutation = " << (measuredParticles_signal[1].p4() + measuredParticles_signal[2].p4()).mass() << "," 
+  std::cout << " m(bl-):"
+	    << " 1st permutation = " << (measuredParticles_signal[1].p4() + measuredParticles_signal[2].p4()).mass() << ","
 	    << " 2nd permutation = " << (measuredParticles_signal[1].p4() + measuredParticles_signal[3].p4()).mass() << std::endl;
   memAlgo.integrate(measuredParticles_signal, measuredMEtPx_signal, measuredMEtPy_signal, measuredMEtCov_signal);
-  std::cout << "numMatrixElementEvaluations:" 
-	    << " signal = " << memAlgo.getNumMatrixElementEvaluations_signal() << "," 
+  std::cout << "numMatrixElementEvaluations:"
+	    << " signal = " << memAlgo.getNumMatrixElementEvaluations_signal() << ","
 	    << " background = " << memAlgo.getNumMatrixElementEvaluations_background() << std::endl;
   const MEMbbwwResultDilepton& result_sig = memAlgo.getResult();
   std::cout << " probability for signal hypothesis = " << result_sig.getProb_signal() << " +/- " << result_sig.getProbErr_signal() << " "
 	    << "(expected = 0.000192071 +/- 3.73844e-05)" << std::endl;
-  std::cout << " probability for background hypothesis = " << result_sig.getProb_background() << " +/- " << result_sig.getProbErr_background() << " " 
+  std::cout << " probability for background hypothesis = " << result_sig.getProb_background() << " +/- " << result_sig.getProbErr_background() << " "
 	    << "(expected = 1.18723e-21 +/- 2.03816e-23)" << std::endl;
-  std::cout << "--> likelihood ratio = " << result_sig.getLikelihoodRatio() << " +/- " << result_sig.getLikelihoodRatioErr() << " " 
+  std::cout << "--> likelihood ratio = " << result_sig.getLikelihoodRatio() << " +/- " << result_sig.getLikelihoodRatioErr() << " "
 	    << "(expected = 1 +/- 1.20777e-18)" << std::endl;
 
   std::cout << "processing background event:\n";
   std::cout << " m(bb) = " << (measuredParticles_background[2].p4() + measuredParticles_background[3].p4()).mass() << std::endl;
   std::cout << " m(ll) = " << (measuredParticles_background[0].p4() + measuredParticles_background[1].p4()).mass() << std::endl;
-  std::cout << " m(bl+):" 
-	    << " 1st permutation = " << (measuredParticles_background[1].p4() + measuredParticles_background[2].p4()).mass() << "," 
+  std::cout << " m(bl+):"
+	    << " 1st permutation = " << (measuredParticles_background[1].p4() + measuredParticles_background[2].p4()).mass() << ","
 	    << " 2nd permutation = " << (measuredParticles_background[1].p4() + measuredParticles_background[3].p4()).mass() << std::endl;
-  std::cout << " m(bl-):" 
-	    << " 1st permutation = " << (measuredParticles_background[0].p4() + measuredParticles_background[2].p4()).mass() << "," 
+  std::cout << " m(bl-):"
+	    << " 1st permutation = " << (measuredParticles_background[0].p4() + measuredParticles_background[2].p4()).mass() << ","
 	    << " 2nd permutation = " << (measuredParticles_background[0].p4() + measuredParticles_background[3].p4()).mass() << std::endl;
   memAlgo.integrate(measuredParticles_background, measuredMEtPx_background, measuredMEtPy_background, measuredMEtCov_background);
-  std::cout << "numMatrixElementEvaluations:" 
-	    << " signal = " << memAlgo.getNumMatrixElementEvaluations_signal() << "," 
+  std::cout << "numMatrixElementEvaluations:"
+	    << " signal = " << memAlgo.getNumMatrixElementEvaluations_signal() << ","
 	    << " background = " << memAlgo.getNumMatrixElementEvaluations_background() << std::endl;
   const MEMbbwwResultDilepton& result_bkg = memAlgo.getResult();
   std::cout << " probability for signal hypothesis = " << result_bkg.getProb_signal() << " +/- " << result_bkg.getProbErr_signal() << " "
 	    << "(expected = 2.1487e-26 +/- 6.44021e-28)" << std::endl;
-  std::cout << " probability for background hypothesis = " << result_bkg.getProb_background() << " +/- " << result_bkg.getProbErr_background() << " " 
+  std::cout << " probability for background hypothesis = " << result_bkg.getProb_background() << " +/- " << result_bkg.getProbErr_background() << " "
 	    << "(expected = 0.00118671 +/- 5.55693e-06)" << std::endl;
-  std::cout << "--> likelihood ratio = " << result_bkg.getLikelihoodRatio() << " +/- " << result_bkg.getLikelihoodRatioErr() << " " 
+  std::cout << "--> likelihood ratio = " << result_bkg.getLikelihoodRatio() << " +/- " << result_bkg.getLikelihoodRatioErr() << " "
 	    << "(expected = 1.81064e-23 +/- 5.49278e-25)" << std::endl;
 
   return EXIT_SUCCESS;

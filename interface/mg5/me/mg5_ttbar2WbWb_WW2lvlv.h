@@ -8,8 +8,8 @@
 #ifndef MG5_sm_ttbar2WbWb_WW2lvlv_H
 #define MG5_sm_ttbar2WbWb_WW2lvlv_H
 
-#include <complex> 
-#include <vector> 
+#include <complex>
+#include <vector>
 
 #include "hhAnalysis/bbwwMEM/interface/mg5/parameters/Parameters_sm_ttbar2WbWb_WW2lvlv.h"
 
@@ -117,9 +117,9 @@ class mg5_sm_ttbar2WbWb_WW2lvlv
     }
 
     // Constants for array limits
-    static const int ninitial = 2; 
-    static const int nexternal = 8; 
-    static const int nprocesses = 1; 
+    static const int ninitial = 2;
+    static const int nexternal = 8;
+    static const int nprocesses = 1;
 
   private:
 

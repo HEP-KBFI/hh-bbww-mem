@@ -8,8 +8,8 @@
 #ifndef MG5_sm_ttbar2WbWb_Wp2lv_Wn2jj_H
 #define MG5_sm_ttbar2WbWb_Wp2lv_Wn2jj_H
 
-#include <complex> 
-#include <vector> 
+#include <complex>
+#include <vector>
 
 #include "hhAnalysis/bbwwMEM/interface/mg5/parameters/Parameters_sm_ttbar2WbWb_Wp2lv_Wn2jj.h"
 
@@ -117,9 +117,9 @@ class mg5_sm_ttbar2WbWb_Wp2lv_Wn2jj
     }
 
     // Constants for array limits
-    static const int ninitial = 2; 
-    static const int nexternal = 8; 
-    static const int nprocesses = 1; 
+    static const int ninitial = 2;
+    static const int nexternal = 8;
+    static const int nprocesses = 1;
 
   private:
 
@@ -129,18 +129,18 @@ class mg5_sm_ttbar2WbWb_Wp2lv_Wn2jj
     calculate_wavefunctions(const int perm[],
                             const int hel[]);
 
-    static const int nwavefuncs = 15; 
-    std::complex<double> w[nwavefuncs][18]; 
-    static const int namplitudes = 3; 
-    std::complex<double> amp[namplitudes]; 
+    static const int nwavefuncs = 15;
+    std::complex<double> w[nwavefuncs][18];
+    static const int namplitudes = 3;
+    std::complex<double> amp[namplitudes];
 
-    double matrix_1_gg_ttx_t_wpb_wp_epve_tx_wmbx_wm_dux(); 
+    double matrix_1_gg_ttx_t_wpb_wp_epve_tx_wmbx_wm_dux();
 
     // Store the matrix element value from sigmaKin
-    double matrix_element[nprocesses]; 
+    double matrix_element[nprocesses];
 
     // Color flows, used when selecting color
-    double * jamp2[nprocesses]; 
+    double * jamp2[nprocesses];
 
     // Pointer to the model parameters
     Parameters_sm_ttbar2WbWb_Wp2lv_Wn2jj * pars;
@@ -151,9 +151,9 @@ class mg5_sm_ttbar2WbWb_Wp2lv_Wn2jj
     // vector with momenta (to be changed each event)
     std::vector<double *> p;
     // Initial particle ids
-    int id1, id2; 
+    int id1, id2;
 
-}; 
+};
 
 
 #endif  // MG5_sm_ttbar2WbWb_Wp2lv_Wn2jj_H

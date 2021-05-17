@@ -13,7 +13,7 @@
 
 #include "hhAnalysis/bbwwMEM/interface/mg5/parameters/Parameters_BSM_gg_hh2bbWW_WW2lvlv.h"
 
-using namespace std; 
+using namespace std;
 
 //==========================================================================
 // A class for calculating the matrix elements for
@@ -71,7 +71,7 @@ class mg5_BSM_gg_hh2bbWW_WW2lvlv
 
     // Calculate flavour-independent parts of cross section.
     virtual void
-    sigmaKin();
+    sigmaKin(bool & firsttime);
 
     // Evaluate sigmaHat(sHat).
     virtual double
@@ -123,9 +123,15 @@ class mg5_BSM_gg_hh2bbWW_WW2lvlv
     }
 
     // Constants for array limits
-    static const int ninitial = 2; 
-    static const int nexternal = 8; 
-    static const int nprocesses = 1; 
+    static const int ninitial = 2;
+    static const int nexternal = 8;
+    static const int nprocesses = 1;
+
+    double kt;
+    double kl;
+    double c2g;
+    double cg;
+    double c2;
 
   private:
 
@@ -140,7 +146,7 @@ class mg5_BSM_gg_hh2bbWW_WW2lvlv
     static const int namplitudes = 2;
     std::complex<double> amp[namplitudes];
 
-    double matrix_1_gg_hh_h_bbx_h_wpwm_wp_epve_wm_emvex(); 
+    double matrix_1_gg_hh_h_bbx_h_wpwm_wp_epve_wm_emvex();
 
     // Store the matrix element value from sigmaKin
     double matrix_element[nprocesses];
@@ -158,6 +164,7 @@ class mg5_BSM_gg_hh2bbWW_WW2lvlv
     std::vector < double * > p;
     // Initial particle ids
     int id1, id2;
+    std::string param_card_name_;
 };
 
 #endif  // MG5_Sigma_BSM_gg_hh2bbWW_WW2lvlv_H

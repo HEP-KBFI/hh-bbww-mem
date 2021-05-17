@@ -19,90 +19,103 @@ Parameters_BSM_gg_hh2bbWW_Wp2jj_Wn2lv * Parameters_BSM_gg_hh2bbWW_Wp2jj_Wn2lv::g
   if (! instance)
     instance = new Parameters_BSM_gg_hh2bbWW_Wp2jj_Wn2lv();
 
-  return instance; 
+  return instance;
 }
 
 void Parameters_BSM_gg_hh2bbWW_Wp2jj_Wn2lv::setIndependentParameters(SLHAReader& slha)
 {
   // Define "zero"
-  zero = 0; 
-  ZERO = 0; 
+  zero = 0;
+  ZERO = 0;
   // Prepare a vector for indices
-  vector<int> indices(2, 0); 
-  mdl_WH = slha.get_block_entry("decay", 25, 6.382339e-03); 
-  mdl_WW = slha.get_block_entry("decay", 24, 2.085000e+00); 
-  mdl_WZ = slha.get_block_entry("decay", 23, 2.495200e+00); 
-  mdl_WT = slha.get_block_entry("decay", 6, 1.508336e+00); 
-  mdl_ymtau = slha.get_block_entry("yukawa", 15, 1.777000e+00); 
-  mdl_ymt = slha.get_block_entry("yukawa", 6, 1.730000e+02); 
-  mdl_ymb = slha.get_block_entry("yukawa", 5, 4.700000e+00); 
-  aS = slha.get_block_entry("sminputs", 3, 1.184000e-01); 
-  mdl_Gf = slha.get_block_entry("sminputs", 2, 1.166370e-05); 
-  aEWM1 = slha.get_block_entry("sminputs", 1, 1.279000e+02); 
-  mdl_MH = slha.get_block_entry("mass", 25, 1.250000e+02); 
-  mdl_MZ = slha.get_block_entry("mass", 23, 9.118760e+01); 
-  mdl_MTA = slha.get_block_entry("mass", 15, 1.777000e+00); 
-  mdl_MT = slha.get_block_entry("mass", 6, 1.730000e+02); 
+  vector<int> indices(2, 0);
+  mdl_WH = slha.get_block_entry("decay", 25, 6.382339e-03);
+  mdl_WW = slha.get_block_entry("decay", 24, 2.085000e+00);
+  mdl_WZ = slha.get_block_entry("decay", 23, 2.495200e+00);
+  mdl_WT = slha.get_block_entry("decay", 6, 1.508336e+00);
+  mdl_ymtau = slha.get_block_entry("yukawa", 15, 1.777000e+00);
+  mdl_ymt = slha.get_block_entry("yukawa", 6, 1.730000e+02);
+  mdl_ymb = slha.get_block_entry("yukawa", 5, 4.700000e+00);
+  aS = slha.get_block_entry("sminputs", 3, 1.184000e-01);
+  mdl_Gf = slha.get_block_entry("sminputs", 2, 1.166370e-05);
+  aEWM1 = slha.get_block_entry("sminputs", 1, 1.279000e+02);
+  mdl_MH = slha.get_block_entry("mass", 25, 1.250000e+02);
+  mdl_MZ = slha.get_block_entry("mass", 23, 9.118760e+01);
+  mdl_MTA = slha.get_block_entry("mass", 15, 1.777000e+00);
+  mdl_MT = slha.get_block_entry("mass", 6, 1.730000e+02);
   masses_.MDL_MT = mdl_MT;
-  mdl_MB = slha.get_block_entry("mass", 5, 4.700000e+00); 
-  mdl_cy = slha.get_block_entry("bsm", 189, 1.000000e+00); 
-  mdl_ctr = slha.get_block_entry("bsm", 188, 1.000000e+00); 
-  mdl_a2 = slha.get_block_entry("bsm", 32, 1.000000e+00); 
-  mdl_a1 = slha.get_block_entry("bsm", 31, 1.000000e+00); 
-  mdl_c2 = slha.get_block_entry("bsm", 30, -1.000000e+00); 
-  mdl_MZ__exp__2 = pow(mdl_MZ, 2.); 
-  mdl_MZ__exp__4 = pow(mdl_MZ, 4.); 
-  mdl_sqrt__2 = sqrt(2.); 
-  mdl_MH__exp__2 = pow(mdl_MH, 2.); 
-  mdl_complexi = std::complex<double> (0., 1.); 
-  mdl_cy__exp__2 = pow(mdl_cy, 2.); 
-  mdl_aEW = 1./aEWM1; 
+  mdl_MB = slha.get_block_entry("mass", 5, 4.700000e+00);
+
+  mdl_MZ__exp__2 = pow(mdl_MZ, 2.);
+  mdl_MZ__exp__4 = pow(mdl_MZ, 4.);
+  mdl_sqrt__2 = sqrt(2.);
+  mdl_MH__exp__2 = pow(mdl_MH, 2.);
+  mdl_complexi = std::complex<double> (0., 1.);
+  mdl_aEW = 1./aEWM1;
   mdl_MW = sqrt(mdl_MZ__exp__2/2. + sqrt(mdl_MZ__exp__4/4. - (mdl_aEW * M_PI *
       mdl_MZ__exp__2)/(mdl_Gf * mdl_sqrt__2)));
-  mdl_sqrt__aEW = sqrt(mdl_aEW); 
-  mdl_ee = 2. * mdl_sqrt__aEW * sqrt(M_PI); 
-  mdl_MW__exp__2 = pow(mdl_MW, 2.); 
-  mdl_sw2 = 1. - mdl_MW__exp__2/mdl_MZ__exp__2; 
-  mdl_cw = sqrt(1. - mdl_sw2); 
-  mdl_sqrt__sw2 = sqrt(mdl_sw2); 
-  mdl_sw = mdl_sqrt__sw2; 
-  mdl_g1 = mdl_ee/mdl_cw; 
-  mdl_gw = mdl_ee/mdl_sw; 
-  mdl_vev = (2. * mdl_MW * mdl_sw)/mdl_ee; 
-  mdl_vev__exp__2 = pow(mdl_vev, 2.); 
-  mdl_lam = mdl_MH__exp__2/(2. * mdl_vev__exp__2); 
-  mdl_yb = (mdl_ymb * mdl_sqrt__2)/mdl_vev; 
-  mdl_yt = (mdl_ymt * mdl_sqrt__2)/mdl_vev; 
-  mdl_ytau = (mdl_ymtau * mdl_sqrt__2)/mdl_vev; 
-  mdl_muH = sqrt(mdl_lam * mdl_vev__exp__2); 
-  mdl_ee__exp__2 = pow(mdl_ee, 2.); 
-  mdl_sw__exp__2 = pow(mdl_sw, 2.); 
-  mdl_cw__exp__2 = pow(mdl_cw, 2.); 
+  mdl_sqrt__aEW = sqrt(mdl_aEW);
+  mdl_ee = 2. * mdl_sqrt__aEW * sqrt(M_PI);
+  mdl_MW__exp__2 = pow(mdl_MW, 2.);
+  mdl_sw2 = 1. - mdl_MW__exp__2/mdl_MZ__exp__2;
+  mdl_cw = sqrt(1. - mdl_sw2);
+  mdl_sqrt__sw2 = sqrt(mdl_sw2);
+  mdl_sw = mdl_sqrt__sw2;
+  mdl_g1 = mdl_ee/mdl_cw;
+  mdl_gw = mdl_ee/mdl_sw;
+  mdl_vev = (2. * mdl_MW * mdl_sw)/mdl_ee;
+  mdl_vev__exp__2 = pow(mdl_vev, 2.);
+  mdl_lam = mdl_MH__exp__2/(2. * mdl_vev__exp__2);
+  mdl_yb = (mdl_ymb * mdl_sqrt__2)/mdl_vev;
+  mdl_yt = (mdl_ymt * mdl_sqrt__2)/mdl_vev;
+  mdl_ytau = (mdl_ymtau * mdl_sqrt__2)/mdl_vev;
+  mdl_muH = sqrt(mdl_lam * mdl_vev__exp__2);
+  mdl_ee__exp__2 = pow(mdl_ee, 2.);
+  mdl_sw__exp__2 = pow(mdl_sw, 2.);
+  mdl_cw__exp__2 = pow(mdl_cw, 2.);
 }
 void Parameters_BSM_gg_hh2bbWW_Wp2jj_Wn2lv::setIndependentCouplings()
 {
-  GC_13 = (mdl_ee * mdl_complexi)/(mdl_sw * mdl_sqrt__2); 
-  GC_28 = -6. * mdl_complexi * mdl_lam * mdl_vev * mdl_ctr; 
-  GC_29 = (mdl_ee__exp__2 * mdl_complexi * mdl_vev)/(2. * mdl_sw__exp__2); 
-  GC_31 = -((mdl_complexi * mdl_yb)/mdl_sqrt__2); 
+  GC_13 = (mdl_ee * mdl_complexi)/(mdl_sw * mdl_sqrt__2);
+
+  GC_29 = (mdl_ee__exp__2 * mdl_complexi * mdl_vev)/(2. * mdl_sw__exp__2);
+  GC_31 = -((mdl_complexi * mdl_yb)/mdl_sqrt__2);
+
 }
-void Parameters_BSM_gg_hh2bbWW_Wp2jj_Wn2lv::setDependentParameters()
+
+void Parameters_BSM_gg_hh2bbWW_Wp2jj_Wn2lv::setDependentParameters() // SLHAReader& slha, bool firstTime
 {
-  mdl_sqrt__aS = sqrt(aS); 
-  G = 2. * mdl_sqrt__aS * sqrt(M_PI); 
-  mdl_G__exp__2 = pow(G, 2.); 
+  //mdl_cy = slha.get_block_entry("bsm", 189, 1.000000e+00);
+  //mdl_ctr = slha.get_block_entry("bsm", 188, 1.000000e+00);
+  //mdl_a2 = slha.get_block_entry("bsm", 32, 1.000000e+00);
+  //mdl_a1 = slha.get_block_entry("bsm", 31, 1.000000e+00);
+  //mdl_c2 = slha.get_block_entry("bsm", 30, -1.000000e+00);
+  //if (firstTime) std::cout << "BSM parameters: " << mdl_cy << " " << mdl_ctr << " " << mdl_a2 << " " << mdl_a1 << " " << mdl_c2 << "\n";
+  ///
+  mdl_sqrt__aS = sqrt(aS);
+  G = 2. * mdl_sqrt__aS * sqrt(M_PI);
+  mdl_G__exp__2 = pow(G, 2.);
 }
-void Parameters_BSM_gg_hh2bbWW_Wp2jj_Wn2lv::setDependentCouplings()
+void Parameters_BSM_gg_hh2bbWW_Wp2jj_Wn2lv::setDependentCouplings(
+    double & kl, // mdl_ctr
+    double & kt, // mdl_cy
+    double & c2, // mdl_c2
+    double & cg, // mdl_a1
+    double & c2g // mdl_a2
+  )
 {
-  GC_38 = -(aS * mdl_complexi)/(3. * M_PI * mdl_vev__exp__2) * mdl_a2; 
-  GC_22 = -(aS * mdl_complexi)/(3. * M_PI * mdl_vev__exp__2) * (-3./2.) *
-      mdl_cy__exp__2;
-  GC_25 = (aS * mdl_complexi)/(3. * M_PI * mdl_vev) * (3./2.) * mdl_cy; 
+  mdl_cy__exp__2 = pow(kt, 2.);
+  GC_38 = -(aS * mdl_complexi)/(3. * M_PI * mdl_vev__exp__2) * c2g;
   GC_34 = -(aS * mdl_complexi)/(3. * M_PI * mdl_vev__exp__2) * (-3./2.) *
       mdl_cy__exp__2;
-  GC_37 = (aS * mdl_complexi)/(3. * M_PI * mdl_vev) * mdl_a1; 
-  GC_36 = -mdl_c2 * (aS * mdl_complexi)/(3. * M_PI * mdl_vev__exp__2) *
+  GC_37 = (aS * mdl_complexi)/(3. * M_PI * mdl_vev) * cg;
+  GC_36 = -c2 * (aS * mdl_complexi)/(3. * M_PI * mdl_vev__exp__2) *
       (-3./2.);
+  //
+  GC_22 = -(aS * mdl_complexi)/(3. * M_PI * mdl_vev__exp__2) * (-3./2.) *
+      mdl_cy__exp__2;
+  GC_25 = (aS * mdl_complexi)/(3. * M_PI * mdl_vev) * (3./2.) * kt;
+  GC_28 = -6. * mdl_complexi * mdl_lam * mdl_vev * kl;
 }
 
 // Routines for printing out parameters
@@ -244,5 +257,3 @@ void Parameters_BSM_gg_hh2bbWW_Wp2jj_Wn2lv::printDependentCouplings()
   LOGVRB << setw(20) <<  "GC_36 " <<  "= " << setiosflags(ios::scientific) <<
       setw(10) << GC_36 << endl;
 }
-
-

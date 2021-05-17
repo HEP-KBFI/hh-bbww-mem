@@ -8,12 +8,12 @@
 #ifndef MG5_Sigma_BSM_gg_hh2bbWW_Wp2lv_Wn2jj_H
 #define MG5_Sigma_BSM_gg_hh2bbWW_Wp2lv_Wn2jj_H
 
-#include <complex> 
-#include <vector> 
+#include <complex>
+#include <vector>
 
 #include "hhAnalysis/bbwwMEM/interface/mg5/parameters/Parameters_BSM_gg_hh2bbWW_Wp2lv_Wn2jj.h"
 
-using namespace std; 
+using namespace std;
 
 //==========================================================================
 // A class for calculating the matrix elements for
@@ -71,7 +71,7 @@ class mg5_BSM_gg_hh2bbWW_Wp2lv_Wn2jj
 
     // Calculate flavour-independent parts of cross section.
     virtual void
-    sigmaKin();
+    sigmaKin(bool & firsttime);
 
     // Evaluate sigmaHat(sHat).
     virtual double
@@ -122,9 +122,14 @@ class mg5_BSM_gg_hh2bbWW_Wp2lv_Wn2jj
     }
 
     // Constants for array limits
-    static const int ninitial = 2; 
-    static const int nexternal = 8; 
-    static const int nprocesses = 1; 
+    static const int ninitial = 2;
+    static const int nexternal = 8;
+    static const int nprocesses = 1;
+    double kt;
+    double kl;
+    double c2g;
+    double cg;
+    double c2;
 
   private:
 
@@ -134,18 +139,18 @@ class mg5_BSM_gg_hh2bbWW_Wp2lv_Wn2jj
     calculate_wavefunctions(const int perm[],
                             const int hel[]);
 
-    static const int nwavefuncs = 13; 
-    std::complex<double> w[nwavefuncs][18]; 
-    static const int namplitudes = 2; 
-    std::complex<double> amp[namplitudes]; 
+    static const int nwavefuncs = 13;
+    std::complex<double> w[nwavefuncs][18];
+    static const int namplitudes = 2;
+    std::complex<double> amp[namplitudes];
 
-    double matrix_1_gg_hh_h_bbx_h_wpwm_wp_epve_wm_dux(); 
+    double matrix_1_gg_hh_h_bbx_h_wpwm_wp_epve_wm_dux();
 
     // Store the matrix element value from sigmaKin
-    double matrix_element[nprocesses]; 
+    double matrix_element[nprocesses];
 
     // Color flows, used when selecting color
-    double * jamp2[nprocesses]; 
+    double * jamp2[nprocesses];
 
     // Pointer to the model parameters
     Parameters_BSM_gg_hh2bbWW_Wp2lv_Wn2jj * pars;
@@ -156,9 +161,10 @@ class mg5_BSM_gg_hh2bbWW_Wp2lv_Wn2jj
     // vector with momenta (to be changed each event)
     std::vector<double *> p;
     // Initial particle ids
-    int id1, id2; 
+    int id1, id2;
+    std::string param_card_name_;
 
-}; 
+};
 
 
 #endif  // MG5_Sigma_BSM_gg_hh2bbWW_Wp2lv_Wn2jj_H

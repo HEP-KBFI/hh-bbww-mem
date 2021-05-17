@@ -10,7 +10,7 @@
 
 #include "tthAnalysis/tthMEM/interface/mg5/read_slha.h"
 
-#include <complex> 
+#include <complex>
 
 #ifndef MDL_MT_masses
 #define MDL_MT_masses
@@ -30,7 +30,7 @@ class Parameters_BSM_gg_hh2bbWW_Wp2jj_Wn2lv
     static Parameters_BSM_gg_hh2bbWW_Wp2jj_Wn2lv * getInstance();
 
     // Define "zero"
-    double zero, ZERO; 
+    double zero, ZERO;
     // Model parameters independent of aS
     double mdl_WH, mdl_WW, mdl_WZ, mdl_WT, mdl_ymtau, mdl_ymt, mdl_ymb, aS,
         mdl_Gf, aEWM1, mdl_MH, mdl_MZ, mdl_MTA, mdl_MT, mdl_MB, mdl_cy,
@@ -40,36 +40,35 @@ class Parameters_BSM_gg_hh2bbWW_Wp2jj_Wn2lv
         mdl_sw, mdl_g1, mdl_gw, mdl_vev, mdl_vev__exp__2, mdl_lam, mdl_yb,
         mdl_yt, mdl_ytau, mdl_muH, mdl_ee__exp__2, mdl_sw__exp__2,
         mdl_cw__exp__2;
-    std::complex<double> mdl_complexi; 
+    std::complex<double> mdl_complexi;
     // Model parameters dependent on aS
-    double mdl_sqrt__aS, G, mdl_G__exp__2; 
+    double mdl_sqrt__aS, G, mdl_G__exp__2;
     // Model couplings independent of aS
-    std::complex<double> GC_13, GC_28, GC_29, GC_31; 
+    std::complex<double> GC_13, GC_28, GC_29, GC_31;
     // Model couplings dependent on aS
-    std::complex<double> GC_38, GC_22, GC_25, GC_34, GC_37, GC_36; 
+    std::complex<double> GC_38, GC_22, GC_25, GC_34, GC_37, GC_36;
 
     // Set parameters that are unchanged during the run
-    void setIndependentParameters(SLHAReader& slha); 
+    void setIndependentParameters(SLHAReader& slha);
     // Set couplings that are unchanged during the run
-    void setIndependentCouplings(); 
+    void setIndependentCouplings();
     // Set parameters that are changed event by event
-    void setDependentParameters(); 
+    void setDependentParameters(); // SLHAReader& slha, bool firstTime
     // Set couplings that are changed event by event
-    void setDependentCouplings(); 
+    void setDependentCouplings(double & kl, double & kt, double & c2, double & cg, double & c2g);
 
     // Print parameters that are unchanged during the run
-    void printIndependentParameters(); 
+    void printIndependentParameters();
     // Print couplings that are unchanged during the run
-    void printIndependentCouplings(); 
+    void printIndependentCouplings();
     // Print parameters that are changed event by event
-    void printDependentParameters(); 
+    void printDependentParameters();
     // Print couplings that are changed event by event
-    void printDependentCouplings(); 
+    void printDependentCouplings();
 
 
   private:
     static Parameters_BSM_gg_hh2bbWW_Wp2jj_Wn2lv * instance;
-}; 
+};
 
 #endif  // Parameters_BSM_gg_hh2bbWW_Wp2jj_Wn2lv_H
-
