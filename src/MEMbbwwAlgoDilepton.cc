@@ -64,6 +64,7 @@ MEMbbwwAlgoDilepton::setHadRecoilTF(mem::HadRecoilTF* hadRecoilTF)
 void 
 MEMbbwwAlgoDilepton::applyOnshellWmassConstraint_signal(bool flag) 
 { 
+  integrand_signal_applyOnshellWmassConstraint_ = flag;	
   integrand_signal_->applyOnshellWmassConstraint(flag);
 }
 
@@ -154,7 +155,8 @@ MEMbbwwAlgoDilepton::integrate(const std::vector<MeasuredParticle>& measuredPart
   result_.probErr_signal_ = 0.;
   result_.permutations_signal_.clear();
   integrand_signal_->resetNumMatrixElementEvaluations();
-  for ( unsigned idxPermutation = 0; idxPermutation < 2; ++idxPermutation ) 
+  unsigned maxPermutations = ( integrand_signal_applyOnshellWmassConstraint_ ) ? 2 : 1;
+  for ( unsigned idxPermutation = 0; idxPermutation < maxPermutations; ++idxPermutation ) 
   {
     //---------------------------------------------------------------------------
     // CV: MadGraph matrix element for HH->bbWW signal is symmetric under exchange b-jet1 vs b-jet2,

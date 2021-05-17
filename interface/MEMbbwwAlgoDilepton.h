@@ -43,6 +43,7 @@ class MEMbbwwAlgoDilepton : public MEMbbwwAlgoBase
 
   /// pointers to integration classes for signal and background hypotheses
   mem::MEMbbwwIntegrandDilepton_signal* integrand_signal_;
+  bool integrand_signal_applyOnshellWmassConstraint_;	
   mem::MEMbbwwIntegrandDilepton_background* integrand_background_;
 
   /// measured momenta of charged leptons and b-jets
