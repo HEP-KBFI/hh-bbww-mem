@@ -23,7 +23,7 @@ MEMbbwwAlgoSingleLepton::MEMbbwwAlgoSingleLepton(double sqrtS,
   , integrand_signal_applyOnshellWmassConstraint_(false)
   , integrand_background_(nullptr)
   , maxNumHadWJetPairs_(8)
-  , sortHadJetPairOption_(kSortHadWJetPairsByMass)
+  , sortHadJetPairOption_(kSortHadWJetPairsByDeltaR)
 { 
   integrand_signal_ = new MEMbbwwIntegrandSingleLepton_signal(sqrtS_, madgraphFileName_signal_, verbosity_);
   integrand_signal_->setPDF(pdf_);
@@ -189,6 +189,7 @@ MEMbbwwAlgoSingleLepton::setMeasuredParticles(const std::vector<mem::MeasuredPar
 	    measuredHadWJet2 != measuredHadWJets_.end(); ++measuredHadWJet2 ) 
       {
         measuredHadWJetPairs_.push_back(MeasuredHadWJetPair(*measuredHadWJet1, *measuredHadWJet2));
+	measuredHadWJetPairs_.push_back(MeasuredHadWJetPair(*measuredHadWJet2, *measuredHadWJet1)); // CV: consider both permutations
       }
     }
     if ( sortHadJetPairOption_ == kSortHadWJetPairsByMass ) 
