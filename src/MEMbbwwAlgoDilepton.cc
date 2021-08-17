@@ -23,8 +23,6 @@ MEMbbwwAlgoDilepton::MEMbbwwAlgoDilepton(double sqrtS,
   , integrand_signal_(nullptr)
   , integrand_background_(nullptr)
 {
-
-	std::cout << "<MEMbbwwAlgoDilepton> madgraphFileName_signal_ = " << madgraphFileName_signal_ << "\n";
   integrand_signal_ = new MEMbbwwIntegrandDilepton_signal(sqrtS_, madgraphFileName_signal_, verbosity_);
   integrand_signal_->setPDF(pdf_);
   integrand_background_ = new MEMbbwwIntegrandDilepton_background(sqrtS_, madgraphFileName_background_, verbosity_);
@@ -141,9 +139,7 @@ MEMbbwwAlgoDilepton::integrate(const std::vector<MeasuredParticle>& measuredPart
   if ( verbosity_ >= 1 )
   {
     std::cout << "<MEMbbwwAlgoDilepton::integrate>:" << std::endl;
-		std::cout << "<MEMbbwwAlgoDilepton::integrate> madgraphFileName_signal_ = " << madgraphFileName_signal_ << "\n";
   }
-
 
   clock_->Reset();
   //const std::string label_total = "<MEMbbwwAlgoDilepton::integrate (total)>" << madgraphFileName_signal_ << "\n";
@@ -269,11 +265,10 @@ MEMbbwwAlgoDilepton::integrate(const std::vector<MeasuredParticle>& measuredPart
   {
     clock_->Show(label_total.data());
   }
-	if ( verbosity_ >= 1 )
-	{
-		std::cout << "<MEMbbwwAlgoDilepton::integrate> madgraphFileName_signal_ = " << madgraphFileName_signal_ << "\n";
-		std::cout << result_ << "\n";
-	}
+  if ( verbosity_ >= 1 )
+  {
+    std::cout << result_ << "\n";
+  }
   numSeconds_cpu_ = clock_->GetCpuTime(label_total.data());
   numSeconds_real_ = clock_->GetRealTime(label_total.data());
 }

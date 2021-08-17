@@ -5,6 +5,8 @@
 #include "hhAnalysis/bbwwMEM/interface/MEMbbwwIntegrandDilepton_signal.h"
 #include "hhAnalysis/bbwwMEM/interface/MEMbbwwIntegrandDilepton_background.h"
 #include "hhAnalysis/bbwwMEM/interface/MEMIntegratorBase.h"
+#include "hhAnalysis/bbwwMEM/interface/BJetTF.h"
+#include "hhAnalysis/bbwwMEM/interface/HadRecoilTF.h"
 #include "hhAnalysis/bbwwMEM/interface/MeasuredParticle.h"
 #include "hhAnalysis/bbwwMEM/interface/MEMResult.h"
 
