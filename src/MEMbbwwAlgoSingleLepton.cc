@@ -58,6 +58,20 @@ MEMbbwwAlgoSingleLepton::setBJet2TF(mem::BJetTF* bjetTF)
 }
  
 void 
+MEMbbwwAlgoSingleLepton::setHadWJet1TF(mem::HadWJetTF* hadWJetTF)
+{
+  integrand_signal_->setHadWJet1TF(hadWJetTF);
+  integrand_background_->setHadWJet1TF(hadWJetTF);
+}
+ 
+void 
+MEMbbwwAlgoSingleLepton::setHadWJet2TF(mem::HadWJetTF* hadWJetTF)
+{
+  integrand_signal_->setHadWJet2TF(hadWJetTF);
+  integrand_background_->setHadWJet2TF(hadWJetTF);
+}
+
+void 
 MEMbbwwAlgoSingleLepton::setHadRecoilTF(mem::HadRecoilTF* hadRecoilTF)
 {
   integrand_signal_->setHadRecoilTF(hadRecoilTF);

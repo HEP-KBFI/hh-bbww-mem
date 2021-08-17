@@ -17,7 +17,9 @@ MEMbbwwIntegrandSingleLepton::MEMbbwwIntegrandSingleLepton(double sqrtS, const s
   , madgraphHadWJet2P4_(nullptr)
 {
   hadWJet1TF_ = new HadWJetTF(verbosity_);
+  hadWJet1TF_isOwned_ = true;
   hadWJet2TF_ = new HadWJetTF(verbosity_);
+  hadWJet2TF_isOwned_ = true;
 
   madgraphChargedLeptonP4_ = new double[4];
   madgraphNeutrinoP4_ = new double[4];
@@ -31,14 +33,30 @@ MEMbbwwIntegrandSingleLepton::~MEMbbwwIntegrandSingleLepton()
   //{
   //  std::cout << "<MEMbbwwIntegrandSingleLepton::~MEMbbwwIntegrandSingleLepton>:" << std::endl;
   //}
-
-  delete hadWJet1TF_;
-  delete hadWJet2TF_;
   
+  if ( hadWJet1TF_isOwned_ ) delete hadWJet1TF_;
+  if ( hadWJet2TF_isOwned_ ) delete hadWJet2TF_;
+
   delete [] madgraphChargedLeptonP4_;
   delete [] madgraphNeutrinoP4_;
   delete [] madgraphHadWJet1P4_;
   delete [] madgraphHadWJet2P4_;
+}
+
+void 
+MEMbbwwIntegrandSingleLepton::setHadWJet1TF(HadWJetTF* hadWJetTF)
+{
+  if ( hadWJet1TF_isOwned_ ) delete hadWJet1TF_;
+  hadWJet1TF_ = hadWJetTF;
+  hadWJet1TF_isOwned_ = false;
+}
+ 
+void 
+MEMbbwwIntegrandSingleLepton::setHadWJet2TF(HadWJetTF* hadWJetTF)
+{
+  if ( hadWJet2TF_isOwned_ ) delete hadWJet2TF_;
+  hadWJet2TF_ = hadWJetTF;
+  hadWJet2TF_isOwned_ = false;
 }
 
 void 

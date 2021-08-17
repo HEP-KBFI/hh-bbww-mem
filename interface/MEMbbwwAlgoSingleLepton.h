@@ -5,6 +5,9 @@
 #include "hhAnalysis/bbwwMEM/interface/MEMbbwwIntegrandSingleLepton_signal.h"
 #include "hhAnalysis/bbwwMEM/interface/MEMbbwwIntegrandSingleLepton_background.h"
 #include "hhAnalysis/bbwwMEM/interface/MEMIntegratorBase.h"
+#include "hhAnalysis/bbwwMEM/interface/BJetTF.h"
+#include "hhAnalysis/bbwwMEM/interface/HadWJetTF.h"
+#include "hhAnalysis/bbwwMEM/interface/HadRecoilTF.h"
 #include "hhAnalysis/bbwwMEM/interface/MeasuredParticle.h"
 #include "hhAnalysis/bbwwMEM/interface/MEMResult.h"
 #include "hhAnalysis/bbwwMEM/interface/memAuxFunctions.h"
@@ -21,9 +24,11 @@ class MEMbbwwAlgoSingleLepton : public MEMbbwwAlgoBase
   MEMbbwwAlgoSingleLepton(double, const std::string&, const std::string&, const std::string&, int = 0);
   ~MEMbbwwAlgoSingleLepton();
 
-  /// set transfer functions for b-jets and MET
+  /// set transfer functions for b-jets, jets from W->jj decays, and MET
   void setBJet1TF(mem::BJetTF*);
   void setBJet2TF(mem::BJetTF*);
+  void setHadWJet1TF(mem::HadWJetTF*);
+  void setHadWJet2TF(mem::HadWJetTF*);
   void setHadRecoilTF(mem::HadRecoilTF*);
 
   /// fix (flag=true) mass of charged lepton plus neutrino or of the jet pair originating from the decay of the "on-shell" W boson to mW,

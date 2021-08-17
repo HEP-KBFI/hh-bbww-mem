@@ -19,6 +19,10 @@ class MEMbbwwIntegrandSingleLepton : public MEMbbwwIntegrandBase
   MEMbbwwIntegrandSingleLepton(double, const std::string&, int);
   virtual ~MEMbbwwIntegrandSingleLepton();
   
+  /// set transfer functions for jets from W->jj decays
+  void setHadWJet1TF(HadWJetTF*);
+  void setHadWJet2TF(HadWJetTF*);
+
   /// set measured momenta of charged leptons and b-jets and of missing transverse momentum
   virtual void setInputs(const mem::MeasuredParticle*, 
 			 const mem::MeasuredParticle*, const mem::MeasuredParticle*, 
@@ -33,7 +37,9 @@ class MEMbbwwIntegrandSingleLepton : public MEMbbwwIntegrandBase
 
   /// transfer functions for jets from W->jj decay
   HadWJetTF* hadWJet1TF_;
+  bool hadWJet1TF_isOwned_;
   HadWJetTF* hadWJet2TF_;
+  bool hadWJet2TF_isOwned_;
 
   /// four-vectors used to evaluate MadGraph matrix element
   double* madgraphChargedLeptonP4_;
