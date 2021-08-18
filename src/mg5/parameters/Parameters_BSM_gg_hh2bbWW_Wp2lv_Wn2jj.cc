@@ -93,7 +93,7 @@ void Parameters_BSM_gg_hh2bbWW_Wp2lv_Wn2jj::setDependentCouplings(
   double & c2g // mdl_a2
 )
 {
-  std::cout << "BSM parameters: " << kt << " " << kl << " " << c2 << " " << c2g << " " << cg << "\n";
+  //std::cout << "BSM parameters: " << kt << " " << kl << " " << c2 << " " << c2g << " " << cg << "\n";
   mdl_cy__exp__2 = pow(kt, 2.);
   GC_28 = -6. * mdl_complexi * mdl_lam * mdl_vev * kl;
   GC_38 = -(aS * mdl_complexi)/(3. * M_PI * mdl_vev__exp__2) * c2g;

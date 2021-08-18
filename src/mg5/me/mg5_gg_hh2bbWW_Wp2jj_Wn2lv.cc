@@ -81,7 +81,7 @@ void mg5_BSM_gg_hh2bbWW_Wp2jj_Wn2lv::sigmaKin(bool & firsttime)
   pars->setDependentCouplings(kl, kt, c2, c2g, cg);
   if (firsttime)
   {
-    std::cout << "BSM parameters: kl = " << kl << "; kt = " << kt << "; c2 = " << c2 << "; cg = " << cg << "; c2g =" << c2g << "\n";
+    //std::cout << "BSM parameters: kl = " << kl << "; kt = " << kt << "; c2 = " << c2 << "; cg = " << cg << "; c2g =" << c2g << "\n";
     //pars->printDependentParameters();
     //pars->printDependentCouplings();
     firsttime = false;
