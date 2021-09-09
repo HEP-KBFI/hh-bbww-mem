@@ -139,17 +139,16 @@ class MEMbbwwPermutationSingleLepton : public MEMPermutationBase
 
 }
 
-template <class T_sig, class T_bkg>
-class MEMResult
+class MEMResultBase
 {
  public:
-  MEMResult()
+  MEMResultBase()
     : prob_signal_(0.)
     , probErr_signal_(0.)
     , prob_background_(0.)
     , probErr_background_(0.)
   {}
-  ~MEMResult() 
+  ~MEMResultBase() 
   {}
   
   double getProb_signal() const
@@ -196,7 +195,29 @@ class MEMResult
     else memScore *= -1.;
     return memScore;
   }
+  
+  friend class MEMbbwwAlgoDilepton;
+  friend class MEMbbwwAlgoSingleLepton;
 
+ protected:
+  double prob_signal_;
+  double probErr_signal_;
+  double prob_background_;
+  double probErr_background_;
+};
+
+std::ostream&
+operator<<(std::ostream& stream, const MEMResultBase& result);
+
+template <class T_sig, class T_bkg>
+class MEMResult : public MEMResultBase
+{
+ public:
+  MEMResult()
+  {}
+  ~MEMResult() 
+  {}
+  
   const std::vector<T_sig>& getPermutations_signal() const
   {
     return permutations_signal_;
@@ -210,11 +231,6 @@ class MEMResult
   friend class MEMbbwwAlgoSingleLepton;
 
  protected:
-  double prob_signal_;
-  double probErr_signal_;
-  double prob_background_;
-  double probErr_background_;
-  
   std::vector<T_sig> permutations_signal_;
   std::vector<T_bkg> permutations_background_;
 };
