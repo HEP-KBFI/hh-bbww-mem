@@ -522,10 +522,10 @@ double MEMbbwwIntegrandDilepton_signal::Eval(const double* x, int & countEval) c
 
   const double conversionFactor = 1.e+10*square(hbar_c); // conversion factor from GeV^-2 to picobarn = 10^-40m
   double integrandValue = conversionFactor*normFactor_;
-  const double fudgeFactor = 0.05*1.6e+29;
+  const double fudgeFactor             = 0.05*1.6e+29;
   const double fudgeFactor_missingBJet = 0.02*2.9e+24;
-  if ( measuredBJet1_ && measuredBJet2_ ) integrandValue *= fudgeFactor;
-  else integrandValue *= fudgeFactor_missingBJet;
+  if   ( measuredBJet1_ && measuredBJet2_ ) integrandValue *= fudgeFactor;
+  else                                      integrandValue *= fudgeFactor_missingBJet;
   integrandValue *= (trueNuP4.pt()*trueAntiNuP4.pt());
   integrandValue *= prob_PDF;
   integrandValue *= prob_flux;
