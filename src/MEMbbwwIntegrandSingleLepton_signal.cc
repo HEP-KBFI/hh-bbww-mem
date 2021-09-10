@@ -750,8 +750,14 @@ double MEMbbwwIntegrandSingleLepton_signal::Eval(const double* x, int & countEva
 
   const double conversionFactor = 1.e+10*square(hbar_c); // conversion factor from GeV^-2 to picobarn = 10^-40m
   double integrandValue = conversionFactor*normFactor_;
-  const double fudgeFactor = 1.e+15;
-  integrandValue *= fudgeFactor;
+  const double fudgeFactor               = 1.e+65;
+  const double fudgeFactor_missingBJet   = 1.e+58;
+  const double fudgeFactor_missingWJet   = 1.e+60;
+  const double fudgeFactor_missingBnWJet = 1.e+52;
+  if      ( measuredBJet1_ && measuredBJet2_ && measuredHadWJet1_ && measuredHadWJet2_ ) integrandValue *= fudgeFactor;
+  else if (                                     measuredHadWJet1_ && measuredHadWJet2_ ) integrandValue *= fudgeFactor_missingBJet;
+  else if ( measuredBJet1_ && measuredBJet2_                                           ) integrandValue *= fudgeFactor_missingWJet;
+  else                                                                                   integrandValue *= fudgeFactor_missingBnWJet;
   integrandValue *= trueNuP4.pt();
   integrandValue *= prob_PDF;
   integrandValue *= prob_flux;
