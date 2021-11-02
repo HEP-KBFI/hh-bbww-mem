@@ -3,6 +3,8 @@
 
 #include "hhAnalysis/bbwwMEM/interface/MeasuredParticle.h" // MeasuredParticle
 
+#include "DataFormats/Math/interface/deltaR.h" // deltaR
+
 namespace mem
 {
 
